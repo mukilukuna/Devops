@@ -14,12 +14,12 @@ stages:
               azureSubscription: "ServiceConnectionProjectAnsible"
               ScriptType: "FilePath"
               ScriptPath: "$(System.DefaultWorkingDirectory)/scripts/devops.ps1"
-              ScriptArguments: '-location northeurope `
+              ScriptArguments: '-location westeurope `
                 -resourceGroupName "rg-404da-mktg-pdb-ne-dev-001" `
-                -owner "Marketing" `
+                -owner "Lukuna B.V." `
                 -costCenter "112245" `
-                -application "Project Day Break" `
-                -description "The latest AI to do AI things" `
+                -application "Beroeps Product" `
+                -description "Applicatie voor het versnellen van de productie van de Beroeps producten" `
                 -repo "https://github.com/mukilukuna/Devops"'
               FailOnStandardError: true
               azurePowerShellVersion: "LatestVersion"

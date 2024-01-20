@@ -1,0 +1,11 @@
+trigger: none
+
+pool: default
+
+stages:
+  -stage: StageProvisionResourceGroup
+    Displayname: "Stage: Provision Resource Group"
+    Jobs:
+      - job: JobProvisionResourceGroup
+        Displayname: "Job: Provision Resource Group"
+        Steps:

@@ -1,3 +1,14 @@
+# Creates an Azure resource group with tags
+#
+# This function creates a new Azure resource group with the provided name, 
+# location, and tags. It takes in parameters for the resource group name, 
+# location, owner, cost center, application name, description, and repository.
+#
+# It assigns the tag values to a hashtable, then passes that hashtable to the 
+# New-AzResourceGroup command to create the resource group with tags.
+#
+# It wraps the resource group creation in a try/catch block to handle any errors.
+# If an error occurs, it will output debug information and throw a custom error.
 Param(
     $location,
     $resourcegroupname,
@@ -13,7 +24,7 @@ $tag = @{
     Costcenter  = $costcenter;
     Application = $application;
     Description = $description;
-    $Repository = $Repository
+    Repository  = $Repository
 }
 
 try {

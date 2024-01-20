@@ -11,7 +11,7 @@ stages:
         steps:
           - task: AzurePowerShell@5
             inputs:
-              azureSubscription: "Visual Studio Enterprise-abonnement – MPN"
+              azureSubscription: "ServiceConnectionProjectAnsible
               ScriptType: "FilePath"
               ScriptPath: "$(System.DefaultWorkingDirectory)/scripts/devops.ps1"
               ScriptArguments: '-location northeurope `

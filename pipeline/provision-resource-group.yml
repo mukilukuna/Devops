@@ -25,4 +25,3 @@ stages:
                 -repo "https://github.com/mukilukuna/Devops"'
               FailOnStandardError: true
               azurePowerShellVersion: "LatestVersion"
-# test

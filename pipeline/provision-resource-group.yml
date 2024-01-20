@@ -1,6 +1,6 @@
 trigger: none
 
-pool: Azure Pipelines
+pool: default
 
 stages:
   - stage: StageProvisionResourceGroup

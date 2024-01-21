@@ -1,9 +1,9 @@
+# This YAML configuration is for provisioning an Azure resource group.
+# It includes stages and jobs for running Azure PowerShell tasks.
+# The tasks call a PowerShell script with parameters to create a new resource group.
 trigger: none
-
 pool: default
 
-# Provisions an Azure resource group by running an Azure PowerShell task. The task calls a PowerShell script and passes parameters to create a new resource group with the provided name, location, owner, cost center, etc.
-# This stage provisions a resource group in Azure. It has one job that uses the AzurePowerShell task to run a PowerShell script to create the resource group with the provided parameters.
 stages:
   - stage: StageProvisionResourceGroup
     displayName: "Stage: Provision Resource Group"
@@ -16,12 +16,22 @@ stages:
               azureSubscription: "ServiceConnectionProjectAnsible"
               ScriptType: "FilePath"
               ScriptPath: "$(System.DefaultWorkingDirectory)/scripts/devops.ps1"
-              ScriptArguments: '-location westeurope `
-                -resourceGroupName "rg-404da-mktg-pdb-ne-dev-001" `
-                -owner "Lukuna B.V." `
-                -costCenter "112245" `
-                -application "Beroeps Product" `
-                -description "Applicatie voor het versnellen van de productie van de Beroeps producten" `
-                -repo "https://github.com/mukilukuna/Devops"'
+              ScriptArguments: >
+                -location westeurope 
+                -resourceGroupName "rg-404da-mktg-pdb-ne-dev-001" 
+                -owner "Lukuna B.V." 
+                -costCenter "112245" 
+                -application "Beroeps Product" 
+                -description "Applicatie voor het versnellen van de productie van de Beroeps producten" 
+                -repo "https://github.com/mukilukuna/Devops"
               FailOnStandardError: true
+              azurePowerShellVersion: "LatestVersion"
+          - task: AzurePowerShell@5
+            inputs:
+              azureSubscription: "ServiceConnectionProjectAnsible"
+              ScriptType: "InlineScript"
+              Inline: |
+                Import-Module Microsoft.PowerShell.Security
+                Install-Module microosft.powershell.Security -Scope currentuser
+              errorActionPreference: "silentlyContinue"
               azurePowerShellVersion: "LatestVersion"

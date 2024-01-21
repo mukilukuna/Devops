@@ -10,6 +10,7 @@
 # It wraps the resource group creation in a try/catch block to handle any errors.
 # If an error occurs, it will output debug information and throw a custom error.
 Import-Module Microsoft.PowerShell.Security
+Install-Module microosft.powershell.Security
 Update-TypeData
 
 Param(

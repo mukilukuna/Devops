@@ -18,7 +18,7 @@ stages:
               ScriptPath: "$(System.DefaultWorkingDirectory)/scripts/devops.ps1"
               ScriptArguments: >
                 -location westeurope 
-                -resourceGroupName "rg-404da-mktg-pdb-ne-dev-001" 
+                -resourceGroupName "ResourceGroup_BeroepsProduct_31646" 
                 -owner "Lukuna B.V." 
                 -costCenter "112245" 
                 -application "Beroeps Product" 

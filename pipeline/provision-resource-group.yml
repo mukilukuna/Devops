@@ -9,7 +9,7 @@ stages:
         steps:
           - task: PowerShell@2
             inputs:
-              azureSubscription: "Visual Studio Enterprise-abonnement – MPN(c0b52ba4-df61-49cf-ab65-315eb1152086)"
+              azureSubscription: "ServiceConnectionProjectAnsible"
               targetType: "filePath"
               filePath: "$(System.DefaultWorkingDirectory)/script/devops.ps1"
               arguments: '-location westeurope `

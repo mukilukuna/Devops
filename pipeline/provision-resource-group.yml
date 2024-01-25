@@ -1,5 +1,5 @@
 # This YAML configuration is for provisioning an Azure resource group.
-# It includes stages and jobs for running Azure PowerShell tasks.
+# It includes stages and jobs for running Azure CLI tasks.
 # The tasks call a PowerShell script with parameters to create a new resource group.
 trigger: none
 pool: default
@@ -11,12 +11,13 @@ stages:
       - job: JobProvisionResourceGroup
         displayName: "Job: Provision Resource Group"
         steps:
-          - task: AzurePowerShell@5
+          - task: AzureCLI@2
             inputs:
-              azureSubscription: "ServiceConnectionProjectAnsible"
-              ScriptType: "FilePath"
-              ScriptPath: "$(System.DefaultWorkingDirectory)/scripts/devops.ps1"
-              ScriptArguments: '-location westeurope `
+              azureSubscription: "Visual Studio Enterprise-abonnement – MPN(c0b52ba4-df61-49cf-ab65-315eb1152086)"
+              scriptType: "ps"
+              scriptLocation: "scriptPath"
+              scriptPath: "$(System.DefaultWorkingDirectory)/scripts/devops.ps1"
+              scriptArguments: '-location westeurope `
                 -resourceGroupName "rg-404da-mktg-pdb-ne-dev-001" `
                 -owner "Lukuna B.V." `
                 -costCenter "112245" `
@@ -24,14 +25,3 @@ stages:
                 -description "Applicatie voor het versnellen van de productie van de Beroeps producten" `
                 -repo "https://github.com/mukilukuna/Devops"'
               FailOnStandardError: true
-              azurePowerShellVersion: "LatestVersion"
-          - task: AzurePowerShell@5
-            inputs:
-              azureSubscription: "ServiceConnectionProjectAnsible"
-              ScriptType: "InlineScript"
-              Inline: |
-                Import-Module Microsoft.PowerShell.Security
-                Install-Module microosft.powershell.Security -Scope currentuser
-                Install-Module -Name Az.Accounts -RequiredVersion 1.1.0
-              errorActionPreference: "silentlyContinue"
-              azurePowerShellVersion: "LatestVersion"

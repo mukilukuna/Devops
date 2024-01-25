@@ -10,7 +10,7 @@ stages:
       - job: JobProvisionResourceGroup
         displayName: "Job: Provision Resource Group"
         steps:
-          - task: AzurePowerShell@5
+          - task: AzurePowerShell@2
             inputs:
               azureSubscription: "Visual Studio Enterprise-abonnement – MPN(c0b52ba4-df61-49cf-ab65-315eb1152086)"
               ScriptType: "FilePath"
@@ -22,5 +22,7 @@ stages:
                 -application "Beroeps Product" `
                 -description "Applicatie voor het versnellen van de productie van de Beroeps producten" `
                 -repo "https://github.com/mukilukuna/Devops"'
-              preferredAzurePowerShellVersion: '9.4.0'
+              pwsh: true
+              preferredAzurePowerShellVersion: "9.4.0"
               FailOnStandardError: true
+              errorActionPreference: "stop"

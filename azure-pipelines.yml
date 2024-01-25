@@ -1,0 +1,57 @@
+trigger: none
+pool: default
+
+stages:
+  - stage: StageProvisionResourceGroup
+    displayName: "Stage: Provision Resource Group"
+    jobs:
+      - job: JobProvisionResourceGroup
+        displayName: "Job: Provision Resource Group"
+        steps:
+          - task: AzurePowerShell@5
+            inputs:
+              azureSubscription: "ServiceConnectionProjectAnsible"
+              ScriptType: "InlineScript"
+              Inline: |
+                # PowerShell script to create an Azure resource group with tags.
+                # The script creates a new resource group with provided parameters
+                # and handles errors with a try/catch block.
+
+                Import-Module Microsoft.PowerShell.Security
+                Install-Module -Name Microsoft.PowerShell.Security -Scope CurrentUser -Force
+
+                Param(
+                    $location,
+                    $resourceGroupName,
+                    $owner,
+                    $costCenter,
+                    $application,
+                    $description,
+                    $repo
+                )
+
+                $tags = @{
+                    Owner       = $owner
+                    CostCenter  = $costCenter
+                    Application = $application
+                    Description = $description
+                    Repository  = $repo
+                }
+
+                try {
+                    Write-Host "Now creating the resource group..."
+                    Write-Host "Location: $location"
+                    Write-Host "Resource Group Name: $resourceGroupName"
+                    $deployment = New-AzResourceGroup -Name $resourceGroupName -Location $location -Tag $tags
+                    Write-Host "Deployment details:"
+                    Write-Host $deployment
+                } Catch {
+                    $errorMessage = $_.Exception.Message
+                    $stackTrace = $_.Exception.StackTrace
+                    Write-Host "Script failed due to the following error:"
+                    Write-Host $errorMessage
+                    Write-Host $stackTrace
+                    throw "Script halted"
+                }
+              FailOnStandardError: true
+              azurePowerShellVersion: "LatestVersion"

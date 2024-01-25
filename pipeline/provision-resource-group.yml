@@ -14,7 +14,7 @@ stages:
               InlineScript: |
                 Install-Module -Name Az -RequiredVersion 9.4.0 -Force -AllowClobber -Scope CurrentUser
                 Import-Module -Name Az -RequiredVersion 9.4.0
-              preferredAzurePowerShellVersion: "5.9.0"
+              preferredAzurePowerShellVersion: "2.15.0"
               FailOnStandardError: true
 
           - task: AzurePowerShell@5

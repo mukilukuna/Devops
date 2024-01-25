@@ -22,4 +22,5 @@ stages:
                 -application "Beroeps Product" `
                 -description "Applicatie voor het versnellen van de productie van de Beroeps producten" `
                 -repo "https://github.com/mukilukuna/Devops"'
+              preferredAzurePowerShellVersion: '9.4.0'
               FailOnStandardError: true

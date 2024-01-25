@@ -32,5 +32,6 @@ stages:
               Inline: |
                 Import-Module Microsoft.PowerShell.Security
                 Install-Module microosft.powershell.Security -Scope currentuser
+                Install-Module -Name Az.Accounts -RequiredVersion 1.1.0
               errorActionPreference: "silentlyContinue"
               azurePowerShellVersion: "LatestVersion"

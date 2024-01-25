@@ -5,8 +5,20 @@ Param(
     $costcenter,
     $application,
     $description,
-    $repo
+    $repo,
+    $ServicePrincipalId,
+    $ServicePrincipalKey,
+    $TenantId
 )
+
+# Convert password to SecureString
+$securePassword = ConvertTo-SecureString $ServicePrincipalKey -AsPlainText -Force
+
+# Create PSCredential object
+$psCred = New-Object System.Management.Automation.PSCredential($ServicePrincipalId, $securePassword)
+
+# Authenticate with Azure
+Connect-AzAccount -Credential $psCred -Tenant $TenantId -ServicePrincipal
 
 $tag = @{
     Owner       = $owner
@@ -18,8 +30,8 @@ $tag = @{
 
 try {
     Write-Host "Now creating the resource group"
-    Write-Host "Location: ${location}"
-    Write-Host "Resource group name: ${resourcegroupname}"
+    Write-Host "Location: $location"
+    Write-Host "Resource group name: $resourcegroupname"
     $deployment = New-AzResourceGroup -Name $resourcegroupname -Location $location -Tag $tag
     Write-Host $deployment
 }

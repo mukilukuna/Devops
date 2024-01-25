@@ -7,27 +7,26 @@ stages:
       - job: JobProvisionResourceGroup
         displayName: "Job: Provision Resource Group"
         steps:
-          - task: AzurePowerShell@5
+          - task: PowerShell@2
             inputs:
-              azureSubscription: "Visual Studio Enterprise-abonnement – MPN(c0b52ba4-df61-49cf-ab65-315eb1152086)"
-              ScriptType: "InlineScript"
-              InlineScript: |
-                Install-Module -Name Az -RequiredVersion 9.4.0 -Force -AllowClobber -Scope CurrentUser
-                Import-Module -Name Az -RequiredVersion 9.4.0
-              preferredAzurePowerShellVersion: "2.15.0"
-              FailOnStandardError: true
+              targetType: "inline"
+              script: |
+                Install-Module -Name Az -Force -AllowClobber -Scope CurrentUser
+                Import-Module -Name Az
+              pwsh: true
+              failOnStderr: true
 
-          - task: AzurePowerShell@5
+          - task: PowerShell@2
             inputs:
-              azureSubscription: "Visual Studio Enterprise-abonnement – MPN(c0b52ba4-df61-49cf-ab65-315eb1152086)"
-              ScriptType: "FilePath"
-              ScriptPath: "$(System.DefaultWorkingDirectory)/scripts/devops.ps1"
-              ScriptArguments: '-location westeurope `
+              targetType: "filePath"
+              filePath: "$(System.DefaultWorkingDirectory)/scripts/devops.ps1"
+              arguments: '-location westeurope `
                 -resourceGroupName "rg-404da-mktg-pdb-ne-dev-001" `
                 -owner "Lukuna B.V." `
                 -costCenter "112245" `
                 -application "Beroeps Product" `
                 -description "Applicatie voor het versnellen van de productie van de Beroeps producten" `
                 -repo "https://github.com/mukilukuna/Devops"'
-              FailOnStandardError: true
+              pwsh: true
+              failOnStderr: true
               errorActionPreference: "stop"

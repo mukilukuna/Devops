@@ -12,7 +12,7 @@ stages:
         steps:
           - task: AzurePowerShell@5
             inputs:
-              azureSubscription: "c0b52ba4-df61-49cf-ab65-315eb1152086"
+              azureSubscription: "Visual Studio Enterprise-abonnement – MPN(c0b52ba4-df61-49cf-ab65-315eb1152086)"
               ScriptType: "FilePath"
               ScriptPath: "$(System.DefaultWorkingDirectory)/scripts/devops.ps1"
               ScriptArguments: '-location westeurope `

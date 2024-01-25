@@ -1,6 +1,3 @@
-# This YAML configuration is for provisioning an Azure resource group.
-# It includes stages and jobs for running Azure PowerShell tasks.
-# The tasks call a PowerShell script with parameters to create a new resource group.
 trigger: none
 pool: default
 stages:
@@ -12,13 +9,13 @@ stages:
         steps:
           - task: AzurePowerShell@5
             inputs:
-            azureSubscription: "Visual Studio Enterprise-abonnement – MPN(c0b52ba4-df61-49cf-ab65-315eb1152086)"
-            ScriptType: "InlineScript"
-            InlineScript: |
-              Install-Module -Name Az -RequiredVersion 9.4.0 -Force -AllowClobber -Scope CurrentUser
-              Import-Module -Name Az -RequiredVersion 9.4.0
-            preferredAzurePowerShellVersion: "latest"
-            FailOnStandardError: true
+              azureSubscription: "Visual Studio Enterprise-abonnement – MPN(c0b52ba4-df61-49cf-ab65-315eb1152086)"
+              ScriptType: "InlineScript"
+              InlineScript: |
+                Install-Module -Name Az -RequiredVersion 9.4.0 -Force -AllowClobber -Scope CurrentUser
+                Import-Module -Name Az -RequiredVersion 9.4.0
+              preferredAzurePowerShellVersion: "latest"
+              FailOnStandardError: true
 
           - task: AzurePowerShell@5
             inputs:

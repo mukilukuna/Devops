@@ -16,7 +16,7 @@ stages:
               azureSubscription: "Visual Studio Enterprise-abonnement – MPN(c0b52ba4-df61-49cf-ab65-315eb1152086)"
               scriptType: "ps"
               scriptLocation: "scriptPath"
-              scriptPath: "$(System.DefaultWorkingDirectory)/scripts/devops.ps1"
+              scriptPath: "$(System.DefaultWorkingDirectory)/scripts/devops.SH"
               scriptArguments: '-location westeurope `
                 -resourceGroupName "rg-404da-mktg-pdb-ne-dev-001" `
                 -owner "Lukuna B.V." `

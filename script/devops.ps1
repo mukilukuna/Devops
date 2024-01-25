@@ -31,8 +31,8 @@ $tag = @{
 try {
     write-host "now creating the resource group"
     write-host "location : ${location}"
-    write-host "resource group name : ${recoursegroupname}"
-    $deployment = New-AzResourceGroup -Name "${recoursegroupname}" -Location "${location}" -tag ${tag}
+    write-host "resource group name : ${resourcegroupname}"
+    $deployment = New-AzResourceGroup -Name "${resourcegroupname}" -Location "${location}" -tag ${tag}
     write-host $deployment
 }
 Catch {

@@ -12,3 +12,17 @@ param RetentionInDays int = 30
 
 @description('Log analytics SKU')
 param sku string = 'PerGB2018'
+
+@allowed([
+  'Enabled'
+  'Disabled'
+])
+@description('publicNetworkAccessforIngestion')
+param publicNetworkAccessforIngestion string = 'Enabled'
+
+@allowed([
+  'Enabled'
+  'Disabled'
+])
+@description('publicNetworkAccessforQuery')
+param publicNetworkAccessforQuery string = 'Enabled'

@@ -34,3 +34,17 @@ param publicNetworkAccessforIngestion string = 'Enabled'
 
 @description('publicNetworkAccessforQuery')
 param publicNetworkAccessforQuery string = 'Enabled'
+
+module loganalytics './modules/LogAnalytics/LogAnalitycs.bicep' = {
+  name: '${appShort}-log-analytics-001'
+  params: {
+    tags: tags
+    location: location
+    loganalyticsWSName: loganalyticsWSName
+    RetentionInDays: RetentionInDays
+    sku: sku
+    publicNetworkAccessforIngestion: publicNetworkAccessforIngestion
+    publicNetworkAccessforQuery: publicNetworkAccessforQuery
+
+  }
+}

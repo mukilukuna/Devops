@@ -11,13 +11,10 @@ Param(
     $TenantId
 )
 
-# Convert password to SecureString
 $securePassword = ConvertTo-SecureString $ServicePrincipalKey -AsPlainText -Force
 
-# Create PSCredential object
 $psCred = New-Object System.Management.Automation.PSCredential($ServicePrincipalId, $securePassword)
 
-# Authenticate with Azure
 Connect-AzAccount -Credential $psCred -Tenant $TenantId -ServicePrincipal
 
 $tag = @{

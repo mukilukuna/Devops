@@ -28,4 +28,3 @@ stages:
     variables:
       ServicePrincipalId: "fda4fffb-a2a7-4aef-aa72-ec775ceaf764"
       TenantId: "62e222e6-5ad4-45d1-88c4-1b18d2bedfda"
-      ServicePrincipalKey: "$(ServicePrincipalKey)"

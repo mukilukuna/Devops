@@ -13,7 +13,7 @@ stages:
               filePath: "$(System.DefaultWorkingDirectory)/script/devops.ps1"
               arguments: >
                 -location "westeurope"
-                -resourceGroupName "rg-404da-mktg-pdb-ne-dev-001"
+                -resourceGroupName "ResourceGroupBeroepsProduct"
                 -owner "Lukuna B.V."
                 -costCenter "112245"
                 -application "Beroeps Product"

@@ -10,7 +10,7 @@ stages:
           - task: PowerShell@2
             inputs:
               targetType: "filePath"
-              filePath: "$(System.DefaultWorkingDirectory)/script/devops.ps1"
+              filePath: "$(System.DefaultWorkingDirectory)/ResourceGroup/script/devops.ps1"
               arguments: >
                 -location "westeurope"
                 -resourceGroupName "ResourceGroupBeroepsProduct"

@@ -45,6 +45,5 @@ module loganalytics './modules/LogAnalytics/LogAnalitycs.bicep' = {
     sku: sku
     publicNetworkAccessforIngestion: publicNetworkAccessforIngestion
     publicNetworkAccessforQuery: publicNetworkAccessforQuery
-
   }
 }

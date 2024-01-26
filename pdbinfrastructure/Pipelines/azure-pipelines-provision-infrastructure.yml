@@ -1,0 +1,19 @@
+trigger: none
+
+parameters:
+  - name: variableGroup
+    type: string
+    default: vg-ans-iac
+  - name: serviceConnection
+    type: string
+    default: ServiceConnectionProjectAnsible
+  - name: enviroment
+    type: string
+    value: -dev
+      -test
+      -prod
+
+variables:
+  - group: ${{ parameters.variableGroup }}
+  - name: version
+    value: 001

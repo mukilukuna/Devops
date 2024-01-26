@@ -26,3 +26,20 @@ param publicNetworkAccessforIngestion string = 'Enabled'
 ])
 @description('publicNetworkAccessforQuery')
 param publicNetworkAccessforQuery string = 'Enabled'
+
+resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2021-12-01-preview' = {
+  name: loganalyticsWSName
+  location: location
+  tags: tags
+  properties: {
+    publicNetworkAccessForIngestion: publicNetworkAccessforIngestion
+    publicNetworkAccessForQuery: publicNetworkAccessforQuery
+    retentionInDays: RetentionInDays
+    sku: {
+      name: sku
+    }
+  }
+}
+
+output logAnalyticsWSName string = logAnalytics.name
+output logAnalyticsWSResourceId string = logAnalyticsWS.id

@@ -10,10 +10,10 @@ Param(
 
 
 $tag = @{
-    Owner       = $owner
-    Costcenter  = $costcenter
-    Application = $application
-    Description = $description
+    Owner       = $owner;
+    Costcenter  = $costcenter;
+    Application = $application;
+    Description = $description;
     Repository  = $repo
 }
 

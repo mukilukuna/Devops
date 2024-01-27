@@ -11,11 +11,11 @@ Param(
     $TenantId
 )
 
-$securePassword = ConvertTo-SecureString $ServicePrincipalKey -AsPlainText -Force
+#$securePassword = ConvertTo-SecureString $ServicePrincipalKey -AsPlainText -Force
 
-$psCred = New-Object System.Management.Automation.PSCredential($ServicePrincipalId, $securePassword)
+#$psCred = New-Object System.Management.Automation.PSCredential($ServicePrincipalId, $securePassword)
 
-Connect-AzAccount -Credential $psCred -Tenant $TenantId -ServicePrincipal
+#Connect-AzAccount -Credential $psCred -Tenant $TenantId -ServicePrincipal
 
 $tag = @{
     Owner       = $owner

@@ -9,6 +9,7 @@ stages:
         steps:
           - task: PowerShell@5
             inputs:
+              azureSubscription: "ServiceConnectionProjectAnsible"
               targetType: "filePath"
               filePath: "$(System.DefaultWorkingDirectory)/ResourceGroup/script/devops.ps1"
               arguments: >
@@ -25,6 +26,7 @@ stages:
               pwsh: true
               failOnStderr: true
               errorActionPreference: "stop"
+              azurePowershellVersion: "LatestVersion"
 #    variables:
 #      ServicePrincipalId: "fda4fffb-a2a7-4aef-aa72-ec775ceaf764"
 #      TenantId: "62e222e6-5ad4-45d1-88c4-1b18d2bedfda"

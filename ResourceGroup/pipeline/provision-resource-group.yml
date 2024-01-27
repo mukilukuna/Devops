@@ -22,7 +22,7 @@ stages:
               #                -ServicePrincipalId "$(ServicePrincipalId)"
               #                -ServicePrincipalKey "$(ServicePrincipalKey)"
               #                -TenantId "$(TenantId)"
-              pwsh: true
+              #              pwsh: true
               failOnStderr: true
               errorActionPreference: "stop"
               azurePowershellVersion: "LatestVersion"

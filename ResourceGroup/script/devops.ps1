@@ -1,6 +1,6 @@
 Param(
     $location,
-    $resourcegroupname,
+    $resourceGroupName,
     $owner,
     $costcenter,
     $application,
@@ -28,8 +28,8 @@ $tag = @{
 try {
     Write-Host "Now creating the resource group"
     Write-Host "Location: $location"
-    Write-Host "Resource group name: $resourcegroupname"
-    $deployment = New-AzResourceGroup -Name $resourcegroupname -Location $location -Tag $tag
+    Write-Host "Resource group name: $resourceGroupName"
+    $deployment = New-AzResourceGroup -Name $resourceGroupName -Location $location -Tag $tag
     Write-Host $deployment
 }
 Catch {

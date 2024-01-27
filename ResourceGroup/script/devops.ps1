@@ -5,10 +5,10 @@ Param(
     $costcenter,
     $application,
     $description,
-    $repo,
-#    $ServicePrincipalId,
-#    $ServicePrincipalKey,
-    $TenantId
+    $repo
+    #    $ServicePrincipalId,
+    #    $ServicePrincipalKey,
+    #    $TenantId
 )
 
 #$securePassword = ConvertTo-SecureString $ServicePrincipalKey -AsPlainText -Force

@@ -12,13 +12,13 @@ stages:
               azureSubscription: "ServiceConnectionProjectAnsible"
               ScriptType: "FilePath"
               ScriptPath: "$(System.DefaultWorkingDirectory)/ResourceGroup/script/devops.ps1"
-              arguments: -location "westeurope"
-                -resourceGroupName "ResourceGroupBeroepsProduct"
-                -owner "Lukuna B.V."
-                -costCenter "112245"
-                -application "Beroeps Product"
-                -description "Applicatie voor het versnellen van de productie van de Beroeps producten"
-                -repo "https://github.com/mukilukuna/Devops"
+              arguments: -location "westeurope" `
+                -resourceGroupName "ResourceGroupBeroepsProduct" `
+                -owner "Lukuna B.V." `
+                -costCenter "112245" `
+                -application "Beroeps Product" `
+                -description "Applicatie voor het versnellen van de productie van de Beroeps producten" `
+                -repo "https://github.com/mukilukuna/Devops" `
               #                -ServicePrincipalId "$(ServicePrincipalId)"
               #                -ServicePrincipalKey "$(ServicePrincipalKey)"
               #                -TenantId "$(TenantId)"

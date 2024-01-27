@@ -1,0 +1,28 @@
+trigger:
+  - main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - script: echo Hello, world!
+    displayName: "Run a one-line script"
+
+  - script: |
+      echo Add other tasks to build, test, and deploy your project.
+
+      echo See https://aka.ms/yaml
+    displayName: "Run a multi-line script"
+
+  - task: AzureResourceManagerTemplateDeployment@3
+    inputs:
+      deploymentScope: "Resource Group"
+      azureResourceManagerConnection: "ServiceConnectionProjectAnsible"
+      subscriptionId: "c0b52ba4-df61-49cf-ab65-315eb1152086"
+      action: "Create Or Update Resource Group"
+      resourceGroupName: "ResourceGroupBeroepsProduct"
+      location: "West Europe"
+      templateLocation: "Linked artifact"
+      csmFile: '"$(System.DefaultWorkingDirectory)/'
+      csmParametersFile: "template parameters"
+      deploymentMode: "Incremental"

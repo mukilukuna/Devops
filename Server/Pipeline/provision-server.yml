@@ -23,6 +23,6 @@ steps:
       resourceGroupName: "ResourceGroupBeroepsProduct"
       location: "West Europe"
       templateLocation: 'URL of the file'
-      csmFileLink: 'https://github.com/mukilukuna/Devops/blob/main/Server/ARM/parameters.json'
-      csmParametersFileLink: 'https://github.com/mukilukuna/Devops/blob/main/Server/ARM/template.json'
+      csmFileLink: 'https://github.com/mukilukuna/Devops/blob/main/Server/ARM/template.json'
+      csmParametersFileLink: 'https://github.com/mukilukuna/Devops/blob/main/Server/ARM/parameters.json'
       deploymentMode: "Incremental"

@@ -17,3 +17,29 @@ variables:
   - group: ${{ parameters.variableGroup }}
   - name: version
     value: 001
+
+stages:
+  - stage: stageProvisionLogAnalytics
+    displayName: "stage: Provision Log Analytics"
+    jobs:
+      - job: jobProvisionLogAnalytics
+        displayName: "job: Provision Log Analytics"
+        steps:
+          - task: PowerShell@2
+            inputs:
+              targetType: "filePath"
+              filePath: "$(System.DefaultWorkingDirectory)/pdbinfrastructure/script/compile-bicep-to-arm.ps1"
+              arguments: >
+                "-filePath $(System.DefaultWorkingDirectory)/pdbinfrastructure/infra/logAnalitics
+                -biceptemplate main.bicep
+                -outfile main.json"
+                -repo "https://github.com/mukilukuna/Devops"
+                -ServicePrincipalId "$(ServicePrincipalId)"
+                -ServicePrincipalKey "$(ServicePrincipalKey)"
+                -TenantId "$(TenantId)"
+              pwsh: true
+              failOnStderr: true
+              errorActionPreference: "stop"
+    variables:
+    ServicePrincipalId: "fda4fffb-a2a7-4aef-aa72-ec775ceaf764"
+    TenantId: "62e222e6-5ad4-45d1-88c4-1b18d2bedfda"

@@ -23,6 +23,6 @@ steps:
       resourceGroupName: "ResourceGroupBeroepsProduct"
       location: "West Europe"
       templateLocation: "Linked artifact"
-      csmFile: "$(System.DefaultWorkingDirectory)/Server/ARM/parameters.json"
+      csmFile: "$(System.DefaultWorkingDirectory)/Server/ARM/"
       csmParametersFile: "template parameters"
       deploymentMode: "Incremental"

@@ -6,23 +6,25 @@
             "value": "westeurope"
         },
         "networkInterfaceName": {
-            "value": "devopsubuntu104"
+            "value": "devopsubuntuserver485"
         },
         "enableAcceleratedNetworking": {
             "value": true
         },
         "networkSecurityGroupName": {
-            "value": "DevopsUbuntu-nsg"
+            "value": "DevopsUbuntuServer-nsg"
         },
         "networkSecurityGroupRules": {
             "value": [
                 {
-                    "name": "SSH",
+                    "name": "default-allow-ssh",
                     "properties": {
-                        "priority": 300,
+                        "priority": 1000,
                         "protocol": "TCP",
                         "access": "Allow",
                         "direction": "Inbound",
+                        "sourceApplicationSecurityGroups": [],
+                        "destinationApplicationSecurityGroups": [],
                         "sourceAddressPrefix": "*",
                         "sourcePortRange": "*",
                         "destinationAddressPrefix": "*",
@@ -30,12 +32,14 @@
                     }
                 },
                 {
-                    "name": "HTTP",
+                    "name": "DevopsUbuntuLB-allow-inbound",
                     "properties": {
-                        "priority": 320,
-                        "protocol": "TCP",
+                        "priority": 999,
+                        "protocol": "*",
                         "access": "Allow",
                         "direction": "Inbound",
+                        "sourceApplicationSecurityGroups": [],
+                        "destinationApplicationSecurityGroups": [],
                         "sourceAddressPrefix": "*",
                         "sourcePortRange": "*",
                         "destinationAddressPrefix": "*",
@@ -48,7 +52,7 @@
             "value": "default"
         },
         "virtualNetworkName": {
-            "value": "DevopsUbuntu-vnet"
+            "value": "DevopsUbuntuServer-vnet"
         },
         "addressPrefixes": {
             "value": [
@@ -66,7 +70,7 @@
             ]
         },
         "publicIpAddressName": {
-            "value": "DevopsUbuntu-ip"
+            "value": "DevopsUbuntuServer-ip"
         },
         "publicIpAddressType": {
             "value": "Static"
@@ -78,16 +82,16 @@
             "value": "Delete"
         },
         "virtualMachineName": {
-            "value": "DevopsUbuntu"
+            "value": "DevopsUbuntuServer"
         },
         "virtualMachineComputerName": {
-            "value": "DevopsUbuntu"
+            "value": "DevopsUbuntuServer"
         },
         "virtualMachineRG": {
             "value": "ResourceGroupBeroepsProduct"
         },
         "osDiskType": {
-            "value": "Premium_LRS"
+            "value": "Standard_LRS"
         },
         "osDiskDeleteOption": {
             "value": "Delete"
@@ -102,19 +106,10 @@
             "value": false
         },
         "adminUsername": {
-            "value": "azureuser"
+            "value": "admini"
         },
         "adminPassword": {
-             "value": "your_password_here"
-        },
-        "securityType": {
-            "value": "TrustedLaunch"
-        },
-        "secureBoot": {
-            "value": true
-        },
-        "vTPM": {
-            "value": true
+            "value": null
         },
         "autoShutdownStatus": {
             "value": "Enabled"
@@ -135,7 +130,7 @@
             "value": "admini@MLukuna.onmicrosoft.com"
         },
         "loadBalancerName": {
-            "value": "DevopsLoadBalancer"
+            "value": "DevopsUbuntuLB"
         },
         "loadbalancingRuleFrontEndPort": {
             "value": 80

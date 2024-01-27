@@ -23,6 +23,6 @@ steps:
       resourceGroupName: "ResourceGroupBeroepsProduct"
       location: "West Europe"
       templateLocation: "Linked artifact"
-      csmFile: "$(System.DefaultWorkingDirectory)/Server/Pipeline/provision-server.yml"
+      csmFile: "$(System.DefaultWorkingDirectory)/Server/ARM/parameters.json"
       csmParametersFile: "template parameters"
       deploymentMode: "Incremental"

@@ -1,5 +1,7 @@
 trigger: none
+
 pool: default
+
 stages:
   - stage: StageProvisionResourceGroup
     displayName: "Stage: Provision Resource Group"
@@ -12,7 +14,7 @@ stages:
               azureSubscription: "ServiceConnectionProjectAnsible"
               ScriptType: "FilePath"
               ScriptPath: "$(System.DefaultWorkingDirectory)/ResourceGroup/script/devops.ps1"
-              arguments: -location "westeurope" `
+              ScriptArguments: -location "westeurope" `
                 -resourceGroupName "ResourceGroupBeroepsProduct" `
                 -owner "Lukuna B.V." `
                 -costCenter "112245" `

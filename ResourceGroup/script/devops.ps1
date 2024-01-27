@@ -6,8 +6,8 @@ Param(
     $application,
     $description,
     $repo,
-    $ServicePrincipalId,
-    $ServicePrincipalKey,
+#    $ServicePrincipalId,
+#    $ServicePrincipalKey,
     $TenantId
 )
 

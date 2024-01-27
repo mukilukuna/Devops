@@ -7,7 +7,7 @@ stages:
       - job: JobProvisionResourceGroup
         displayName: "Job: Provision Resource Group"
         steps:
-          - task: PowerShell@5
+          - task: AzurePowerShell@5
             inputs:
               azureSubscription: "ServiceConnectionProjectAnsible"
               targetType: "filePath"

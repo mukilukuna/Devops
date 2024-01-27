@@ -22,7 +22,7 @@ steps:
       action: "Create Or Update Resource Group"
       resourceGroupName: "ResourceGroupBeroepsProduct"
       location: "West Europe"
-      templateLocation: "Linked artifact"
-      csmFile: "$(System.DefaultWorkingDirectory)/Server/ARM/parameters.json"
-      csmParametersFile: 'template.json'
+      templateLocation: 'URL of the file'
+      csmFileLink: 'https://github.com/mukilukuna/Devops/blob/main/Server/ARM/parameters.json'
+      csmParametersFileLink: 'https://github.com/mukilukuna/Devops/blob/main/Server/ARM/template.json'
       deploymentMode: "Incremental"

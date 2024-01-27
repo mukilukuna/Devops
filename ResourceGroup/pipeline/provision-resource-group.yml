@@ -10,8 +10,8 @@ stages:
           - task: AzurePowerShell@5
             inputs:
               azureSubscription: "ServiceConnectionProjectAnsible"
-              targetType: "filePath"
-              filePath: "$(System.DefaultWorkingDirectory)/ResourceGroup/script/devops.ps1"
+              ScriptType: "FilePath"
+              ScriptPath: "$(System.DefaultWorkingDirectory)/ResourceGroup/script/devops.ps1"
               arguments: >
                 -location "westeurope"
                 -resourceGroupName "ResourceGroupBeroepsProduct"

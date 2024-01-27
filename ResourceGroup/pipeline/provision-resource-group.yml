@@ -14,20 +14,13 @@ stages:
               azureSubscription: "ServiceConnectionProjectAnsible"
               ScriptType: "FilePath"
               ScriptPath: "$(System.DefaultWorkingDirectory)/ResourceGroup/script/devops.ps1"
-              ScriptArguments: -location "westeurope" 
-                -resourceGroupName "ResourceGroupBeroepsProduct" 
+              ScriptArguments: -location "westeurope"
+                -resourceGroupName "ResourceGroupBeroepsProduct"
                 -owner "Lukuna B.V."`
-                -costCenter "112245" 
-                -application "Beroeps Product" 
-                -description "Applicatie voor het versnellen van de productie van de Beroeps producten" 
-                -repo "https://github.com/mukilukuna/Devops" 
-              #                -ServicePrincipalId "$(ServicePrincipalId)"
-              #                -ServicePrincipalKey "$(ServicePrincipalKey)"
-              #                -TenantId "$(TenantId)"
-              #              pwsh: true
+                -costCenter "112245"
+                -application "Beroeps Product"
+                -description "Applicatie voor het versnellen van de productie van de Beroeps producten"
+                -repo "https://github.com/mukilukuna/Devops"
               failOnStderr: true
               errorActionPreference: "stop"
               azurePowershellVersion: "LatestVersion"
-#    variables:
-#      ServicePrincipalId: "fda4fffb-a2a7-4aef-aa72-ec775ceaf764"
-#      TenantId: "62e222e6-5ad4-45d1-88c4-1b18d2bedfda"

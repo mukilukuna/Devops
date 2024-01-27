@@ -20,7 +20,7 @@ try {
     Write-Host "Now creating the resource group"
     Write-Host "location: ${location}"
     Write-Host "resource group name: ${resourceGroupName}"
-    $deployment = New-AzResourceGroup -Name "${resourceGroupName}" -Location "${location}" -Tag ${tag} -Force
+    $deployment = New-AzResourceGroup -Name "${resourceGroupName}" -Location "${location}" -Tag ${tag}
     Write-Host $deployment
 }
 catch {

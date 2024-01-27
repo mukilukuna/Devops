@@ -104,6 +104,9 @@
         "adminUsername": {
             "value": "azureuser"
         },
+        "adminPassword": {
+             "value": "your_password_here"
+        },
         "securityType": {
             "value": "TrustedLaunch"
         },

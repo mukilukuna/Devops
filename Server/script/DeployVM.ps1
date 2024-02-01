@@ -1,6 +1,6 @@
-# Variabelen
-Import-Module Microsoft.PowerShell.Security
 
+Import-Module Microsoft.PowerShell.Security
+# Variabelen
 $resourceGroupName = "ResourceGroupBeroepsProduct"
 $location = "West Europe"
 $vnetName = "'VnetLukunaBV"
@@ -30,3 +30,8 @@ $subnet = Get-AzVirtualNetworkSubnetConfig -Name $subnetName -VirtualNetwork $vn
 $ipConfig = New-AzNetworkInterfaceIpConfig -Name "ipconfig1" -SubnetId $subnet.Id -PublicIpAddressId $publicIp.Id
 $nic = New-AzNetworkInterface -ResourceGroupName $resourceGroupName -Location $location -Name "$vmName-nic" -IpConfiguration $ipConfig
 New-AzVm -ResourceGroupName $resourceGroupName -Location $location -Name $vmName -NetworkInterfaceId $nic.Id -Image "Win2022Datacenter" -Size $vmSize -Credential $credential
+
+
+# Toon PowerShell versie en locatie
+Write-Host "PowerShell Version: $($PSVersionTable.PSVersion)"
+Write-Host "PowerShell Path: $((Get-Command powershell).Source)"

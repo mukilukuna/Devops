@@ -12,7 +12,7 @@ stages:
         variables:
           vmUsername: $(vmUsername)
           vmPassword: $(vmPassword)
-          AZP_AGENT_CLEANUP_PSMODULES_IN_POWERSHELL: "true"
+          AZP_AGENT_CLEANUP_PSMODULES_IN_POWERSHELL: true
         steps:
           - checkout: none
           - task: AzurePowerShell@5
@@ -21,4 +21,4 @@ stages:
               ScriptType: "FilePath"
               ScriptPath: "$(System.DefaultWorkingDirectory)/Server/script/DeployVM.ps1"
               azurePowerShellVersion: "LatestVersion"
-              pwsh: false
+              pwsh: true

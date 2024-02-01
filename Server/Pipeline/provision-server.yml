@@ -14,7 +14,7 @@ stages:
           vmPassword: $(vmPassword)
           AZP_AGENT_CLEANUP_PSMODULES_IN_POWERSHELL: true
         steps:
-          - checkout: none
+          #          - checkout: none
           - task: AzurePowerShell@5
             inputs:
               azureSubscription: "ServiceConnectionProjectAnsible"

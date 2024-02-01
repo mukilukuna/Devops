@@ -11,7 +11,6 @@ stages:
         displayName: "Job: Provision Server"
         variables:
           - group: vg-ans-iac
-            AZP_AGENT_CLEANUP_PSMODULES_IN_POWERSHELL: true
         steps:
           - task: AzurePowerShell@5
             inputs:

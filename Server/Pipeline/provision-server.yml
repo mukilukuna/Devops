@@ -20,4 +20,4 @@ stages:
               ScriptType: "FilePath"
               ScriptPath: "$(System.DefaultWorkingDirectory)/Server/script/DeployVM.ps1"
               azurePowerShellVersion: "LatestVersion"
-              pwsh: true
+              pwsh: false

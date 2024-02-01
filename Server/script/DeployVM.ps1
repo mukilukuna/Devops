@@ -16,6 +16,8 @@ $publicIpName = "MijnPublicIPLukunaBV" # Voeg de naam van je Public IP toe
 $username = $env:vmUsername
 $password = ConvertTo-SecureString $env:vmPassword -AsPlainText -Force
 $credential = New-Object System.Management.Automation.PSCredential($username, $password)
+Write-Host "Username: $env:vmUsername"
+Write-Host "Password: $($env:vmPassword -replace '.', '*')"  # Toont sterretjes i.p.v. het werkelijke wachtwoord voor beveiliging
 
 try {
 
@@ -44,5 +46,3 @@ catch {
         Write-Host "Controleer de waarden van vmUsername en vmPassword in de omgevingsvariabelen."
     }
 }
-Write-Host "Username: $env:vmUsername"
-Write-Host "Password: $($env:vmPassword -replace '.', '*')"  # Toont sterretjes i.p.v. het werkelijke wachtwoord voor beveiliging

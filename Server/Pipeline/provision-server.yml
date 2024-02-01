@@ -21,6 +21,3 @@ stages:
               ScriptPath: "$(System.DefaultWorkingDirectory)/Server/script/DeployVM.ps1"
               azurePowerShellVersion: "LatestVersion"
               pwsh: true
-            env:
-              vmUsername: $(vmUsername)
-              vmPassword: $(vmPassword)

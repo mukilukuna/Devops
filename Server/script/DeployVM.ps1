@@ -2,6 +2,8 @@
 Write-Host "PowerShell Version: $($PSVersionTable.PSVersion)"
 Write-Host "PowerShell Path: $((Get-Command powershell).Source)"mport-Module Microsoft.PowerShell.Security
 
+Import-Module Microsoft.PowerShell.Security
+
 # Variabelen
 $resourceGroupName = "ResourceGroupBeroepsProduct"
 $location = "West Europe"

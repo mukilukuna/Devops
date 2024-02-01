@@ -40,4 +40,9 @@ try {
 }
 catch {
     Write-Host "Er is een fout opgetreden: $_"
+    if ($_ -match "Cannot bind argument to parameter 'String'") {
+        Write-Host "Controleer de waarden van vmUsername en vmPassword in de omgevingsvariabelen."
+    }
 }
+Write-Host "Username: $env:vmUsername"
+Write-Host "Password: $($env:vmPassword -replace '.', '*')"  # Toont sterretjes i.p.v. het werkelijke wachtwoord voor beveiliging

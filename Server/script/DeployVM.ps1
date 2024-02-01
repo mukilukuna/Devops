@@ -1,4 +1,6 @@
 # Variabelen
+Import-Module Microsoft.PowerShell.Security
+
 $resourceGroupName = "ResourceGroupBeroepsProduct"
 $location = "West Europe"
 $vnetName = "'VnetLukunaBV"

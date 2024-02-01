@@ -10,11 +10,9 @@ stages:
       - job: JobProvisionServer
         displayName: "Job: Provision Server"
         variables:
-          vmUsername: $(vmUsername)
-          vmPassword: $(vmPassword)
-          AZP_AGENT_CLEANUP_PSMODULES_IN_POWERSHELL: true
+          - group: vg-ans-iac
+            AZP_AGENT_CLEANUP_PSMODULES_IN_POWERSHELL: true
         steps:
-          #          - checkout: none
           - task: AzurePowerShell@5
             inputs:
               azureSubscription: "ServiceConnectionProjectAnsible"

@@ -1,5 +1,7 @@
+# Toon PowerShell versie en locatie
+Write-Host "PowerShell Version: $($PSVersionTable.PSVersion)"
+Write-Host "PowerShell Path: $((Get-Command powershell).Source)"mport-Module Microsoft.PowerShell.Security
 
-Import-Module Microsoft.PowerShell.Security
 # Variabelen
 $resourceGroupName = "ResourceGroupBeroepsProduct"
 $location = "West Europe"
@@ -32,6 +34,4 @@ $nic = New-AzNetworkInterface -ResourceGroupName $resourceGroupName -Location $l
 New-AzVm -ResourceGroupName $resourceGroupName -Location $location -Name $vmName -NetworkInterfaceId $nic.Id -Image "Win2022Datacenter" -Size $vmSize -Credential $credential
 
 
-# Toon PowerShell versie en locatie
-Write-Host "PowerShell Version: $($PSVersionTable.PSVersion)"
-Write-Host "PowerShell Path: $((Get-Command powershell).Source)"
+

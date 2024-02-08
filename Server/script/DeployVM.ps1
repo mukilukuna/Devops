@@ -40,12 +40,12 @@ try {
     # Virtual Machine
     $ipConfig = New-AzNetworkInterfaceIpConfig -Name "ipconfig1" -SubnetId $subnet.Id -PublicIpAddressId $publicIp.Id
     $nic = New-AzNetworkInterface -ResourceGroupName $resourceGroupName -Location $location -Name "$vmName-nic" -IpConfiguration $ipConfig
-    $vmConfig = New-AzVMConfig -VMName $vmName -VMSize $vmSize
-    $vmConfig = Set-AzVMOperatingSystem -VM $vmConfig -Windows -ComputerName $vmName -Credential $credential
-    $vmConfig = Set-AzVMSourceImage -VM $vmConfig -PublisherName "MicrosoftWindowsServer" -Offer "WindowsServer" -Skus "2019-Datacenter" -Version "latest"
-    $vmConfig = Add-AzVMNetworkInterface -VM $vmConfig -Id $nic.Id
+    $vmConfig = New-AzVMConfig -VMName $vmName -VMSize $vmSize -Confirm:$false
+    $vmConfig = Set-AzVMOperatingSystem -VM $vmConfig -Windows -ComputerName $vmName -Credential $credential -Confirm:$false
+    $vmConfig = Set-AzVMSourceImage -VM $vmConfig -PublisherName "MicrosoftWindowsServer" -Offer "WindowsServer" -Skus "2019-Datacenter" -Version "latest" -Confirm:$false
+    $vmConfig = Add-AzVMNetworkInterface -VM $vmConfig -Id $nic.Id -Confirm:$false
 
-    New-AzVm -ResourceGroupName $resourceGroupName -Location $location -VM $vmConfig
+    New-AzVm -ResourceGroupName $resourceGroupName -Location $location -VM $vmConfig -Confirm:$false
 }
 catch {
     Write-Host "Er is een fout opgetreden: $_"

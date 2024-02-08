@@ -11,14 +11,14 @@ $nsgName = "NSGLukunaBV"
 $vmSize = "Standard_DS1_v2"
 $vmName = "BeroepsPruductLukunaBV"
 $publicIpName = "MijnPublicIPLukunaBV"
-$nicName = "MijnNicLukunaBV"
+
 
 # Credential opbouwen
 $username = $env:vmUsername
 $password = ConvertTo-SecureString $env:vmPassword -AsPlainText -Force
 $credential = New-Object System.Management.Automation.PSCredential($username, $password)
 Write-Host "Username: $env:vmUsername"
-Write-Host "Password: $($env:vmPassword -replace '.', '*')"  # Toont sterretjes i.p.v. het werkelijke wachtwoord voor beveiliging
+Write-Host "Password: $($env:vmPassword -replace '.', '*')"
 
 try {
 

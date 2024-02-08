@@ -9,7 +9,7 @@ $vnetName = "VnetLukunaBV"
 $subnetName = "SnetLukunaBV"
 $nsgName = "NSGLukunaBV"
 $vmSize = "Standard_DS1_v2"
-$vmName = "BeroepsPruductLukunaBV"
+$vmName = "VMLukunaBV"
 $publicIpName = "MijnPublicIPLukunaBV"
 $ConfirmPreference = 'None' 
 $PSDefaultParameterValues = @{ '*:Force' = $true; '*:Confirm' = $false }
@@ -29,6 +29,10 @@ try {
 
     # NSG
     $nsg = New-AzNetworkSecurityGroup -ResourceGroupName $resourceGroupName -Location $location -Name $nsgName
+    $nic = Get-AzNetworkInterface -ResourceGroupName $resourceGroupName -Name "$vmName-nic"
+
+    # Ophalen van de NIC ID
+    Write-Host "NIC ID: $($nic.Id)"
 
     # PIP
     $publicIp = New-AzPublicIpAddress -ResourceGroupName $resourceGroupName -Location $location -AllocationMethod Static -Name $publicIpName

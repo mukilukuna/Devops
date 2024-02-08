@@ -12,6 +12,7 @@ $vmSize = "Standard_DS1_v2"
 $vmName = "BeroepsPruductLukunaBV"
 $publicIpName = "MijnPublicIPLukunaBV"
 $ConfirmPreference = 'None'
+$PSDefaultParameterValues = @{ '*:Force' = $true; '*:Confirm' = $false }
 
 # Credential opbouwen
 $username = $env:vmUsername

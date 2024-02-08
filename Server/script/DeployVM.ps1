@@ -27,8 +27,6 @@ try {
 
     # NSG
     $nsg = New-AzNetworkSecurityGroup -ResourceGroupName $resourceGroupName -Location $location -Name $nsgName
-    $ruleConfig = New-AzNetworkSecurityRuleConfig -Name "AllowRDP" -Protocol Tcp -Direction Inbound -Priority 100 -SourceAddressPrefix "*" -SourcePortRange "*" -DestinationAddressPrefix "*" -DestinationPortRange 3389 -Access Allow
-    $nsg | Add-AzNetworkSecurityRuleConfig $ruleConfig | Set-AzNetworkSecurityGroup
 
     # PIP
     $publicIp = New-AzPublicIpAddress -ResourceGroupName $resourceGroupName -Location $location -AllocationMethod Static -Name $publicIpName

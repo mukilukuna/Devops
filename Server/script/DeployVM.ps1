@@ -11,6 +11,7 @@ $nsgName = "NSGLukunaBV"
 $vmSize = "Standard_DS1_v2"
 $vmName = "BeroepsPruductLukunaBV"
 $publicIpName = "MijnPublicIPLukunaBV"
+$ConfirmPreference = 'None'
 
 # Credential opbouwen
 $username = $env:vmUsername

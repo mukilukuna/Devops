@@ -29,10 +29,15 @@ try {
 
     # NSG
     $nsg = New-AzNetworkSecurityGroup -ResourceGroupName $resourceGroupName -Location $location -Name $nsgName
-    
+    $nsg = Get-AzNetworkSecurityGroup -Name $nsgname -ResourceGroupName $resourceGroupName
+    $nsg | Add-AzNetworkSecurityRuleConfig -Name "RDPINBOUND" -Description "toegang via RDP" -Access Allow `
+    -Protocol * -Direction Inbound -Priority 100 -SourceAddressPrefix "77.162.118.65" -SourcePortRange * `
+    -DestinationAddressPrefix * -DestinationPortRange 3389
+    $nsg | Set-AzNetworkSecurityGroup
 
-    # Ophalen van de NIC ID
-    Write-Host "NIC ID: $($nic.Id)"
+
+
+
 
     # PIP
     $publicIp = New-AzPublicIpAddress -ResourceGroupName $resourceGroupName -Location $location -AllocationMethod Static -Name $publicIpName
@@ -46,6 +51,7 @@ try {
     $ipConfig = New-AzNetworkInterfaceIpConfig -Name "ipconfig1" -SubnetId $subnet.Id -PublicIpAddressId $publicIp.Id
     $nic = New-AzNetworkInterface -ResourceGroupName $resourceGroupName -Location $location -Name "$vmName-nic" -IpConfiguration $ipConfig
     $nic = Get-AzNetworkInterface -ResourceGroupName $resourceGroupName -Name "$vmName-nic"
+    Write-Host "NIC ID: $($nic.Id)"
     $vmConfig = New-AzVMConfig -VMName $vmName -VMSize $vmSize
     $vmConfig = Set-AzVMOperatingSystem -VM $vmConfig -Windows -ComputerName $vmName -Credential $credential
     $vmConfig = Set-AzVMSourceImage -VM $vmConfig -PublisherName "MicrosoftWindowsServer" -Offer "WindowsServer" -Skus "2019-Datacenter" -Version "latest"

@@ -1,6 +1,5 @@
 # Toon PowerShell versie en locatie
 Write-Host "PowerShell Version: $($PSVersionTable.PSVersion)"
-# Write-Host "PowerShell Path: $((Get-Command -Name PowerShell).Source)"
 
 # Variabelen
 $resourceGroupName = "ResourceGroupBeroepsProduct"
@@ -57,6 +56,7 @@ try {
     $vmConfig = Set-AzVMSourceImage -VM $vmConfig -PublisherName "MicrosoftWindowsServer" -Offer "WindowsServer" -Skus "2019-Datacenter" -Version "latest"
     $vmConfig = Add-AzVMNetworkInterface -VM $vmConfig -Id $nic.Id 
 
+    #Aanmaken van VM
     New-AzVm -ResourceGroupName $resourceGroupName -Location $location -VM $vmConfig
 }
 catch {

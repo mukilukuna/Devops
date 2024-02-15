@@ -15,6 +15,6 @@ jobs:
           resourceGroupName: "ResourceGroupBeroepsProduct"
           location: "West Europe"
           templateLocation: "Linked artifact"
-          csmFile: "$(System.DefaultWorkingDirectory)/Server/ARM/parameters.json"
-          csmParametersFile: "$(System.DefaultWorkingDirectory)/Server/ARM/template.json"
+          csmFile: "$(System.DefaultWorkingDirectory)/Server/ARM/Parameters.bicepparam"
+          csmParametersFile: "$(System.DefaultWorkingDirectory)/Server/ARM/Template.bicep"
           deploymentMode: "Incremental"

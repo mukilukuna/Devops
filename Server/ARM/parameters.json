@@ -6,13 +6,13 @@
             "value": "westeurope"
         },
         "networkInterfaceName": {
-            "value": "loiazudc172"
+            "value": "lukunavm582"
         },
         "enableAcceleratedNetworking": {
             "value": true
         },
         "networkSecurityGroupName": {
-            "value": "LOIAZUDC-nsg"
+            "value": "LukunaVM-nsg"
         },
         "networkSecurityGroupRules": {
             "value": [
@@ -32,46 +32,31 @@
             ]
         },
         "subnetName": {
-            "value": "default"
+            "value": "SnetLukunaBV"
         },
-        "virtualNetworkName": {
-            "value": "LOI-vnet"
-        },
-        "addressPrefixes": {
-            "value": [
-                "10.0.0.0/16"
-            ]
-        },
-        "subnets": {
-            "value": [
-                {
-                    "name": "default",
-                    "properties": {
-                        "addressPrefix": "10.0.0.0/24"
-                    }
-                }
-            ]
+        "virtualNetworkId": {
+            "value": "/subscriptions/c0b52ba4-df61-49cf-ab65-315eb1152086/resourceGroups/ResourceGroupBeroepsProduct/providers/Microsoft.Network/virtualNetworks/VnetLukunaBV"
         },
         "publicIpAddressName": {
-            "value": "LOIAZUDC-ip"
+            "value": "LukunaVM-ip"
         },
         "publicIpAddressType": {
-            "value": "Dynamic"
+            "value": "Static"
         },
         "publicIpAddressSku": {
-            "value": "Basic"
+            "value": "Standard"
         },
         "pipDeleteOption": {
             "value": "Delete"
         },
         "virtualMachineName": {
-            "value": "LOIAZUDC"
+            "value": "LukunaVM"
         },
         "virtualMachineComputerName": {
-            "value": "LOIAZUDC"
+            "value": "LukunaVM"
         },
         "virtualMachineRG": {
-            "value": "LOI"
+            "value": "ResourceGroupBeroepsProduct"
         },
         "osDiskType": {
             "value": "Premium_LRS"
@@ -80,49 +65,28 @@
             "value": "Delete"
         },
         "virtualMachineSize": {
-            "value": "Standard_D4as_v5"
+            "value": "Standard_D2s_v3"
         },
         "nicDeleteOption": {
             "value": "Delete"
         },
+        "hibernationEnabled": {
+            "value": false
+        },
         "adminUsername": {
-            "value": "Admini"
+            "value": "admini"
         },
         "adminPassword": {
-            "value": "fIt4acrAt@ociphUzAdl"
+            "value": null
         },
         "patchMode": {
-            "value": "Manual"
+            "value": "AutomaticByPlatform"
         },
         "enableHotpatching": {
             "value": false
         },
-        "diagnosticsStorageAccountName": {
-            "value": "loiazustor"
-        },
-        "diagnosticsStorageAccountId": {
-            "value": "Microsoft.Storage/storageAccounts/loiazustor"
-        },
-        "diagnosticsStorageAccountType": {
-            "value": "Standard_LRS"
-        },
-        "diagnosticsStorageAccountKind": {
-            "value": "Storage"
-        },
-        "autoShutdownStatus": {
-            "value": "Enabled"
-        },
-        "autoShutdownTime": {
-            "value": "16:00"
-        },
-        "autoShutdownTimeZone": {
-            "value": "W. Europe Standard Time"
-        },
-        "autoShutdownNotificationStatus": {
-            "value": "Disabled"
-        },
-        "autoShutdownNotificationLocale": {
-            "value": "nl"
+        "rebootSetting": {
+            "value": "IfRequired"
         }
     }
 }

@@ -3,7 +3,7 @@ trigger:
 
 jobs:
   - job: StageProvisionServer
-    displayName: "Stage: Provision Server" # A friendly name to display in the pipeline.
+    displayName: "Stage: Provision Server"
     pool: default
     steps:
       - task: AzureResourceManagerTemplateDeployment@3

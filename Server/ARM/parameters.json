@@ -6,44 +6,27 @@
             "value": "westeurope"
         },
         "networkInterfaceName": {
-            "value": "devopsubuntuserver485"
+            "value": "loiazudc172"
         },
         "enableAcceleratedNetworking": {
             "value": true
         },
         "networkSecurityGroupName": {
-            "value": "DevopsUbuntuServer-nsg"
+            "value": "LOIAZUDC-nsg"
         },
         "networkSecurityGroupRules": {
             "value": [
                 {
-                    "name": "default-allow-ssh",
+                    "name": "RDP",
                     "properties": {
-                        "priority": 1000,
+                        "priority": 300,
                         "protocol": "TCP",
                         "access": "Allow",
                         "direction": "Inbound",
-                        "sourceApplicationSecurityGroups": [],
-                        "destinationApplicationSecurityGroups": [],
                         "sourceAddressPrefix": "*",
                         "sourcePortRange": "*",
                         "destinationAddressPrefix": "*",
-                        "destinationPortRange": "22"
-                    }
-                },
-                {
-                    "name": "DevopsUbuntuLB-allow-inbound",
-                    "properties": {
-                        "priority": 999,
-                        "protocol": "*",
-                        "access": "Allow",
-                        "direction": "Inbound",
-                        "sourceApplicationSecurityGroups": [],
-                        "destinationApplicationSecurityGroups": [],
-                        "sourceAddressPrefix": "*",
-                        "sourcePortRange": "*",
-                        "destinationAddressPrefix": "*",
-                        "destinationPortRange": "80"
+                        "destinationPortRange": "3389"
                     }
                 }
             ]
@@ -52,7 +35,7 @@
             "value": "default"
         },
         "virtualNetworkName": {
-            "value": "DevopsUbuntuServer-vnet"
+            "value": "LOI-vnet"
         },
         "addressPrefixes": {
             "value": [
@@ -70,76 +53,76 @@
             ]
         },
         "publicIpAddressName": {
-            "value": "DevopsUbuntuServer-ip"
+            "value": "LOIAZUDC-ip"
         },
         "publicIpAddressType": {
-            "value": "Static"
+            "value": "Dynamic"
         },
         "publicIpAddressSku": {
-            "value": "Standard"
+            "value": "Basic"
         },
         "pipDeleteOption": {
             "value": "Delete"
         },
         "virtualMachineName": {
-            "value": "DevopsUbuntuServer"
+            "value": "LOIAZUDC"
         },
         "virtualMachineComputerName": {
-            "value": "DevopsUbuntuServer"
+            "value": "LOIAZUDC"
         },
         "virtualMachineRG": {
-            "value": "ResourceGroupBeroepsProduct"
+            "value": "LOI"
         },
         "osDiskType": {
-            "value": "Standard_LRS"
+            "value": "Premium_LRS"
         },
         "osDiskDeleteOption": {
             "value": "Delete"
         },
         "virtualMachineSize": {
-            "value": "Standard_D2s_v3"
+            "value": "Standard_D4as_v5"
         },
         "nicDeleteOption": {
             "value": "Delete"
         },
-        "hibernationEnabled": {
-            "value": false
-        },
         "adminUsername": {
-            "value": "admini"
+            "value": "Admini"
         },
         "adminPassword": {
-            "value": Uxwt7X6E_92@ZE-
+            "value": "fIt4acrAt@ociphUzAdl"
+        },
+        "patchMode": {
+            "value": "Manual"
+        },
+        "enableHotpatching": {
+            "value": false
+        },
+        "diagnosticsStorageAccountName": {
+            "value": "loiazustor"
+        },
+        "diagnosticsStorageAccountId": {
+            "value": "Microsoft.Storage/storageAccounts/loiazustor"
+        },
+        "diagnosticsStorageAccountType": {
+            "value": "Standard_LRS"
+        },
+        "diagnosticsStorageAccountKind": {
+            "value": "Storage"
         },
         "autoShutdownStatus": {
             "value": "Enabled"
         },
         "autoShutdownTime": {
-            "value": "19:00"
+            "value": "16:00"
         },
         "autoShutdownTimeZone": {
-            "value": "UTC"
+            "value": "W. Europe Standard Time"
         },
         "autoShutdownNotificationStatus": {
-            "value": "Enabled"
+            "value": "Disabled"
         },
         "autoShutdownNotificationLocale": {
-            "value": "en"
-        },
-        "autoShutdownNotificationEmail": {
-            "value": "admini@MLukuna.onmicrosoft.com"
-        },
-        "loadBalancerName": {
-            "value": "DevopsUbuntuLB"
-        },
-        "loadbalancingRuleFrontEndPort": {
-            "value": 80
-        },
-        "loadbalancingRuleBackendEndPort": {
-            "value": 80
-        },
-        "loadbalancingRuleProtocol": {
-            "value": "Tcp"
+            "value": "nl"
         }
     }
 }

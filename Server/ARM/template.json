@@ -1,6 +1,5 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
         "location": {
@@ -63,14 +62,29 @@
         "nicDeleteOption": {
             "type": "string"
         },
-        "hibernationEnabled": {
-            "type": "bool"
-        },
         "adminUsername": {
             "type": "string"
         },
         "adminPassword": {
             "type": "secureString"
+        },
+        "patchMode": {
+            "type": "string"
+        },
+        "enableHotpatching": {
+            "type": "bool"
+        },
+        "diagnosticsStorageAccountName": {
+            "type": "string"
+        },
+        "diagnosticsStorageAccountId": {
+            "type": "string"
+        },
+        "diagnosticsStorageAccountType": {
+            "type": "string"
+        },
+        "diagnosticsStorageAccountKind": {
+            "type": "string"
         },
         "autoShutdownStatus": {
             "type": "string"
@@ -86,40 +100,25 @@
         },
         "autoShutdownNotificationLocale": {
             "type": "string"
-        },
-        "autoShutdownNotificationEmail": {
-            "type": "string"
-        },
-        "loadBalancerName": {
-            "type": "string"
-        },
-        "loadbalancingRuleFrontEndPort": {
-            "type": "int"
-        },
-        "loadbalancingRuleBackendEndPort": {
-            "type": "int"
-        },
-        "loadbalancingRuleProtocol": {
-            "type": "string"
         }
     },
     "variables": {
         "nsgId": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroupName'))]",
         "vnetName": "[parameters('virtualNetworkName')]",
         "vnetId": "[resourceId(resourceGroup().name,'Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
-        "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]"
+        "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
+        "aadLoginExtensionName": "AADLoginForWindows"
     },
     "resources": [
         {
             "name": "[parameters('networkInterfaceName')]",
             "type": "Microsoft.Network/networkInterfaces",
-            "apiVersion": "2022-11-01",
+            "apiVersion": "2021-03-01",
             "location": "[parameters('location')]",
             "dependsOn": [
                 "[concat('Microsoft.Network/networkSecurityGroups/', parameters('networkSecurityGroupName'))]",
                 "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
-                "[concat('Microsoft.Network/publicIpAddresses/', parameters('publicIpAddressName'))]",
-                "[concat('Microsoft.Network/loadBalancers/', parameters('loadBalancerName'))]"
+                "[concat('Microsoft.Network/publicIpAddresses/', parameters('publicIpAddressName'))]"
             ],
             "properties": {
                 "ipConfigurations": [
@@ -135,12 +134,7 @@
                                 "properties": {
                                     "deleteOption": "[parameters('pipDeleteOption')]"
                                 }
-                            },
-                            "loadBalancerBackendAddressPools": [
-                                {
-                                    "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('loadBalancerName'), concat(parameters('loadBalancerName'), '-backendpool01'))]"
-                                }
-                            ]
+                            }
                         }
                     }
                 ],
@@ -162,7 +156,7 @@
         {
             "name": "[parameters('virtualNetworkName')]",
             "type": "Microsoft.Network/virtualNetworks",
-            "apiVersion": "2021-05-01",
+            "apiVersion": "2020-11-01",
             "location": "[parameters('location')]",
             "properties": {
                 "addressSpace": {
@@ -186,10 +180,11 @@
         {
             "name": "[parameters('virtualMachineName')]",
             "type": "Microsoft.Compute/virtualMachines",
-            "apiVersion": "2022-11-01",
+            "apiVersion": "2021-07-01",
             "location": "[parameters('location')]",
             "dependsOn": [
-                "[concat('Microsoft.Network/networkInterfaces/', parameters('networkInterfaceName'))]"
+                "[concat('Microsoft.Network/networkInterfaces/', parameters('networkInterfaceName'))]",
+                "[concat('Microsoft.Storage/storageAccounts/', parameters('diagnosticsStorageAccountName'))]"
             ],
             "properties": {
                 "hardwareProfile": {
@@ -204,9 +199,9 @@
                         "deleteOption": "[parameters('osDiskDeleteOption')]"
                     },
                     "imageReference": {
-                        "publisher": "canonical",
-                        "offer": "0001-com-ubuntu-server-focal",
-                        "sku": "20_04-lts-gen2",
+                        "publisher": "MicrosoftWindowsServer",
+                        "offer": "WindowsServer",
+                        "sku": "2022-datacenter-azure-edition",
                         "version": "latest"
                     }
                 },
@@ -220,24 +215,41 @@
                         }
                     ]
                 },
-                "additionalCapabilities": {
-                    "hibernationEnabled": false
-                },
                 "osProfile": {
                     "computerName": "[parameters('virtualMachineComputerName')]",
                     "adminUsername": "[parameters('adminUsername')]",
                     "adminPassword": "[parameters('adminPassword')]",
-                    "linuxConfiguration": {
+                    "windowsConfiguration": {
+                        "enableAutomaticUpdates": false,
+                        "provisionVmAgent": true,
                         "patchSettings": {
-                            "patchMode": "ImageDefault"
+                            "enableHotpatching": "[parameters('enableHotpatching')]",
+                            "patchMode": "[parameters('patchMode')]"
                         }
                     }
                 },
                 "diagnosticsProfile": {
                     "bootDiagnostics": {
-                        "enabled": true
+                        "enabled": true,
+                        "storageUri": "[concat('https://', parameters('diagnosticsStorageAccountName'), '.blob.core.windows.net/')]"
                     }
                 }
+            },
+            "identity": {
+                "type": "systemAssigned"
+            }
+        },
+        {
+            "name": "[parameters('diagnosticsStorageAccountName')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2019-06-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "minimumTlsVersion": "TLS1_2"
+            },
+            "kind": "[parameters('diagnosticsStorageAccountKind')]",
+            "sku": {
+                "name": "[parameters('diagnosticsStorageAccountType')]"
             }
         },
         {
@@ -259,88 +271,26 @@
                 "notificationSettings": {
                     "status": "[parameters('autoShutdownNotificationStatus')]",
                     "notificationLocale": "[parameters('autoShutdownNotificationLocale')]",
-                    "timeInMinutes": "30",
-                    "emailRecipient": "[parameters('autoShutdownNotificationEmail')]"
+                    "timeInMinutes": "30"
                 }
             }
         },
         {
-            "name": "[concat(parameters('loadBalancerName'), '-publicip')]",
-            "type": "Microsoft.Network/publicIpAddresses",
-            "apiVersion": "2020-08-01",
+            "name": "[concat(parameters('virtualMachineName'),'/', variables('aadLoginExtensionName'))]",
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "apiVersion": "2018-10-01",
             "location": "[parameters('location')]",
             "properties": {
-                "publicIpAllocationMethod": "Static",
-                "publicIPAddressVersion": "IPv4",
-                "idleTimeoutInMinutes": 15
-            },
-            "sku": {
-                "name": "Standard"
-            },
-            "zones": null
-        },
-        {
-            "name": "[parameters('loadBalancerName')]",
-            "type": "Microsoft.Network/loadBalancers",
-            "apiVersion": "2021-05-01",
-            "location": "[parameters('location')]",
-            "sku": {
-                "name": "Standard"
-            },
-            "properties": {
-                "frontendIPConfigurations": [
-                    {
-                        "name": "[concat(parameters('loadBalancerName'), '-frontendconfig01')]",
-                        "properties": {
-                            "publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIpAddresses', concat(parameters('loadBalancerName'), '-publicip'))]"
-                            }
-                        }
-                    }
-                ],
-                "backendAddressPools": [
-                    {
-                        "name": "[concat(parameters('loadBalancerName'), '-backendpool01')]"
-                    }
-                ],
-                "loadBalancingRules": [
-                    {
-                        "name": "[concat(parameters('loadBalancerName'), '-lbrule01')]",
-                        "properties": {
-                            "frontendIPConfiguration": {
-                                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', parameters('loadBalancerName'), concat(parameters('loadBalancerName'), '-frontendconfig01'))]"
-                            },
-                            "backendAddressPool": {
-                                "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('loadBalancerName'), concat(parameters('loadBalancerName'), '-backendpool01'))]"
-                            },
-                            "frontendPort": "[parameters('loadbalancingRuleFrontEndPort')]",
-                            "backendPort": "[parameters('loadbalancingRuleBackendEndPort')]",
-                            "enableFloatingIP": false,
-                            "idleTimeoutInMinutes": 15,
-                            "disableOutboundSnat": true,
-                            "loadDistribution": "Default",
-                            "protocol": "[parameters('loadbalancingRuleProtocol')]",
-                            "probe": {
-                                "id": "[resourceId('Microsoft.Network/loadBalancers/probes', parameters('loadBalancerName'), concat(parameters('loadBalancerName'), '-probe01'))]"
-                            }
-                        }
-                    }
-                ],
-                "probes": [
-                    {
-                        "name": "[concat(parameters('loadBalancerName'), '-probe01')]",
-                        "properties": {
-                            "intervalInSeconds": 15,
-                            "numberOfProbes": 2,
-                            "requestPath": "[if(equals(parameters('loadbalancingRuleProtocol'),'Tcp'), json('null'), '/')]",
-                            "port": "[if(equals(parameters('loadbalancingRuleProtocol'), 'Tcp'), parameters('loadbalancingRuleBackendEndPort'), '80')]",
-                            "protocol": "[if(equals(parameters('loadbalancingRuleProtocol'),'Tcp'), 'Tcp', 'Http')]"
-                        }
-                    }
-                ]
+                "publisher": "Microsoft.Azure.ActiveDirectory",
+                "type": "[variables('aadLoginExtensionName')]",
+                "typeHandlerVersion": "1.0",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "mdmId": ""
+                }
             },
             "dependsOn": [
-                "[concat('Microsoft.Network/publicIpAddresses/', concat(parameters('loadBalancerName'), '-publicip'))]"
+                "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]"
             ]
         }
     ],

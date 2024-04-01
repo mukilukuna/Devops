@@ -3,34 +3,39 @@ variable "prefix" {
   type        = string
   default     = "CIR"
 }
+variable "location" {
+  description = "value for location"
+  type        = string
+  default     = "westeurope"
+}
 
 resource "azurerm_resource_group" "example" {
-  name     = "${var.prefix}ResourceGroup"
+  name     = "${var.prefix}euazurg"
   location = var.location
 }
 
 resource "azurerm_virtual_network" "example" {
-  name                = "${var.prefix}VNet"
+  name                = "${var.prefix}euazuvnet"
   address_space       = ["10.0.0.0/16"]
   location            = var.location
   resource_group_name = azurerm_resource_group.example.name
 }
 
 resource "azurerm_subnet" "example" {
-  name                 = "${var.prefix}Subnet"
+  name                 = "${var.prefix}euazusubnet"
   resource_group_name  = azurerm_resource_group.example.name
   virtual_network_name = azurerm_virtual_network.example.name
   address_prefixes     = ["10.0.1.0/24"]
 }
 
 resource "azurerm_network_security_group" "example" {
-  name                = "${var.prefix}NSG"
+  name                = "${var.prefix}euazuNSG"
   location            = var.location
   resource_group_name = azurerm_resource_group.example.name
 }
 
 resource "azurerm_virtual_desktop_host_pool" "example" {
-  name                = "${var.prefix}HostPool"
+  name                = "${var.prefix}euazuhp"
   location            = var.location
   resource_group_name = azurerm_resource_group.example.name
   type                = "Pooled"
@@ -38,7 +43,7 @@ resource "azurerm_virtual_desktop_host_pool" "example" {
 }
 
 resource "azurerm_virtual_desktop_application_group" "example" {
-  name                = "${var.prefix}AppGroup"
+  name                = "${var.prefix}euazuvd"
   location            = var.location
   resource_group_name = azurerm_resource_group.example.name
   type                = "RemoteApp"

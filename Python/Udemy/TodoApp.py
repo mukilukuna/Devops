@@ -15,7 +15,9 @@ while True:
         case "aanpassen" | "edit":
             number = int(
                 input("Wat is de nummer van de todo die je wilt aanpassen: "))
-            todos[number]
+            number = number - 1
+            new_todo = input("naar wat wil je het aanpassen?: ")
+            todos[number] = new_todo
         case _:
             print("Jouw input wordt niet herkend door de programma, probeer het opnieuw")
 print(todos)

@@ -1,1 +1,0 @@
-ssh -i "C:\Users\mukil\OneDrive\Documenten\VS Code\Linux\Certificates\LinuxKey.pem" azureuser@13.69.26.150

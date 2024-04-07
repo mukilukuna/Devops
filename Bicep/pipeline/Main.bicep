@@ -1,47 +1,55 @@
-param prefix string = 'CIR'
 param location string = 'westeurope'
+param name string = 'cir'
 
-resource exampleVnet 'Microsoft.Network/virtualNetworks@2020-06-01' = {
-  name: '${prefix}euazuvnet'
+// Create a FileStorage Account for premium file shares
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-02-01' = {
+  name: '${name}euazusto'
   location: location
+  kind: 'FileStorage' // Specifically for premium file shares
+  sku: {
+    name: 'Premium_LRS' // Premium performance tier
+  }
+}
+
+
+// Define the default file service for the storage account
+resource fileService 'Microsoft.Storage/storageAccounts/fileServices@2023-01-01' = {
+  name: 'default'
+  parent: storageAccount
+}
+
+// Define file share 'APPS'
+resource appsFileShare 'Microsoft.Storage/storageAccounts/fileServices/shares@2023-01-01' = {
+  name: 'APPS'
+  parent: fileService
   properties: {
-    addressSpace: {
-      addressPrefixes: [
-        '10.0.0.0/16'
-      ]
+    shareQuota: 100 // Example quota in GiB
+    metadata: {
+      description: 'File share for applications'
     }
-    subnets: [
-      {
-        name: '${prefix}euazusubnet'
-        properties: {
-          addressPrefix: '10.0.1.0/24'
-        }
-      }
-    ]
   }
 }
 
-resource exampleNsg 'Microsoft.Network/networkSecurityGroups@2020-06-01' = {
-  name: '${prefix}euazuNSG'
-  location: location
-  properties: {}
-}
-
-resource exampleHostPool 'Microsoft.DesktopVirtualization/hostPools@2021-09-03-preview' = {
-  name: '${prefix}euazuhp'
-  location: location
+// Define file share 'SYSLOGON'
+resource sysLogonFileShare 'Microsoft.Storage/storageAccounts/fileServices/shares@2023-01-01' = {
+  name: 'SYSLOGON'
+  parent: fileService
   properties: {
-    hostPoolType: 'Pooled'
-    loadBalancerType: 'BreadthFirst'
-    preferredAppGroupType: 'RemoteApp'
+    shareQuota: 50 // Example quota in GiB
+    metadata: {
+      description: 'File share for system logon scripts'
+    }
   }
 }
 
-resource exampleApplicationGroup 'Microsoft.DesktopVirtualization/applicationGroups@2021-09-03-preview' = {
-  name: '${prefix}euazuvd'
-  location: location
+// Define file share 'SCRIPTS'
+resource scriptsFileShare 'Microsoft.Storage/storageAccounts/fileServices/shares@2023-01-01' = {
+  name: 'SCRIPTS'
+  parent: fileService
   properties: {
-    applicationGroupType: 'RemoteApp'
-    hostPoolArmPath: exampleHostPool.id
+    shareQuota: 20 // Example quota in GiB
+    metadata: {
+      description: 'File share for miscellaneous scripts'
+    }
   }
 }

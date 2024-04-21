@@ -15,5 +15,4 @@ foreach ($module in $requiredModules) {
 # Importeer de module
 Import-Module Az.Compute
 
-# Uw specifieke PowerShell commando
 Get-AzComputeResourceSku | Where-Object { $_.Locations -contains "westeurope" -and $_.ResourceType -eq "virtualMachines" }

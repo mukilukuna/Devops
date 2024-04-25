@@ -8,17 +8,27 @@ while True:
             break
         case "toon" | "show":
             for index, item in enumerate(todos):
-                print(f"{index + 1}, {item}")
+                print(f"{index + 1}, {item}",)
         case "toevoegen" | "add":
-            todo = input("wat is de todo: ")
+            todo = input("wat is de todo: ") + "\n"
+
+            file = open("Python/Udemy/Python Mega Course/todosave.txt", "r")
+            todos = file.readlines()
+            file.close()
+
             todos.append(todo.capitalize())
+
+            file = open("Python/Udemy/Python Mega Course/todosave.txt", "w")
+            file.writelines(todos)
+            file.close()
+
         case "aanpassen" | "edit":
             for index, item in enumerate(todos):
                 print(f"{index +1}, {item}")
             number = int(
                 input("Wat is de nummer van de todo die je wilt aanpassen: "))
             number = number - 1
-            new_todo = input("naar wat wil je het aanpassen?: ")
+            new_todo = input("naar wat wil je het aanpassen?: ") + "\n"
             todos[number] = new_todo
         case "compleet" | "afronden":
             for index, item in enumerate(todos):

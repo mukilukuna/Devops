@@ -51,13 +51,21 @@ else {
     Write-Host "Systeemchecks overgeslagen."
 }
 
-# Controleer en installeer PSWindowsUpdate module indien nodig.
-if (-not (Get-Module -ListAvailable -Name PSWindowsUpdate)) {
-    Install-Module -Name PSWindowsUpdate -Force
+# Vraag gebruiker of updates uitgevoerd moeten worden.
+$runUpdates = Read-Host "Windows updates uitvoeren? (Ja/Nee)"
+
+if ($runUpdates -eq "Ja") {
+    # Controleer en installeer PSWindowsUpdate module indien nodig.
+    if (-not (Get-Module -ListAvailable -Name PSWindowsUpdate)) {
+        Install-Module -Name PSWindowsUpdate -Force
+    }
+
+    # Windows updates uitvoeren.
+    Get-WindowsUpdate -Install -AcceptAll
+
+    # Upgrade alle geïnstalleerde pakketten.
+    winget upgrade --all --include-unknown --silent
 }
-
-# Windows updates uitvoeren.
-Get-WindowsUpdate -Install -AcceptAll
-
-# Upgrade alle geïnstalleerde pakketten.
-winget upgrade --all --include-unknown --silent
+else {
+    Write-Host "Updates overgeslagen."
+}

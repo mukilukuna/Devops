@@ -7,6 +7,9 @@ while True:
         case "stop" | "quit":
             break
         case "toon" | "show":
+            file = open("Python/Udemy/Python Mega Course/todosave.txt", "r")
+            todos = file.readlines()
+            file.close()
             for index, item in enumerate(todos):
                 print(f"{index + 1}, {item}",)
         case "toevoegen" | "add":
@@ -21,7 +24,6 @@ while True:
             file = open("Python/Udemy/Python Mega Course/todosave.txt", "w")
             file.writelines(todos)
             file.close()
-
         case "aanpassen" | "edit":
             for index, item in enumerate(todos):
                 print(f"{index +1}, {item}")
@@ -31,6 +33,9 @@ while True:
             new_todo = input("naar wat wil je het aanpassen?: ") + "\n"
             todos[number] = new_todo
         case "compleet" | "afronden":
+            file = open("Python/Udemy/Python Mega Course/todosave.txt", "r")
+            todos = file.readlines()
+            file.close()
             for index, item in enumerate(todos):
                 print(f"{index + 1}, {item}")
             keuze = int(

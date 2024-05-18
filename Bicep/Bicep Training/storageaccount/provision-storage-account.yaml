@@ -1,0 +1,21 @@
+trigger: none
+
+pool: "Azure Pipelines"
+
+stages:
+  - stage: stageProvisioningStorageAccount
+    displayname: "stage Provisioning Storage Account"
+    jobs:
+      - job:
+    displayName: "job Provisioning Storage Account"
+    steps:
+      - task: AzureResourceManagerTemplateDeployment@3
+        inputs:
+          deploymentScope: "Resource Group"
+          azureResourceManagerConnection: "ServiceConnectionProjectAnsible"
+          subscriptionId: "c0b52ba4-df61-49cf-ab65-315eb1152086"
+          action: "Create Or Update Resource Group"
+          resourceGroupName: "rg-liteuezusto"
+          location: "West Europe"
+          templateLocation: "URL of the file"
+          deploymentMode: "Incremental"

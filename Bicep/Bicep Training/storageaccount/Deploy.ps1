@@ -1,6 +1,6 @@
 $location = "westeurope"
-$name = "rg-StorageAccount"
-$templatefile = "C:\Users\mukil\OneDrive\Documenten\Vs Code\Devops\Devops\Bicep\StorageAccount\Script\storage.bicep"
+$name = "rg-liteuezusto"
+$templatefile = "C:\Users\mukil\OneDrive\Documenten\Vs Code\Devops\Devops\Bicep\bicep training\StorageAccount\main.bicep"
 
 $context = Get-AzContext
 

@@ -9,6 +9,8 @@ stages:
       - job:
         displayName: "job Provisioning Storage Account"
         steps:
+          - checkout: self
+
           - task: AzureResourceManagerTemplateDeployment@3
             inputs:
               deploymentScope: "Resource Group"
@@ -17,6 +19,6 @@ stages:
               action: "Create Or Update Resource Group"
               resourceGroupName: "rg-liteuezusto"
               location: "West Europe"
-              ScriptType: "FilePath"
-              ScriptPath: "$(System.DefaultWorkingDirectory)/Bicep/Bicep Training/storageaccount/Main.bicep"
+              templateLocation: "Linked artifact"
+              csmFile: "$(Build.SourcesDirectory)/Bicep/Bicep Training/storageaccount/Main.bicep"
               deploymentMode: "Incremental"

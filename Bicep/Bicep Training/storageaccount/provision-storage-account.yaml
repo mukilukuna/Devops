@@ -17,5 +17,6 @@ stages:
           action: "Create Or Update Resource Group"
           resourceGroupName: "rg-liteuezusto"
           location: "West Europe"
-          templateLocation: "URL of the file"
+          ScriptType: "FilePath"
+          ScriptPath: "$(System.DefaultWorkingDirectory)/Bicep/Bicep Training/storageaccount/Deploy.ps1"
           deploymentMode: "Incremental"

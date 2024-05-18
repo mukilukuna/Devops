@@ -20,5 +20,5 @@ stages:
               resourceGroupName: "rg-liteuezusto"
               location: "West Europe"
               templateLocation: "Linked artifact"
-              csmFile: "$(Build.SourcesDirectory)/Bicep/Bicep Training/storageaccount/Main.bicep"
+              csmFile: "$(Build.SourcesDirectory)/Bicep/BicepTraining/storageaccount/Main.bicep"
               deploymentMode: "Incremental"

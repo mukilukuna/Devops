@@ -4,7 +4,7 @@ pool: "Azure Pipelines"
 
 stages:
   - stage: stageProvisioningStorageAccount
-    displayname: "stage Provisioning Storage Account"
+    displayName: "stage Provisioning Storage Account"
     jobs:
       - job:
         displayName: "job Provisioning Storage Account"

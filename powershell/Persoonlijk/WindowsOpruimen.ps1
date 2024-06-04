@@ -33,12 +33,8 @@ $runChecks = Read-Host "Systeemchecks uitvoeren (sfc, DISM, chkdsk)? (Ja/Nee)"
 
 if ($runChecks -eq "Ja") {
     # Start systeemcomponent opschoning.
-    DISM.exe /Online /Cleanup-Image /StartComponentCleanup
-    DISM.exe /Online /Cleanup-Image /SPSuperseded
-    DISM.exe /Online /Cleanup-Image /StartComponentCleanup /ResetBase
-    DISM.exe /Online /Cleanup-Image /AnalyzeComponentStore
-    DISM.exe /Online /Cleanup-Image /RestoreHealth /Source:C:\RepairSource\Windows /LimitAccess
-
+    DISM.exe /Online /Cleanup-Image /StartComponentCleanup /ResetBase /scanhealth /restorehealth
+    
     # Systeembestanden controleren en herstellen.
     sfc /scannow
 

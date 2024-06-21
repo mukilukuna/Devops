@@ -1,0 +1,5 @@
+﻿Install-module MSOnline
+Connect-MsolService
+(Get-MsolCompanyInformation).DirectorySynchronizationEnabled
+Set-MsolDirSyncEnabled -EnableDirSync $false
+(Get-MsolCompanyInformation).DirectorySynchronizationEnabled

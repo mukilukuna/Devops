@@ -1,1 +1,0 @@
-set-mailbox <mailbox name> -MessageCopyForSentAsEnabled $True

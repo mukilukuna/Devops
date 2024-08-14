@@ -14,7 +14,7 @@ $FslogixUrl= "https://aka.ms/fslogix_download"
 # Start powershell logging
 $SaveVerbosePreference = $VerbosePreference
 $VerbosePreference = 'continue'
-$VMTime = Get-Date
+$VMTime = Get-Dateå
 $LogTime = $VMTime.ToUniversalTime()
 mkdir "C:\Windows\temp\NerdioManagerLogs\ScriptedActions\fslogix" -Force
 Start-Transcript -Path "C:\Windows\temp\NerdioManagerLogs\ScriptedActions\fslogix\ps_log.txt" -Append

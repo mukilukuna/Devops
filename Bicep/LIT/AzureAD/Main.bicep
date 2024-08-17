@@ -10,7 +10,8 @@ param group3Name string = 'Security Group 3'
 resource securityGroup1 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
   name: guid(group1Name)
   properties: {
-    roleDefinitionId: '/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId}'
+
+    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', '{roleDefinitionId}')
     principalId: '{principalId}'
     principalType: 'Group'
   }
@@ -19,7 +20,8 @@ resource securityGroup1 'Microsoft.Authorization/roleAssignments@2020-04-01-prev
 resource securityGroup2 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
   name: guid(group2Name)
   properties: {
-    roleDefinitionId: '/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId}'
+
+    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', '{roleDefinitionId}')
     principalId: '{principalId}'
     principalType: 'Group'
   }
@@ -28,7 +30,8 @@ resource securityGroup2 'Microsoft.Authorization/roleAssignments@2020-04-01-prev
 resource securityGroup3 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
   name: guid(group3Name)
   properties: {
-    roleDefinitionId: '/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId}'
+
+    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', '{roleDefinitionId}')
     principalId: '{principalId}'
     principalType: 'Group'
   }

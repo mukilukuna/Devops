@@ -1,8 +1,8 @@
 // https://www.detechnischejongens.nl/actueel/how-to-create-a-personal-azure-virtual-desktop-scaling-plan-with-terraform-using-azapi
 
 param location string = 'westeurope'
-param avdHostPoolId string // Dit is de ID van je AVD hostpool
-param principalId string // Principal ID van de Windows Virtual Desktop App
+param avdHostPoolId string '/subscriptions/51fae53c-e8d7-4e0c-8336-e044cc4e09b7/resourcegroups/RMA-EUAZU-RSG-AVD/providers/Microsoft.DesktopVirtualization/hostpools/RMA-EUAZU-HSP-PROD'
+param principalId string '398dcdf0-805c-4e95-a6f6-7a248deeca3e'
 
 // Stap 2: Definieer een aangepaste rol voor het schaalplan
 resource scalerRole 'Microsoft.Authorization/roleDefinitions@2022-04-01' = {

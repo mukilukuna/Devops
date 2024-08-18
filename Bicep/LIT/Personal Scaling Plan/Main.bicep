@@ -1,4 +1,3 @@
-// Voeg hier de link toe naar de Azure portal gids voor het maken van schaalplannen
 // https://www.detechnischejongens.nl/actueel/how-to-create-a-personal-azure-virtual-desktop-scaling-plan-with-terraform-using-azapi
 
 param location string = 'westeurope'

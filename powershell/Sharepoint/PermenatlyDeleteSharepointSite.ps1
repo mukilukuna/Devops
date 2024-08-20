@@ -31,7 +31,8 @@ if ($deletedSites) {
         Remove-SPODeletedSite -Identity $site.Url -Confirm:$false
     }
     Write-Host "All deleted sites have been permanently removed."
-} else {
+}
+else {
     Write-Host "No deleted sites found."
 }
 

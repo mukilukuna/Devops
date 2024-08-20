@@ -4,7 +4,7 @@ $modules = @("Microsoft.Online.SharePoint.PowerShell", "MSOnline")
 foreach ($module in $modules) {
     if (-not (Get-Module -ListAvailable -Name $module)) {
         Write-Host "Module $module is not installed. Installing..."
-        Install-Module -Name $module -Force -AllowClobber -Scope CurrentUser
+        Install-Module -Name $module -Force -AllowClobber -Scope AllUsers
     }
     else {
         Write-Host "Module $module is already installed."

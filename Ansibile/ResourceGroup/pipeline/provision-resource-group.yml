@@ -9,6 +9,8 @@ stages:
       - job: JobProvisionResourceGroup
         displayName: "Job: Provision Resource Group"
         steps:
+          - script: echo $(System.DefaultWorkingDirectory)
+            displayName: "Check Working Directory"
           - task: AzurePowerShell@5
             inputs:
               azureSubscription: "ServiceConnectionProjectAnsible"

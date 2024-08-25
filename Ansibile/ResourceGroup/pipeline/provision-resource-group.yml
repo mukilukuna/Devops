@@ -18,7 +18,7 @@ stages:
             inputs:
               azureSubscription: "ServiceConnectionProjectAnsible"
               ScriptType: "FilePath"
-              ScriptPath: "$(System.DefaultWorkingDirectory)Ansible/ResourceGroup/script/devops.ps1"
+              ScriptPath: "$(System.DefaultWorkingDirectory)/Ansible/ResourceGroup/script/devops.ps1"
               ScriptArguments: |
                 -location "westeurope"
                 -resourceGroupName "ResourceGroupBeroepsProduct"

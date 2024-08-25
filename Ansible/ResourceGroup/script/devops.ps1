@@ -20,6 +20,12 @@ try {
     Write-Host "Now creating the resource group"
     Write-Host "location: ${location}"
     Write-Host "resource group name: ${resourceGroupName}"
+
+    # Debugging lines
+    if (-not $resourceGroupName) {
+        throw "Resource group name is null or empty!"
+    }
+
     $deployment = New-AzResourceGroup -Name "${resourceGroupName}" -Location "${location}" -Tag ${tag}
     Write-Host $deployment
 }

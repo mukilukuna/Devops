@@ -9,8 +9,10 @@ stages:
       - job: JobProvisionResourceGroup
         displayName: "Job: Provision Resource Group"
         steps:
-          - script: echo $(System.DefaultWorkingDirectory)
-            displayName: "Check Working Directory"
+          - script: |
+            echo "Listing all files in the working directory:"
+            ls -R $(System.DefaultWorkingDirectory)
+          displayName: "List All Files"
           - task: AzurePowerShell@5
             inputs:
               azureSubscription: "ServiceConnectionProjectAnsible"

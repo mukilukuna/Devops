@@ -9,18 +9,20 @@ stages:
       - job: JobProvisionResourceGroup
         displayName: "Job: Provision Resource Group"
         steps:
-          - script:
-            echo "Listing all files in the working directory:"
-            ls -R $(System.DefaultWorkingDirectory)
-          displayName: "List All Files"
+          - script: |
+              echo "Listing all files in the working directory:"
+              ls -R $(System.DefaultWorkingDirectory)
+            displayName: "List All Files"
+
           - task: AzurePowerShell@5
             inputs:
               azureSubscription: "ServiceConnectionProjectAnsible"
               ScriptType: "FilePath"
               ScriptPath: "$(System.DefaultWorkingDirectory)/ResourceGroup/script/devops.ps1"
-              ScriptArguments: -location "westeurope"
+              ScriptArguments: |
+                -location "westeurope"
                 -resourceGroupName "ResourceGroupBeroepsProduct"
-                -owner "Lukuna B.V."`
+                -owner "Lukuna B.V."
                 -costCenter "112245"
                 -application "Beroeps Product"
                 -description "Applicatie voor het versnellen van de productie van de Beroeps producten"

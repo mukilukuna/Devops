@@ -9,7 +9,7 @@ stages:
       - job: JobProvisionResourceGroup
         displayName: "Job: Provision Resource Group"
         steps:
-          - script: |
+          - script:
             echo "Listing all files in the working directory:"
             ls -R $(System.DefaultWorkingDirectory)
           displayName: "List All Files"

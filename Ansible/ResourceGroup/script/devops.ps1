@@ -17,16 +17,25 @@ $tag = @{
 }
 
 try {
-    Write-Host "Now creating the resource group"
-    Write-Host "location: ${location}"
-    Write-Host "resource group name: ${resourceGroupName}"
+    # Output parameter values for debugging
+    Write-Host "Starting resource group creation process"
+    Write-Host "Parameters received:"
+    Write-Host "Location: $location"
+    Write-Host "Resource Group Name: $resourceGroupName"
+    Write-Host "Owner: $owner"
+    Write-Host "Cost Center: $costCenter"
+    Write-Host "Application: $application"
+    Write-Host "Description: $description"
+    Write-Host "Repository: $repo"
 
-    # Debugging lines
+    # Check if resource group name is provided
     if (-not $resourceGroupName) {
         throw "Resource group name is null or empty!"
     }
 
-    $deployment = New-AzResourceGroup -Name "${resourceGroupName}" -Location "${location}" -Tag ${tag}
+    Write-Host "Now creating the resource group"
+    $deployment = New-AzResourceGroup -Name $resourceGroupName -Location $location -Tag $tag
+    Write-Host "Resource group created successfully"
     Write-Host $deployment
 }
 catch {

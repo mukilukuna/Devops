@@ -1,0 +1,7 @@
+{
+  "subscriptionId": "*<hubSubscriptionId>*",
+  "connectivityResourceGroupApplicationName": "connectivity",
+  "peeringIdentity": {
+    "applicationName": "peering"
+  }
+}

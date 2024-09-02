@@ -1,0 +1,791 @@
+{
+  "name": "foundationmcpolicies",
+  "properties": {
+    "Description": "This initiative deploys Foundation Managed Cloud policies for cloud governance and automation.",
+    "DisplayName": "Foundation Managed Cloud Policy Set Definitions",
+    "Mode": null,
+    "Metadata": {
+      "version": "1.0.0",
+      "category": "Governance"
+    },
+    "PolicyDefinitionGroups": [
+      {
+        "name": "F.01 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.01 - Identity Management",
+        "description": "MFA on all user accounts"
+      },
+      {
+        "name": "F.02 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.02 - Access Control",
+        "description": "Access Control"
+      },
+      {
+        "name": "F.03 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.03 - Privileged Access Restrictions",
+        "description": "Privileged Access Restrictions"
+      },
+      {
+        "name": "F.04 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.04 - Encrypt Data at Rest",
+        "description": "Encryption on Data at Rest"
+      },
+      {
+        "name": "F.05 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.05 - Encrypt Data in Transit",
+        "description": "Encryption on Data in Transit"
+      },
+      {
+        "name": "F.06 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.06 - Enforce Data Storage Locations",
+        "description": "Enforce Data Storage Locations"
+      },
+      {
+        "name": "F.07 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.07 - Deny Traffic by Default",
+        "description": "Deny Traffic by Default"
+      },
+      {
+        "name": "F.08 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.08 - Prevent Accidental Deletion",
+        "description": "Prevent Accidental Deletion"
+      },
+      {
+        "name": "F.09 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.09 - Logging and Auditing",
+        "description": "Logging and Auditing"
+      },
+      {
+        "name": "F.10 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.10 - Enforce Resource Logging",
+        "description": "Enforce Resource Logging"
+      },
+      {
+        "name": "F.11 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.11 - Enforce Network Logging",
+        "description": "Enforce Network Logging"
+      },
+      {
+        "name": "F.12 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.12 - Update Management",
+        "description": "Enforce Update Management"
+      },
+      {
+        "name": "F.15 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.15 - Audit Backup Protection",
+        "description": "Audit Backup Protection"
+      },
+      {
+        "name": "F.16 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.16 - Audit Backup Protection",
+        "description": "Audit Backup Protection"
+      },
+      {
+        "name": "F.17 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.17 - Vulnerability Managment",
+        "description": "Vulnerability Managment"
+      },
+      {
+        "name": "F.18 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.18 - Key Management",
+        "description": "key Management"
+      },
+      {
+        "name": "F.19 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.19 - Automate DNS Configuration",
+        "description": "Automate DNS Configuration"
+      },
+      {
+        "name": "F.20 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.20 - Micro Segmentation",
+        "description": "Micro Segmentation"
+      },
+      {
+        "name": "F.21 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.21 - Detect and prevent insecure services and protocols",
+        "description": "Detect and prevent insecure services and protocols"
+      },
+      {
+        "name": "F.22 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.22 - Virus/Malware Protection",
+        "description": "Protection agianst Virus or Malware"
+      },
+      {
+        "name": "F.23 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.23 - Enforce Hub-Spoke Topology",
+        "description": "Enforce Hub-Spoke Topogoly architecture"
+      },
+      {
+        "name": "F.24 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.24 - Cost Managment",
+        "description": "Cost Managment"
+      }
+    ],
+    "Parameters": {
+      "deployIfNotExistEffect": {
+        "type": "String",
+        "metadata": {
+          "displayName": "deployIfNotExistEffect",
+          "description": "Enable or disable the execution of the DINE policy"
+        },
+        "allowedValues": ["DeployIfNotExists", "Disabled"],
+        "defaultValue": "DeployIfNotExists"
+      }
+    },
+    "PolicyDefinitions": [
+      {
+        "policyDefinitionReferenceId": "Deploy-NetworkWachter-ForVnet",
+        "parameters": {},
+        "groupNames": ["F.09 - Foundation"],
+        "policyDefinitionName": "a9b99dd8-06c5-4317-8629-9d86a3c6e7d9"
+      },
+      {
+        "policyDefinitionReferenceId": "Deny-GWSubnet-RouteTable",
+        "parameters": {},
+        "groupNames": ["F.07 - Foundation"],
+        "policyDefinitionName": "35f9c03a-cc27-418e-9c0c-539ff999d010"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-KeyVault-SoftDelete",
+        "parameters": {},
+        "groupNames": ["F.08 - Foundation"],
+        "policyDefinitionName": "1e66c121-a66a-4b1f-9b83-0fd99bf0fc2d"
+      },
+      {
+        "policyDefinitionReferenceId": "Audit-NetworkWatcher-on",
+        "parameters": {},
+        "groupNames": ["F.09 - Foundation"],
+        "policyDefinitionName": "b6e2945c-0b7b-40f5-9233-7a5323b5cdc6"
+      },
+      {
+        "policyDefinitionReferenceId": "Georedundant-Backup-MariaDB",
+        "parameters": {},
+        "groupNames": ["F.15 - Foundation"],
+        "policyDefinitionName": "0ec47710-77ff-4a3d-9181-6aa50af424d0"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-VirtualMachine-Backup",
+        "parameters": {},
+        "groupNames": ["F.15 - Foundation"],
+        "policyDefinitionName": "013e242c-8828-4970-87b3-ab247555486d"
+      },
+      {
+        "policyDefinitionReferenceId": "Audit-VM-NoUseManagedDisk",
+        "parameters": {},
+        "groupNames": ["F.06 - Foundation"],
+        "policyDefinitionName": "06a78e20-9358-41c9-923c-fb736d382a4d"
+      },
+      {
+        "policyDefinitionReferenceId": "Georedundant-Backup-ForMySQL",
+        "parameters": {},
+        "groupNames": ["F.15 - Foundation"],
+        "policyDefinitionName": "82339799-d096-41ae-8538-b108becf0970"
+      },
+      {
+        "policyDefinitionReferenceId": "Georedundant-Backup-ForPostgreSQL",
+        "parameters": {},
+        "groupNames": ["F.15 - Foundation"],
+        "policyDefinitionName": "48af4db5-9b8b-401c-8e74-076be876a430"
+      },
+      {
+        "policyDefinitionReferenceId": "Audit-ResourceLocationMatch-GroupLocation",
+        "parameters": {},
+        "groupNames": ["F.06 - Foundation"],
+        "policyDefinitionName": "0a914e76-4921-4c19-b460-a2d36003525a"
+      },
+      {
+        "policyDefinitionReferenceId": "Deny-VPNGwSku-Basic",
+        "parameters": {},
+        "groupNames": ["F.23 - Foundation"],
+        "policyDefinitionName": "e345b6c3-24bd-4c93-9bbb-7e5e49a17b78"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-TDE-SQLDataBases",
+        "parameters": {},
+        "groupNames": ["F.05 - Foundation"],
+        "policyDefinitionName": "17k78e20-9358-41c9-923c-fb736d382a12"
+      },
+      {
+        "policyDefinitionReferenceId": "Remediate-Machines-Vulnerabilities",
+        "parameters": {},
+        "groupNames": ["F.17 - Foundation"],
+        "policyDefinitionName": "e1e5fd5d-3e4c-4ce1-8661-7d1873ae6b15"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-Machines-Updates",
+        "parameters": {},
+        "groupNames": ["F.12 - Foundation"],
+        "policyDefinitionName": "86b3d65f-7626-441e-b690-81a8b71cff60"
+      },
+      {
+        "policyDefinitionReferenceId": "Set-AUM-prerequisites",
+        "parameters": {},
+        "groupNames": [
+          "F.12 - Foundation"
+        ],
+        "policyDefinitionName": "9905ca54-1471-49c6-8291-7582c04cd4d4"
+      },
+      {
+        "policyDefinitionReferenceId": "Set-AUM-periodic-updates",
+        "parameters": {},
+        "groupNames": [
+          "F.12 - Foundation"
+        ],
+        "policyDefinitionName": "59efceea-0c96-497e-a4a1-4eb2290dac15"
+      },
+      {
+        "policyDefinitionReferenceId": "Set-AUM-maintenance-schedule-infr-weu-group1-0600-ThirdSunday",
+        "parameters": {
+          "maintenanceConfigurationResourceId": {
+            "value": "/subscriptions/*<managementSubscriptionId>*/resourcegroups/*<mgmtWeu-monitoringRG_ResourceName>*/providers/microsoft.maintenance/maintenanceconfigurations/infr-weu-group1-0600-thirdsunday"
+          },
+          "tagValues": {
+            "value": [
+              {
+                "key": "InSpark_VirtualMachineUpdateGroup",
+                "value": "infr-weu-group1-0600-ThirdSunday"
+              }
+            ]
+          },
+          "tagOperator": {
+            "value": "Any"
+          }
+        },
+        "groupNames": [
+          "F.12 - Foundation"
+        ],
+        "policyDefinitionName": "ba0df93e-e4ac-479a-aac2-134bbae39a1a"
+      },
+      {
+        "policyDefinitionReferenceId": "Set-AUM-maintenance-schedule-infr-weu-group2-0600-FourthSunday",
+        "parameters": {
+          "maintenanceConfigurationResourceId": {
+            "value": "/subscriptions/*<managementSubscriptionId>*/resourcegroups/*<mgmtWeu-monitoringRG_ResourceName>*/providers/microsoft.maintenance/maintenanceconfigurations/infr-weu-group2-0600-fourthsunday"
+          },
+          "tagValues": {
+            "value": [
+              {
+                "key": "InSpark_VirtualMachineUpdateGroup",
+                "value": "infr-weu-group2-0600-FourthSunday"
+              }
+            ]
+          },
+          "tagOperator": {
+            "value": "Any"
+          }
+        },
+        "groupNames": [
+          "F.12 - Foundation"
+        ],
+        "policyDefinitionName": "ba0df93e-e4ac-479a-aac2-134bbae39a1a"
+      },
+      {
+        "policyDefinitionReferenceId": "Set-AUM-maintenance-schedule-daily-definitions",
+        "parameters": {
+          "maintenanceConfigurationResourceId": {
+            "value": "/subscriptions/*<managementSubscriptionId>*/resourcegroups/*<mgmtWeu-monitoringRG_ResourceName>*/providers/microsoft.maintenance/maintenanceconfigurations/infr-weu-group0-0800-1Day"
+          },
+          "tagValues": {
+            "value": []
+          },
+          "tagOperator": {
+            "value": "All"
+          }
+        },
+        "groupNames": [
+          "F.12 - Foundation"
+        ],
+        "policyDefinitionName": "ba0df93e-e4ac-479a-aac2-134bbae39a1a"
+      },
+      {
+        "policyDefinitionReferenceId": "More-ThenOneOwner-ToSubscription",
+        "parameters": {},
+        "groupNames": ["F.02 - Foundation"],
+        "policyDefinitionName": "09024ccc-0c5f-475e-9457-b7c0d9ed487b"
+      },
+      {
+        "policyDefinitionReferenceId": "Deploy-Cannotdeleteresourcelock-Onresourcegroup",
+        "parameters": {
+          "tagName": {
+            "value": "Environment"
+          },
+          "tagValue": {
+            "value": ["Production", "Shared"]
+          },
+          "exemptResourceGroups": {
+            "value": [
+              "NetworkWatcherRG",
+              "rg-infr-privatelinkzones-p-weu-01",
+              "AzureBackupRG_westeurope_1",
+              "*<AzureDevOpsRG>*",
+              "rg-infr-alerting-p-weu-01",
+              "rg-infr-bastion-p-weu-01"
+            ]
+          }
+        },
+        "groupNames": ["F.08 - Foundation"],
+        "policyDefinitionName": "Deploy-CanNotDeleteResourceLock-OnResourceGroup"
+      },
+      {
+        "policyDefinitionReferenceId": "2296873749414492395",
+        "parameters": {
+          "nsgRegion": {
+            "value": "westeurope"
+          },
+          "storageId": {
+            "value": "*<mgmtWeu-loggingStorageAccount_ResourceId>*"
+          },
+          "workspaceResourceId": {
+            "value": "*<mgmtWeu-logAnalytics_ResourceId>*"
+          },
+          "workspaceId": {
+            "value": "*<mgmtWeu-logAnalytics_WorkspaceId>*"
+          },
+          "workspaceRegion": {
+            "value": "westeurope"
+          },
+          "networkWatcherRG": {
+            "value": "NetworkWatcherRG"
+          },
+          "networkWatcherName": {
+            "value": "NetworkWatcher_westeurope"
+          }
+        },
+        "groupNames": ["F.11 - Foundation"],
+        "policyDefinitionName": "Deploy-NsgFlowLogs-TrafficAnalytics"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-Allowed-Locations",
+        "parameters": {
+          "listOfAllowedLocations": {
+            "value": ["westeurope", "northeurope"]
+          }
+        },
+        "groupNames": ["F.06 - Foundation"],
+        "policyDefinitionName": "e56962a6-4747-49cd-b67b-bf8b01975c4c"
+      },
+      {
+        "policyDefinitionReferenceId": "Audit-NetworkWatcher-TrafficAnalytics",
+        "parameters": {},
+        "groupNames": ["F.09 - Foundation"],
+        "policyDefinitionName": "2f080164-9f4d-497e-9db6-416dc9f7b48a"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-AppServiceApi-UpgradeTLSVersion",
+        "parameters": {
+          "effect": {
+            "value": "AuditIfNotExists"
+          }
+        },
+        "groupNames": ["F.21 - Foundation"],
+        "policyDefinitionName": "Enforce-AppServiceApi-UpgradeTLSVersion"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-AppServiceFunction-UpgradeTLSVersion",
+        "parameters": {
+          "effect": {
+            "value": "AuditIfNotExists"
+          }
+        },
+        "groupNames": ["F.21 - Foundation"],
+        "policyDefinitionName": "Enforce-AppServiceFunction-UpgradeTLSVersion"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-AppService-UpgradeTLSVersion",
+        "parameters": {
+          "effect": {
+            "value": "AuditIfNotExists"
+          }
+        },
+        "groupNames": ["F.21 - Foundation"],
+        "policyDefinitionName": "Enforce-AppService-UpgradeTLSVersion"
+      },
+      {
+        "policyDefinitionReferenceId": "DeployBudgetCostManagement",
+        "parameters": {
+          "effect": {
+            "value": "DeployIfNotExists"
+          }
+        },
+        "groupNames": ["F.24 - Foundation"],
+        "policyDefinitionName": "Deploy-Budget-CostManagement"
+      },
+      {
+        "policyDefinitionReferenceId": "Audit-AppServicePlan-Unused",
+        "parameters": {
+          "effect": {
+            "value": "Audit"
+          }
+        },
+        "groupNames": ["F.24 - Foundation"],
+        "policyDefinitionName": "Audit-AppServicePlan-Unused"
+      },
+      {
+        "policyDefinitionReferenceId": "Audit-Disks-Unused",
+        "parameters": {
+          "effect": {
+            "value": "Audit"
+          }
+        },
+        "groupNames": ["F.24 - Foundation"],
+        "policyDefinitionName": "Audit-Disks-Unused"
+      },
+      {
+        "policyDefinitionReferenceId": "Audit-PublicIP-Unused",
+        "parameters": {
+          "effect": {
+            "value": "Audit"
+          }
+        },
+        "groupNames": ["F.24 - Foundation"],
+        "policyDefinitionName": "Audit-PublicIP-Unused"
+      },
+      {
+        "policyDefinitionReferenceId": "Audit-VM-AHUB",
+        "parameters": {
+          "effect": {
+            "value": "Audit"
+          }
+        },
+        "groupNames": ["F.24 - Foundation"],
+        "policyDefinitionName": "Audit-VM-AHUB"
+      },
+      {
+        "policyDefinitionReferenceId": "Deploy-Defender-KeyVaults",
+        "parameters": {
+          "effect": {
+            "value": "DeployIfNotExists"
+          }
+        },
+        "groupNames": ["F.16 - Foundation"],
+        "policyDefinitionName": "1f725891-01c0-420a-9059-4fa46cb770b7"
+      },
+      {
+        "policyDefinitionReferenceId": "Deploy-Defender-Servers",
+        "parameters": {
+          "effect": {
+            "value": "DeployIfNotExists"
+          }
+        },
+        "groupNames": ["F.16 - Foundation"],
+        "policyDefinitionName": "8e86a5b6-b9bd-49d1-8e21-4bb8a0862222"
+      },
+      {
+        "policyDefinitionReferenceId": "Deploy-Defender-AppServices",
+        "parameters": {
+          "effect": {
+            "value": "DeployIfNotExists"
+          }
+        },
+        "groupNames": ["F.16 - Foundation"],
+        "policyDefinitionName": "b40e7bcd-a1e5-47fe-b9cf-2f534d0bfb7d"
+      },
+      {
+        "policyDefinitionReferenceId": "Deploy-Defender-SQLServers",
+        "parameters": {
+          "effect": {
+            "value": "DeployIfNotExists"
+          }
+        },
+        "groupNames": ["F.16 - Foundation"],
+        "policyDefinitionName": "b99b73e7-074b-4089-9395-b7236f094491"
+      },
+      {
+        "policyDefinitionReferenceId": "Deploy-Defender-SQLServersOnMachines",
+        "parameters": {
+          "effect": {
+            "value": "DeployIfNotExists"
+          }
+        },
+        "groupNames": ["F.16 - Foundation"],
+        "policyDefinitionName": "50ea7265-7d8c-429e-9a7d-ca1f410191c3"
+      },
+      {
+        "policyDefinitionReferenceId": "Deploy-Defender-OpenSourceRelationalDatabases",
+        "parameters": {
+          "effect": {
+            "value": "DeployIfNotExists"
+          }
+        },
+        "groupNames": ["F.16 - Foundation"],
+        "policyDefinitionName": "44433aa3-7ec2-4002-93ea-65c65ff0310a"
+      },
+      {
+        "policyDefinitionReferenceId": "Deploy-Defender-Containers",
+        "parameters": {
+          "effect": {
+            "value": "DeployIfNotExists"
+          }
+        },
+        "groupNames": ["F.16 - Foundation"],
+        "policyDefinitionName": "c9ddb292-b203-4738-aead-18e2716e858f"
+      },
+      {
+        "policyDefinitionReferenceId": "Deploy-Defender-AzureResourceManager",
+        "parameters": {
+          "effect": {
+            "value": "DeployIfNotExists"
+          }
+        },
+        "groupNames": ["F.16 - Foundation"],
+        "policyDefinitionName": "b7021b2b-08fd-4dc0-9de7-3c6ece09faf9"
+      },
+      {
+        "policyDefinitionReferenceId": "Deploy-Defender-Storage",
+        "parameters": {
+          "effect": {
+            "value": "DeployIfNotExists"
+          }
+        },
+        "groupNames": ["F.16 - Foundation"],
+        "policyDefinitionName": "74c30959-af11-47b3-9ed2-a26e03f427a3"
+      },
+      {
+        "policyDefinitionReferenceId": "Deploy-DefaultDeny-NSGRule",
+        "parameters": {
+          "effect": {
+            "value": "[parameters('deployIfNotExistEffect')]"
+          }
+        },
+        "groupNames": ["F.23 - Foundation"],
+        "policyDefinitionName": "Deploy-DefaultDeny-NsgRule"
+      },
+      {
+        "policyDefinitionReferenceId": "Deploy-Defender-ExportCloudData",
+        "parameters": {
+          "resourceGroupName": {
+            "value": "DfcDataExportRG"
+          },
+          "resourceGroupLocation": {
+            "value": "westeurope"
+          },
+          "createResourceGroup": {
+            "value": false
+          },
+          "workspaceResourceId": {
+            "value": "*<mgmtWeu-logAnalytics_ResourceId>*"
+          }
+        },
+        "groupNames": ["F.17 - Foundation"],
+        "policyDefinitionName": "ffb6f416-7bd2-4488-8828-56585fef2be9"
+      },
+      {
+        "policyDefinitionReferenceId": "Deploy-AMA-Windows-VM",
+        "parameters": {
+          "effect": {
+            "value": "[parameters('deployIfNotExistEffect')]"
+          },
+          "bringYourOwnUserAssignedManagedIdentity": {
+            "value": true
+          },
+          "userAssignedManagedIdentityName": {
+            "value": "*<mgmtWeu-azureMonitoringAgentUserAssignedIdentity_ResourceName>*"
+          },
+          "userAssignedManagedIdentityResourceGroup": {
+            "value": "*<mgmtWeu-azureMonitoringAgentUserAssignedIdentity_ResourceGroupName>*"
+          },
+          "userAssignedManagedIdentitySubscription": {
+            "value": "*<mgmtWeu-azureMonitoringAgentUserAssignedIdentity_SubscriptionId>*"
+          }
+        },
+        "groupNames": ["F.23 - Foundation"],
+        "policyDefinitionName": "bdffab46-452d-5c4d-aacb-bdf9e45fd363"
+      },
+      {
+        "policyDefinitionReferenceId": "Deploy-AMA-Linux-VM",
+        "parameters": {
+          "effect": {
+            "value": "[parameters('deployIfNotExistEffect')]"
+          },
+          "bringYourOwnUserAssignedManagedIdentity": {
+            "value": true
+          },
+          "userAssignedManagedIdentityName": {
+            "value": "*<mgmtWeu-azureMonitoringAgentUserAssignedIdentity_ResourceName>*"
+          },
+          "userAssignedManagedIdentityResourceGroup": {
+            "value": "*<mgmtWeu-azureMonitoringAgentUserAssignedIdentity_ResourceGroupName>*"
+          },
+          "userAssignedManagedIdentitySubscription": {
+            "value": "*<mgmtWeu-azureMonitoringAgentUserAssignedIdentity_SubscriptionId>*"
+          }
+        },
+        "groupNames": ["F.23 - Foundation"],
+        "policyDefinitionName": "2bf130ac-424c-570d-aadf-3cd38fbf1157"
+      },
+      {
+        "policyDefinitionReferenceId": "Deploy-AMA-Windows-VMSS",
+        "parameters": {
+          "effect": {
+            "value": "[parameters('deployIfNotExistEffect')]"
+          },
+          "bringYourOwnUserAssignedManagedIdentity": {
+            "value": true
+          },
+          "userAssignedManagedIdentityName": {
+            "value": "*<mgmtWeu-azureMonitoringAgentUserAssignedIdentity_ResourceName>*"
+          },
+          "userAssignedManagedIdentityResourceGroup": {
+            "value": "*<mgmtWeu-azureMonitoringAgentUserAssignedIdentity_ResourceGroupName>*"
+          },
+          "userAssignedManagedIdentitySubscription": {
+            "value": "*<mgmtWeu-azureMonitoringAgentUserAssignedIdentity_SubscriptionId>*"
+          }
+        },
+        "groupNames": ["F.23 - Foundation"],
+        "policyDefinitionName": "6eef296d-6e58-5404-acb0-a102bd5f0ee6"
+      },
+      {
+        "policyDefinitionReferenceId": "Deploy-DCR-Linux-VM-Association",
+        "parameters": {
+          "effect": {
+            "value": "[parameters('deployIfNotExistEffect')]"
+          },
+          "dcrResourceId": {
+            "value": "*<mgmtWeu-dataCollectionRule_ResourceId>*"
+          },
+          "resourceType": {
+            "value": "Microsoft.Insights/dataCollectionRules"
+          }
+        },
+        "allowedLocations": {
+          "value": ["westeurope", "northeurope"]
+        },
+        "groupNames": ["F.23 - Foundation"],
+        "policyDefinitionName": "2ea82cdd-f2e8-4500-af75-67a2e084ca74"
+      },
+      {
+        "policyDefinitionReferenceId": "Deploy-DCR-Windows-VM-Association",
+        "parameters": {
+          "effect": {
+            "value": "[parameters('deployIfNotExistEffect')]"
+          },
+          "dcrResourceId": {
+            "value": "*<mgmtWeu-dataCollectionRule_ResourceId>*"
+          },
+          "resourceType": {
+            "value": "Microsoft.Insights/dataCollectionRules"
+          }
+        },
+        "allowedLocations": {
+          "value": ["westeurope", "northeurope"]
+        },
+        "groupNames": ["F.23 - Foundation"],
+        "policyDefinitionName": "244efd75-0d92-453c-b9a3-7d73ca36ed52"
+      },
+      {
+        "policyDefinitionReferenceId": "Deploy-DCR-Linux-VMSS-Association",
+        "parameters": {
+          "effect": {
+            "value": "[parameters('deployIfNotExistEffect')]"
+          },
+          "dcrResourceId": {
+            "value": "*<mgmtWeu-dataCollectionRule_ResourceId>*"
+          },
+          "resourceType": {
+            "value": "Microsoft.Insights/dataCollectionRules"
+          }
+        },
+        "allowedLocations": {
+          "value": ["westeurope", "northeurope"]
+        },
+        "groupNames": ["F.23 - Foundation"],
+        "policyDefinitionName": "050a90d5-7cce-483f-8f6c-0df462036dda"
+      },
+      {
+        "policyDefinitionReferenceId": "Deploy-DCR-Linux-Windows-Association",
+        "parameters": {
+          "effect": {
+            "value": "[parameters('deployIfNotExistEffect')]"
+          },
+          "dcrResourceId": {
+            "value": "*<mgmtWeu-dataCollectionRule_ResourceId>*"
+          },
+          "resourceType": {
+            "value": "Microsoft.Insights/dataCollectionRules"
+          }
+        },
+        "allowedLocations": {
+          "value": ["westeurope", "northeurope"]
+        },
+        "groupNames": ["F.23 - Foundation"],
+        "policyDefinitionName": "0a3b9bf4-d30e-424a-af6b-9a93f6f78792"
+      },
+      {
+        "policyDefinitionReferenceId": "Deploy-Windows-ChangeTracking-Extension",
+        "parameters": {
+          "effect": {
+            "value": "[parameters('deployIfNotExistEffect')]"
+          }
+        },
+        "groupNames": [
+          "F.23 - Foundation"
+        ],
+        "policyDefinitionName": "f08f556c-12ff-464d-a7de-40cb5b6cccec"
+      },
+      {
+        "policyDefinitionReferenceId": "Deploy-Linux-ChangeTracking-Extension",
+        "parameters": {
+          "effect": {
+            "value": "[parameters('deployIfNotExistEffect')]"
+          }
+        },
+        "groupNames": [
+          "F.23 - Foundation"
+        ],
+        "policyDefinitionName": "ec88097d-843f-4a92-8471-78016d337ba4"
+      },
+      {
+        "policyDefinitionReferenceId": "Deploy-DCR-Windows-ChangeTracking-Association",
+        "parameters": {
+          "effect": {
+            "value": "[parameters('deployIfNotExistEffect')]"
+          },
+          "dcrResourceId": {
+            "value": "*<mgmtWeu-dataCollectionRule_ResourceId>*"
+          }
+        },
+        "groupNames": [
+          "F.23 - Foundation"
+        ],
+        "policyDefinitionName": "b6faa975-0add-4f35-8d1c-70bba45c4424"
+      },
+      {
+        "policyDefinitionReferenceId": "Deploy-DCR-Linux-ChangeTracking-Association",
+        "parameters": {
+          "effect": {
+            "value": "[parameters('deployIfNotExistEffect')]"
+          },
+          "dcrResourceId": {
+            "value": "*<mgmtWeu-dataCollectionRule_ResourceId>*"
+          }
+        },
+        "groupNames": [
+          "F.23 - Foundation"
+        ],
+        "policyDefinitionName": "bef2d677-e829-492d-9a3d-f5a20fda818f"
+      }
+    ]
+  }
+}

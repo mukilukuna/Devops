@@ -1,0 +1,57 @@
+{
+  "name": "identityallowedprincipaltypes",
+  "properties": {
+    "Description": "This policy defines a white list of principal types (user, serviceprincipal,group) that can be used in IAM.",
+    "DisplayName": "Identity: Allowed Identity Types in Role Assignments",
+    "Mode": "All",
+    "Metadata": {
+      "version": "1.0.0",
+      "category": "Governance"
+    },
+    "Parameters": {
+      "principalType": {
+        "type": "Array",
+        "metadata": {
+          "displayName": "principalType",
+          "description": "The list of allowed principalTypes e.g. 'User, Group, ServicePrincipal'"
+        },
+        "defaultValue": [
+          "Group",
+          "ServicePrincipal"
+        ]
+      },
+      "effect": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Effect",
+          "description": "Enable or disable the execution of the policy."
+        },
+        "allowedValues": [
+          "Deny",
+          "Audit",
+          "Disabled"
+        ],
+        "defaultValue": "Deny"
+      }
+    },
+    "PolicyRule": {
+      "if": {
+        "allOf": [
+          {
+            "equals": "Microsoft.Authorization/roleAssignments",
+            "field": "type"
+          },
+          {
+            "not": {
+              "field": "Microsoft.Authorization/roleAssignments/principalType",
+              "in": "[parameters('principalType')]"
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "[parameters('effect')]"
+      }
+    }
+  }
+}

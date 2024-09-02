@@ -1,0 +1,60 @@
+{
+  "name": "Audit-Budget-CostManagement",
+  "properties": {
+    "displayName": "Audit existence of Budget for Cost Management",
+    "policyType": "Custom",
+    "mode": "All",
+    "description": "Audit existence of a budget under the assigned scope",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "CostManagement"
+    },
+    "parameters": {
+      "effect": {
+        "type": "String",
+        "metadata": {
+          "description": "Enable or disable the execution of the policy"
+        },
+        "allowedValues": [
+          "AuditIfNotExists",
+          "Disabled"
+        ],
+        "defaultValue": "AuditIfNotExists"
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Resources/subscriptions"
+          }
+        ]
+      },
+      "then": {
+        "effect": "[parameters('effect')]",
+        "details": {
+          "type": "Microsoft.Consumption/budgets",
+          "deploymentScope": "subscription",
+          "existenceScope": "subscription",
+          "existenceCondition": {
+            "allOf": [
+              {
+                "field": "Microsoft.Consumption/budgets/amount",
+                "exists": true
+              },
+              {
+                "field": "Microsoft.Consumption/budgets/timeGrain",
+                "exists": true
+              },
+              {
+                "field": "Microsoft.Consumption/budgets/category",
+                "exists": true
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

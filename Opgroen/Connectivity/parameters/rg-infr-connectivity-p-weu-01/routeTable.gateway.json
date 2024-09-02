@@ -1,0 +1,40 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workloadName": {
+            "value": "*<workloadName>*"
+        },
+        "applicationName": {
+            "value": "gatewayroutetable"
+        },
+        "environmentName": {
+            "value": "*<environmentName>*"
+        },
+        "regionName": {
+            "value": "*<regionName>*"
+        },
+        "index": {
+            "value": 1
+        },
+        "disableBgp": {
+            "value": false
+        },
+        "nextHopIpAddress": {
+            "value": "*<addressSpacePrefix>*.68"
+        },
+        "routes": {
+            "value": []
+        },
+        "tags": {
+            "value": {
+                "CostCenter": "*<CostCenterTag>*",
+                "Owner": "*<OwnerTag>*",
+                "Environment": "*<EnvironmentTag>*",
+                "WorkloadName": "*<WorkloadNameTag>*",
+                "ApplicationName": "*<ApplicationNameTag>*",
+                "ManagedBy": "*<ManagedByTag>*"
+            }
+        }
+    }
+}

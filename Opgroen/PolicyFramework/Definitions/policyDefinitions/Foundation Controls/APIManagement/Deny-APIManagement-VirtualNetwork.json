@@ -1,0 +1,75 @@
+{
+  "name": "Deny-APIManagement-VirtualNetwork",
+  "properties": {
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "displayName": "Deny API Management without Vnet injection",
+    "description": "Enforces the use of vnet injection for API Management.",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "APIManagement"
+    },
+    "parameters": {
+      "effect": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Effect",
+          "description": "Enable or disable the execution of the policy"
+        },
+        "allowedValues": [
+          "Audit",
+          "Disabled",
+          "Deny"
+        ],
+        "defaultValue": "Deny"
+      },
+      "evaluatedSkuNames": {
+        "type": "Array",
+        "metadata": {
+          "displayName": "API Management SKU Names",
+          "description": "List of API Management SKUs against which this policy will be evaluated."
+        },
+        "allowedValues": [
+          "Developer",
+          "Basic",
+          "Standard",
+          "Premium",
+          "Consumption"
+        ],
+        "defaultValue": [
+          "Developer",
+          "Premium"
+        ]
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.ApiManagement/service"
+          },
+          {
+            "field": "Microsoft.ApiManagement/service/sku.name",
+            "in": "[parameters('evaluatedSkuNames')]"
+          },
+          {
+            "anyOf": [
+              {
+                "field": "Microsoft.ApiManagement/service/virtualNetworkType",
+                "exists": "false"
+              },
+              {
+                "field": "Microsoft.ApiManagement/service/virtualNetworkType",
+                "equals": "None"
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "[parameters('effect')]"
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "name": "Deploy-Tags-RequiredOnResources",
+  "properties": {
+    "Description": "Require a tag on resources",
+    "DisplayName": "Tag: Require a tag on resources",
+    "Mode": "Indexed",
+    "Metadata": {
+      "Version": "1.0.0",
+      "Category": "Resource Organization"
+    },
+    "Parameters": {
+      "tagName": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Tag Name",
+          "description": "Name of the tag, such as 'environment'"
+        }
+      },
+      "effect": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Effect",
+          "description": "Enable or disable the execution of the policy"
+        },
+        "allowedValues": [
+          "Audit",
+          "Deny",
+          "Disabled"
+        ],
+        "defaultValue": "Deny"
+      },
+      "excludedResourceTypes": {
+        "type": "Array",
+        "metadata": {
+          "displayName": "Excluded Resource Types",
+          "description": "Array of resource types that are excluded from this policy"
+        },
+        "defaultValue": []
+      }
+    },
+    "PolicyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "[concat('tags[', parameters('tagName'), ']')]",
+            "exists": false
+          },
+          {
+            "field": "type",
+            "notIn": "[parameters('excludedResourceTypes')]"
+          }
+        ]
+      },
+      "then": {
+        "effect": "[parameters('effect')]"
+      }
+    }
+  }
+}

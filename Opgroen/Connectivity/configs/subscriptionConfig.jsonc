@@ -1,0 +1,87 @@
+{
+  // Subscription Details
+  "Governance": {
+    "managementGroupName": "*<managementGroupId>*",
+    "subscriptionName": "*<subscriptionName>*",
+    "subscriptionId": "*<subscriptionId>*",
+    "location": "*<location>*",
+    //Subscription Tags
+    "tags": {
+      "CostCenter": "*<CostCenterTag>*",
+      "Owner": "*<OwnerTag>*",
+      "Environment": "*<EnvironmentTag>*",
+      "WorkloadName": "*<WorkloadNameTag>*",
+      "ApplicationName": "*<ApplicationNameTag>*",
+      "ManagedBy": "*<ManagedByTag>*"
+    },
+    //Security Settings
+    "enableDefenderForCloud": true,
+    "securityEmail": "*<securityEmail>*",
+    //Budget details
+    "budgetEmail": "*<budgetEmail>*",
+    "budget": 1200
+  },
+  "permissions": [
+    // {
+    //     "name": "GEN-ZZ-SEC-P01-ROOTMGMT-OW-Owner",
+    //     "principalId": "adda0aa5-ee2a-4086-b10d-e1a2f18e21da",
+    //     "roleDefinitionId": "8e3af657-a8ff-443c-a75c-2fe8c4bcb635",
+    //     "description": "GEN-ZZ-SEC-P01-ROOTMGMT-OW Owner role assignment",
+    //     "principalType": "Group"
+    // },
+    // {
+    //     "name": "GEN-ZZ-SEC-P01-HUBSUB-CO-Contributor",
+    //     "principalId": "2623a1f9-c020-4c89-a00d-f2f34219dac3",
+    //     "roleDefinitionId": "b24988ac-6180-42a0-ab88-20f7382dd24c",
+    //     "description": "GEN-ZZ-SEC-P01-HUBSUB-CO Contributor role assignment",
+    //     "principalType": "Group"
+    // },
+    // {
+    //     "name": "GEN-ZZ-SEC-P01-HUBSUB-RE-Reader",
+    //     "principalId": "8cdb4eff-39d2-4f89-b831-8fc048b61ab7",
+    //     "roleDefinitionId": "acdd72a7-3385-48ef-bd42-f606fba81ae7",
+    //     "description": "GEN-ZZ-SEC-P01-HUBSUB-RE Reader role assignment",
+    //     "principalType": "Group"
+    // }
+  ],
+  //Naming Convention
+  "namingConvention": {
+    "workloadName": "*<workloadName>*",
+    "applicationName": "*<applicationName>*",
+    "environmentName": "*<environmentName>*",
+    "regionName": "*<regionName>*"
+  },
+  //Networking details
+  "networking": {
+    "addressSpacePrefix": "*<addressSpacePrefix>*",
+    "vNetDnsServers": ["168.63.129.16"],
+    "mgmtAddressSpacePrefix": "*<mgmtAddressSpacePrefix>*",
+    "azureIPSpace": "*<AzureIPSpace>*",
+    "firewallDnsServers": [
+      "10.143.2.5", 
+      "10.143.2.4"
+    ],
+    "deployVPNGateway": "*<deployVPNGateway>*",
+    "deployExpressRouteGateway": "*<deployExpressRouteGateway>*",
+    "permissions": [
+      {
+        "name": "*<connWeu-peeringUserAssignedIdentity_PrincipalId>*-NetworkContributor",
+        "principalId": "*<connWeu-peeringUserAssignedIdentity_PrincipalId>*",
+        "roleDefinitionId": "4d97b98b-1d4f-4787-a291-c67834d212e7",
+        "description": "*<connWeu-peeringUserAssignedIdentity_PrincipalId>* Network Contributor role assignment",
+        "principalType": "ServicePrincipal"
+      },
+      {
+        "name": "*<connWeu-peeringUserAssignedIdentity_PrincipalId>*-Contributor",
+        "principalId": "*<connWeu-peeringUserAssignedIdentity_PrincipalId>*",
+        "roleDefinitionId": "b24988ac-6180-42a0-ab88-20f7382dd24c",
+        "description": "*<connWeu-peeringUserAssignedIdentity_PrincipalId>* Contributor role assignment",
+        "principalType": "ServicePrincipal"
+      }
+    ]
+  },
+  //Foundation Details
+  "Foundation": {
+    "foundationLogAnalyticsResourceId": "*<mgmtWeu-logAnalytics_ResourceId>*"
+  }
+}

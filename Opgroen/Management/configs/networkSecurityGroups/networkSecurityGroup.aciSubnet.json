@@ -1,0 +1,22 @@
+{
+  "securityRules": [
+    {
+      "name": "Deny-VirtualNetwork-VirtualNetwork-Traffic",
+      "properties": {
+        "description": "Default deny VirtualNetwork to VirtualNetwork traffic to ensure zero trust model",
+        "protocol": "*",
+        "sourcePortRange": "*",
+        "destinationPortRange": "*",
+        "sourceAddressPrefix": "*",
+        "destinationAddressPrefix": "*",
+        "access": "Deny",
+        "priority": 4096,
+        "direction": "Inbound",
+        "sourcePortRanges": [],
+        "destinationPortRanges": [],
+        "sourceAddressPrefixes": [],
+        "destinationAddressPrefixes": []
+      }
+    }
+  ]
+}

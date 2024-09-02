@@ -1,0 +1,74 @@
+{
+    "name": "Audit-Resourcegroup-Lockbasedontag",
+    "properties": {
+      "Description": "Audit all Resource Groups that have a specific Tag, for the CanNotDelete Resource Lock.",
+      "DisplayName": "Locks: Audit Resource Locks on Resource Groups based on Tags",
+      "Mode": "All",
+      "Metadata": {
+        "Version": "1.0.0",
+        "Category": "Goverance"
+      },
+      "Parameters": {
+        "tagName": {
+          "type": "String",
+          "metadata": {
+            "displayName": "Tag Name",
+            "description": "The Tag name to audit against (i.e. Environment, CostCenter, etc.)"
+          }
+        },
+        "tagValue": {
+          "type": "Array",
+          "metadata": {
+            "displayName": "Tag Value",
+            "description": "List of tag values for the tag."
+          },
+          "defaultValue": [
+            "Production",
+            "Shared"
+          ]
+        },
+        "exemptResourceGroups": {
+          "type": "Array",
+          "metadata": {
+            "displayName": "Exempted Resource Group Names",
+            "description": "Any Resource Group included in this list will not have this Policy applied to them."
+          },
+          "defaultValue": [
+            "NetworkWatcherRG",
+            "rg-infr-privatelinkzones-p-weu-01",
+            "AzureBackupRG_westeurope_1",
+            "VisualStudioOnline-06A9B11A0999421A8D114D8D51B06AB4"
+          ]
+        }
+      },
+      "PolicyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Resources/subscriptions/resourceGroups"
+            },
+            {
+              "field": "[concat('tags[', parameters('tagName'), ']')]",
+              "in": "[parameters('tagValue')]"
+            },
+            {
+              "field": "name",
+              "notIn": "[parameters('exemptResourceGroups')]"
+            }
+          ]
+        },
+        "then": {
+          "effect": "auditIfNotExists",
+          "details": {
+            "type": "Microsoft.Authorization/locks",
+            "existenceCondition": {
+              "field": "Microsoft.Authorization/locks/level",
+              "equals": "CanNotDelete"
+            }
+          }
+        }
+      }
+    }
+  }
+  

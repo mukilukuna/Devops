@@ -1,0 +1,14 @@
+{
+  "moduleAliases": {
+    "br": {
+      "BicepFeatures": {
+        "registry": "insparkbiceptemplates.azurecr.io",
+        "modulePath": "features"
+      },
+      "BicepSolutions": {
+        "registry": "insparkbiceptemplates.azurecr.io",
+        "modulePath": "solutions"
+      }
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "pacOwnerId": "11111111-2222-3333-4444-555555555555",
+  "pacEnvironments": [
+    {
+      "pacSelector": "epac-dev",
+      "cloud": "AzureCloud",
+      "tenantId": "*<TenantId>*",
+      "deploymentRootScope": "*<canary-managementGroup-customerMg_ResourceId>*",
+      "desiredState": {
+        "strategy": "full", // default full
+        // full      = delete any unknown assignments and Policy/Set definitions in managed scope not containing metadata.pacOwnerId
+        // ownedOnly = delete only our own assignments as indicated by metadata.pacOwnerId field
+        "keepDfcSecurityAssignments": false
+      },
+      "globalNotScopes": [
+        "/subscriptions/*/resourceGroups/excluded-rg*",
+        "*<canary-managementGroup-decommisionedMg_ResourceId>*"
+      ],
+      "managedIdentityLocation": "westeurope"
+    },
+    {
+      "pacSelector": "tenant",
+      "cloud": "AzureCloud",
+      "tenantId": "*<TenantId>*",
+      "deploymentRootScope": "*<managementGroup-customerMg_ResourceId>*", // replaces rootScope
+      "desiredState": {
+        // [optional]
+        "strategy": "ownedOnly", // default full
+        // full      = delete any unknown assignments and Policy/Set definitions in managed scope not containing metadata.pacOwnerId
+        // ownedOnly = delete only our own assignments as indicated by metadata.pacOwnerId field
+        "keepDfcSecurityAssignments": true, // default WAS true pre-epac v10
+        "excludedScopes": [
+          // Management Groups
+          // Subscriptions
+          // Resource Groups
+        ],
+        "excludedPolicyDefinitions": [
+          // wild cards allowed
+        ],
+        "excludedPolicySetDefinitions": [
+          // wild cards allowed
+        ],
+        "excludedPolicyAssignments": [
+          "*/providers/microsoft.authorization/policyassignments/newspokepolasmgt"
+        ]
+      },
+      "globalNotScopes": [
+        "/subscriptions/*/resourceGroups/excluded-rg*",
+        "*<canary-managementGroup-decommisionedMg_ResourceId>*",
+        "*<canary-managementGroup-customerMg_ResourceId>*"
+      ],
+      "managedIdentityLocation": "westeurope"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+parameters:
+  workloadName:
+  workloadType:
+  templateRepo:
+  parametersPath:
+
+steps:
+# [Module Pester Test] task(s)
+  #-----------------------------
+  - task: PowerShell@2
+    displayName: Run [${{ parameters.workloadName }}] tests via (Pester)
+    inputs:
+      targetType: inline
+      pwsh: true
+      script: |
+        # --------------------- #
+        # INVOKE PESTER TEST(S) #
+        # --------------------- #
+        Install-Module Pester -Force -ErrorAction Stop -RequiredVersion 5.1.1
+        $path = "$(System.DefaultWorkingDirectory)/${{ parameters.templateRepo }}/${{ parameters.workloadType }}/${{ parameters.workloadName }}/Tests/feature.tests.ps1"
+        Invoke-Pester -Configuration @{
+          Run        = @{
+            Container = New-PesterContainer -Path $path -Data @{
+              ParameterFilePath = "${{ parameters.parametersPath }}"
+            }
+          }
+          TestResult = @{
+            TestSuiteName = '[${{ parameters.workloadName }}] Module Tests'
+            OutputPath    = '$(System.DefaultWorkingDirectory)/${{ parameters.templateRepo }}/workload-testResults.xml'
+            OutputFormat  = 'NUnitXml'
+            Enabled       = $true
+          }
+          Output     = @{
+            Verbosity = 'Detailed'
+          }
+        }
+      errorActionPreference: continue
+
+  - task: PublishTestResults@2
+    displayName: Publish Test Results
+    inputs:
+      testRunTitle: "[${{ parameters.workloadName }}] Module Tests"
+      testResultsFormat: NUnit
+      testResultsFiles: "$(System.DefaultWorkingDirectory)/${{ parameters.templateRepo }}/workload-testResults.xml"
+      failTaskOnFailedTests: false
+    continueOnError: false
+    condition: succeededOrFailed()

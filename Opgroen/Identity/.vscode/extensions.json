@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "ms-azure-devops.azure-pipelines",
+    "ms-azuretools.vscode-bicep",
+    "ms-vscode.powershell",
+    "esbenp.prettier-vscode",
+    "yzhang.markdown-all-in-one"
+  ]
+}

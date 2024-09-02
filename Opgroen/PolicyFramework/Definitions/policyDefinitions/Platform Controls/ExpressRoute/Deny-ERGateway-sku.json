@@ -1,0 +1,57 @@
+{
+  "name": "Deny-ERGateway-sku",
+  "properties": {
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "displayName": "Express-Route Gateway should be deployed with correct sku",
+    "description": "This policy defines the allowed sku size for Express-Route Gateway",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "Network"
+    },
+    "parameters": {
+      "effect": {
+        "type": "String",
+        "metadata": {
+            "displayName": "Effect",
+            "description": "Enable or disable the execution of the policy"
+        },
+        "allowedValues": [
+            "Audit",
+            "Deny",
+            "Disabled"
+        ],
+        "defaultValue": "Deny"
+    },
+    "sku": {
+        "type": "String",
+        "metadata": {
+            "displayName": "Allowed Gateway SKU",
+            "description": "Which Gateway SKU are allowed"
+        },
+        "defaultValue": "ErGw1Az"
+    }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Network/virtualNetworkGateways"
+        },
+        {
+            "field": "Microsoft.Network/virtualNetworkGateways/gatewayType",
+            "equals": "ExpressRoute"
+        },
+        {
+            "field": "Microsoft.Network/virtualNetworkGateways/sku.tier",
+            "notEquals": "[parameters('sku')]"
+        }
+        ]
+      },
+      "then": {
+        "effect": "[parameters('effect')]"
+      }
+    }
+  }
+}

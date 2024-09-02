@@ -1,0 +1,101 @@
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - .Global/*
+      - Features/*
+      - Solutions/*
+      - Tests/*
+
+jobs:
+  - job: CalculateVersion
+    condition: eq(variables['Build.Reason'], 'IndividualCI')
+    displayName: Calculate version and tagging
+    steps:
+      - task: PowerShell@2
+        displayName: Calculating new version
+        inputs:
+          targetType: filePath
+          filePath: "$(System.DefaultWorkingDirectory)/.Global/Scripts/Set-NewFeatureVersion.ps1"
+          pwsh: true
+        env:
+          SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+          CollectionUri: $(System.CollectionUri)
+          TeamProject: $(System.TeamProject)
+          RepositoryID: $(Build.Repository.ID)
+          objectId: $(Build.SourceVersion)
+
+  - job: PublishArtifacts
+    displayName: Publish pipeline artifact
+    dependsOn: CalculateVersion
+    condition: succeeded()
+    steps:
+      - publish: $(System.DefaultWorkingDirectory)
+        artifact: Bicep Templates
+
+  - job: UpdateDocumentation
+    displayName: Update documentation
+    dependsOn: PublishArtifacts
+    condition: and( not(failed()), not(canceled()) )
+    steps:
+
+    - task: PowerShell@2
+      displayName: Generate release notes
+      inputs:
+        targetType: 'FilePath'
+        filePath: '$(System.DefaultWorkingDirectory)/.Global/Scripts/New-ReleaseNotes.ps1'
+        pwsh: true
+      env:
+        outputFile: $(Build.ArtifactStagingDirectory)/Release-Notes.md
+        SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+        CollectionUri: $(System.CollectionUri)
+        TeamProject: $(System.TeamProject)
+        RepositoryID: $(Build.Repository.ID)
+        buildName: $(Build.DefinitionName)
+
+    - task: WikiFolderUpdaterTask@1
+      displayName: Upload documentation to wiki
+      inputs:
+        repo: 'https://dev.azure.com/weareinspark/BusinessReadyCloud/_git/BRCWiki'
+        targetFolder: BRCTemplates
+        replaceFile: True
+        sourceFolder: $(Build.ArtifactStagingDirectory)/
+        Filter: '**/*.md'
+        message: 'Update wiki'
+        gitname: $(Release.RequestedFor)
+        gitemail: $(Release.RequestedForEmail)
+        useAgentToken: true
+        localpath: '$(System.DefaultWorkingDirectory)/repo'
+
+  - job: UpdateSnippets
+    displayName: Update Snippets
+    dependsOn: # Optional dependencies
+    steps:
+    - checkout: self
+      persistCredentials: true
+
+    - task: bash@3
+      displayName: Checkout source branch
+      inputs:
+        targetType: 'inline'
+        script: |
+          git checkout main
+
+    - task: PowerShell@2
+      displayName: Create snippets
+      inputs:
+        targetType: 'FilePath'
+        filePath: $(System.DefaultWorkingDirectory)/.Global/Scripts/New-Snippets.ps1
+
+    - task: PowerShell@2
+      displayName: Push new snippets
+      inputs:
+        targetType: 'inline'
+        script: |
+          git config --global user.name "$(Build.RequestedFor)"
+          git config --global user.email "$(Build.RequestedForEmail)"
+          git add .
+          git commit -m "$(Build.BuildId)"
+          git push origin main

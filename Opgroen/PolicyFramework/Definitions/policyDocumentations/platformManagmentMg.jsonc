@@ -1,0 +1,44 @@
+{
+    "documentAssignments": {
+        "environmentCategories": [
+            {
+                "pacEnvironment": "tenant",
+                "environmentCategory": "prod",
+                "scopes": [ // Used in Markdown output only
+                    "Management Group: platformManagmentMg"
+                ],
+                "representativeAssignments": [
+                    {
+                        "shortName": "platformManagmentMg - Platform Management Cloud Assignment",
+                        "id": "*<managementGroup-managementMg_ResourceId>*/providers/microsoft.authorization/policyassignments/platformmgmpolasgmt"
+                    }
+                ]
+            }
+        ],
+        "documentationSpecifications": [
+            {
+                "fileNameStem": "platformManagmentMg-policy-effects",
+                "environmentCategories": [
+                    "prod"
+                ],
+                "title": "Policy effects"
+            }
+        ]
+    },
+    "documentInitiatives": [
+        {
+            "pacEnvironment": "tenant",
+            "fileNameStem": "platformManagmentMg-compliance-initiatives",
+            "title": "Document Initiatives",
+            "initiatives": [
+                    {
+                        "shortName": "platformManagmentMg - Platform Management Cloud Assignment",
+                        "id": "*<managementGroup-managementMg_ResourceId>*/providers/microsoft.authorization/policyassignments/platformmgmpolasgmt"
+                    }
+            ],
+            "environmentColumnsInCsv": [
+                "prod"
+            ]
+        }
+    ]
+}

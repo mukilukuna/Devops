@@ -1,0 +1,50 @@
+parameters:
+  - name: subscriptionId
+    type: string
+  - name: resourceGroupName
+    type: string
+  - name: azureResourceManagerConnection
+    type: string
+  - name: location
+    type: string
+  - name: csmParametersFile
+    type: string
+  - name: templateRepo
+    type: string
+    default: BRCTemplates
+  - name: templateFileName
+    type: string
+    default: template.bicep
+  - name: outPutPrefix
+    type: string
+    default: ''
+
+steps:
+  - ${{ if ne(variables['Build.SourceBranch'], 'refs/heads/main') }}:
+      - template: /.Global/Pipelines/validate.yaml
+        parameters:
+          templateRepo: ${{ parameters.templateRepo }}
+          templateFileName: ${{ parameters.templateFileName }}
+          workloadName: WebAvailabilityTest
+          workloadType: Features
+          subscriptionId: ${{ parameters.subscriptionId }}
+          resourceGroupName: ${{ parameters.resourceGroupName }}
+          azureSubscription: ${{ parameters.azureResourceManagerConnection }}
+          location: ${{ parameters.location }}
+          parametersPath: ${{ parameters.csmParametersFile }}
+
+  - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
+      - checkout: self
+      - checkout: templates
+      - template: /.Global/Pipelines/deploy.yaml
+        parameters:
+          outPutPrefix: ${{ parameters.outPutPrefix }}
+          templateRepo: ${{ parameters.templateRepo }}
+          templateFileName: ${{ parameters.templateFileName }}
+          workloadName: WebAvailabilityTest
+          workloadType: Features
+          subscriptionId: ${{ parameters.subscriptionId }}
+          resourceGroupName: ${{ parameters.resourceGroupName }}
+          azureSubscription: ${{ parameters.azureResourceManagerConnection }}
+          location: ${{ parameters.location }}
+          parametersPath: ${{ parameters.csmParametersFile }}

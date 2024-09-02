@@ -1,0 +1,47 @@
+parameters:
+  - name: csmParametersFile
+    type: string
+  - name: azureResourceManagerConnection
+    type: string
+  - name: location
+    type: string
+  - name: templateRepo
+    type: string
+  - name: templateProject
+    type: string
+  - name: version
+    type: string
+  - name: templateFileName
+    type: string
+    default: template.bicep
+  - name: outPutPrefix
+    type: string
+    default: ''
+
+steps:
+  - ${{ if and(ne(variables['Build.SourceBranch'], 'refs/heads/main'), ne(variables['Build.SourceBranch'], 'refs/heads/staging')) }}:
+      - checkout: self
+      - checkout: git://${{ parameters.templateProject }}/${{ parameters.templateRepo }}@refs/tags/${{ parameters.version }}
+      - template: /.Global/Pipelines/validate.yaml
+        parameters:
+          templateRepo: ${{ parameters.templateRepo }}
+          templateFileName: ${{ parameters.templateFileName }}
+          workloadName: RoleAssignmentTenant
+          workloadType: Features
+          azureSubscription: ${{ parameters.azureResourceManagerConnection }}
+          parametersPath: ${{ parameters.csmParametersFile }}
+          location: ${{ parameters.location }}
+
+  - ${{ if or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/staging')) }}:
+      - checkout: self
+      - checkout: git://${{ parameters.templateProject }}/${{ parameters.templateRepo }}@refs/tags/${{ parameters.version }}
+      - template: /.Global/Pipelines/deploy.yaml
+        parameters:
+          outPutPrefix: ${{ parameters.outPutPrefix }}
+          templateRepo: ${{ parameters.templateRepo }}
+          templateFileName: ${{ parameters.templateFileName }}
+          workloadName: RoleAssignmentTenant
+          workloadType: Features
+          azureSubscription: ${{ parameters.azureResourceManagerConnection }}
+          parametersPath: ${{ parameters.csmParametersFile }}
+          location: ${{ parameters.location }}

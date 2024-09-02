@@ -1,0 +1,100 @@
+{
+    "documentAssignments": {
+        "environmentCategories": [
+            {
+                "pacEnvironment": "tenant",
+                "environmentCategory": "prod",
+                "scopes": [ // Used in Markdown output only
+                    "Management Group: CustomerMg"
+                ],
+                "representativeAssignments": [ 
+                    {
+                        "shortName": "Foundation - Managed Cloud Policy Assignment",
+                        "id": "*<managementGroup-customerMg_ResourceId>*/providers/microsoft.authorization/policyassignments/foundationmcpolasgmt"
+                    },
+                    {
+                        "shortName": "Foundation - Security Cloud Policy Assignment",
+                        "id": "*<managementGroup-customerMg_ResourceId>*/providers/microsoft.authorization/policyassignments/foundationsecpolasgmt"
+                    },
+                    {
+                        "shortName": "Foundation - Tagging Cloud Policy Assignment",
+                        "id": "*<managementGroup-customerMg_ResourceId>*/providers/microsoft.authorization/policyassignments/foundationtagpolasgmt"
+                    },
+                    {
+                        "shortName": "Foundation - Identity Baseline Policy Assignment",
+                        "id": "*<managementGroup-customerMg_ResourceId>*/providers/microsoft.authorization/policyassignments/foundationidepolicies"
+                    },
+                    {
+                        "shortName": "Foundation - Network Control Policy Assignment",
+                        "id": "*<managementGroup-customerMg_ResourceId>*/providers/microsoft.authorization/policyassignments/foundationnwcpolasgmt"
+                    },
+                    {
+                        "shortName": "Foundation - Private DNS Zones Policy Assignment",
+                        "id": "*<managementGroup-customerMg_ResourceId>*/providers/microsoft.authorization/policyassignments/foundationdnspolasgmt"
+                    },
+                    {
+                        "shortName": "Foundation - Diagnostic Logging Policy Assignment",
+                        "id": "*<managementGroup-customerMg_ResourceId>*/providers/microsoft.authorization/policyassignments/foundationdiagpolasgmt"
+                    },
+                    {
+                        "shortName": "Foundation - Sandbox Policy Assignment",
+                        "id": "*<managementGroup-sandboxMg_ResourceId>*/providers/microsoft.authorization/policyAssignments/foundationsbxpolasgmt"
+                    }
+                ]
+            }
+        ],
+        "documentationSpecifications": [
+            {
+                "fileNameStem": "customerMg-policy-effects",
+                "environmentCategories": [
+                    "prod"
+                ],
+                "title": "Policy effects"
+            }
+        ]
+    },
+    "documentInitiatives": [
+        {
+            "pacEnvironment": "tenant",
+            "fileNameStem": "customerMg-compliance-initiatives",
+            "title": "Document Initiatives",
+            "initiatives": [
+                    {
+                        "shortName": "Foundation - Managed Cloud Policy Assignment",
+                        "id": "*<managementGroup-customerMg_ResourceId>*/providers/microsoft.authorization/policyassignments/foundationmcpolasgmt"
+                    },
+                    {
+                        "shortName": "Foundation - Security Cloud Policy Assignment",
+                        "id": "*<managementGroup-customerMg_ResourceId>*/providers/microsoft.authorization/policyassignments/foundationsecpolasgmt"
+                    },
+                    {
+                        "shortName": "Foundation - Tagging Cloud Policy Assignment",
+                        "id": "*<managementGroup-customerMg_ResourceId>*/providers/microsoft.authorization/policyassignments/foundationtagpolasgmt"
+                    },
+                    {
+                        "shortName": "Foundation - Identity Baseline Policy Assignment",
+                        "id": "*<managementGroup-customerMg_ResourceId>*/providers/microsoft.authorization/policyassignments/foundationidepolicies"
+                    },
+                    {
+                        "shortName": "Foundation - Network Control Policy Assignment",
+                        "id": "*<managementGroup-customerMg_ResourceId>*/providers/microsoft.authorization/policyassignments/foundationnwcpolasgmt"
+                    },
+                    {
+                        "shortName": "Foundation - Private DNS Zones Policy Assignment",
+                        "id": "*<managementGroup-customerMg_ResourceId>*/providers/microsoft.authorization/policyassignments/foundationdnspolasgmt"
+                    },
+                    {
+                        "shortName": "Foundation - Diagnostic Logging Policy Assignment",
+                        "id": "*<managementGroup-customerMg_ResourceId>*/providers/microsoft.authorization/policyassignments/foundationdiagpolasgmt"
+                    },
+                    {
+                        "shortName": "Foundation - Sandbox Policy Assignment",
+                        "id": "*<managementGroup-sandboxMg_ResourceId>*/providers/microsoft.authorization/policyAssignments/foundationsbxpolasgmt"
+                    }
+            ],
+            "environmentColumnsInCsv": [
+                "prod"
+            ]
+        }
+    ]
+}

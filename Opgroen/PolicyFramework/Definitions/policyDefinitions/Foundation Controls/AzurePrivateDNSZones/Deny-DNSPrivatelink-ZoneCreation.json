@@ -1,0 +1,57 @@
+{
+    "name": "Deny-DNSPrivatelink-ZoneCreation",
+    "properties": {
+      "Description": "This policy denies the creation of a private DNS in the current scope, used in combination with policies that create centralized private DNS in identity subscription",
+      "Metadata": {
+        "Version": "1.0.0",
+        "Category": "Network Security"
+      },
+      "DisplayName": "DNS: Deny the creation of private DNS Zones",
+      "Mode": "Indexed",
+      "Parameters": {
+        "effect": {
+          "type": "String",
+          "metadata": {
+            "displayName": "Effect",
+            "description": "Enable or disable the execution of the policy"
+          },
+          "allowedValues": [
+            "Audit",
+            "Deny",
+            "Disabled"
+          ],
+          "defaultValue": "Deny"
+        },
+        "exemptSubscriptions": {
+          "type": "Array",
+          "metadata": {
+            "displayName": "Exempt Subscription IDs",
+            "description": "Any Subscription IDs included in this list will not have this Policy applied to them."
+          },
+          "defaultValue": []
+        }
+      },
+      "PolicyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Network/privateDnsZones"
+            },
+            {
+              "field": "name",
+              "contains": "privatelink.*"
+            },
+            {
+              "notIn": "[parameters('exemptSubscriptions')]",
+              "value": "[subscription().subscriptionId]"
+            }
+          ]
+        },
+        "then": {
+          "effect": "[parameters('effect')]"
+        }
+      }
+    }
+  }
+  

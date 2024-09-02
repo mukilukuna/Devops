@@ -1,0 +1,921 @@
+{
+  "name": "foundationsecpolicies",
+  "properties": {
+    "Description": "This initiative deploys Foundation Security Policies for cloud governance",
+    "DisplayName": "Foundation Security Cloud Policy Set Definitions",
+    "Mode": null,
+    "Metadata": {
+      "version": "1.0.0",
+      "category": "Governance"
+    },
+    "PolicyDefinitionGroups": [
+      {
+        "name": "F.01 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.01 - Identity Management",
+        "description": "MFA on all user accounts"
+      },
+      {
+        "name": "F.02 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.02 - Access Control",
+        "description": "Access Control"
+      },
+      {
+        "name": "F.03 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.03 - Privileged Access Restrictions",
+        "description": "Privileged Access Restrictions"
+      },
+      {
+        "name": "F.04 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.04 - Encrypt Data at Rest",
+        "description": "Encryption on Data at Rest"
+      },
+      {
+        "name": "F.05 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.05 - Encrypt Data in Transit",
+        "description": "Encryption on Data in Transit"
+      },
+      {
+        "name": "F.06 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.06 - Enforce Data Storage Locations",
+        "description": "Enforce Data Storage Locations"
+      },
+      {
+        "name": "F.07 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.07 - Deny Traffic by Default",
+        "description": "Deny Traffic by Default"
+      },
+      {
+        "name": "F.08 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.08 - Prevent Accidental Deletion",
+        "description": "Prevent Accidental Deletion"
+      },
+      {
+        "name": "F.09 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.09 - Logging and Auditing",
+        "description": "Logging and Auditing"
+      },
+      {
+        "name": "F.10 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.10 - Enforce Resource Logging",
+        "description": "Enforce Resource Logging"
+      },
+      {
+        "name": "F.11 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.11 - Enforce Network Logging",
+        "description": "Enforce Network Logging"
+      },
+      {
+        "name": "F.13 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.13 - Network Segmentation",
+        "description": "Network segmentation"
+      },
+      {
+        "name": "F.15 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.15 - Audit Backup Protection",
+        "description": "Audit Backup Protection"
+      },
+      {
+        "name": "F.16 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.16 - Audit Backup Protection",
+        "description": "Audit Backup Protection"
+      },
+      {
+        "name": "F.17 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.17 - Vulnerability Managment",
+        "description": "Vulnerability Managment"
+      },
+      {
+        "name": "F.18 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.18 - Key Management",
+        "description": "Key Management"
+      },
+      {
+        "name": "F.19 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.19 - Automate DNS Configuration",
+        "description": "Automate DNS Configuration"
+      },
+      {
+        "name": "F.20 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.20 - Micro Segmentation",
+        "description": "Micro Segmentation"
+      },
+      {
+        "name": "F.21 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.21 - Detect and prevent insecure services and protocols",
+        "description": "Detect and prevent insecure services and protocols"
+      },
+      {
+        "name": "F.22 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.22 - Virus/Malware Protection",
+        "description": "Protection agianst Virus or Malware"
+      },
+      {
+        "name": "F.23 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.23 - Enforce Hub-Spoke Topology",
+        "description": "Enforce Hub-Spoke Topogoly architecture"
+      },
+      {
+        "name": "F.24 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.24 - Cost Managment",
+        "description": "Cost Managment"
+      }
+    ],
+    "Parameters": {},
+    "PolicyDefinitions": [
+      {
+        "policyDefinitionReferenceId": "Deny-NetworkInterface-PublicIP",
+        "parameters": {},
+        "groupNames": [
+          "F.07 - Foundation"
+        ],
+        "policyDefinitionName": "83a86a26-fd1f-447c-b59d-e51f44264114"
+      },
+      {
+        "policyDefinitionReferenceId": "Deny-NetworkInterface-IPForwarding",
+        "parameters": {},
+        "groupNames": [
+          "F.07 - Foundation"
+        ],
+        "policyDefinitionName": "88c0b9da-ce96-4b03-9635-f29a937e2900"
+      },
+      {
+        "policyDefinitionReferenceId": "Route-AllTraffic-ToFirewall",
+        "parameters": {},
+        "groupNames": [
+          "F.23 - Foundation"
+        ],
+        "policyDefinitionName": "fc5e4038-4584-4632-8c85-c0448d374b2c"
+      },
+      {
+        "policyDefinitionReferenceId": "Allow-FunctionApps-FTPSOnly",
+        "parameters": {},
+        "groupNames": [
+          "F.05 - Foundation"
+        ],
+        "policyDefinitionName": "399b2637-a50f-4f95-96f8-3a145476eb15"
+      },
+      {
+        "policyDefinitionReferenceId": "Allow-AppService-FTPSOnly",
+        "parameters": {},
+        "groupNames": [
+          "F.05 - Foundation"
+        ],
+        "policyDefinitionName": "4d24b6d4-5e53-4a4f-a7f4-618fa573ee4b"
+      },
+      {
+        "policyDefinitionReferenceId": "Use-FunctionsApps-LatestTLSVersion",
+        "parameters": {},
+        "groupNames": [
+          "F.21 - Foundation"
+        ],
+        "policyDefinitionName": "f9d614c5-c173-4d56-95a7-b4437057d193"
+      },
+      {
+        "policyDefinitionReferenceId": "Use-AppService-LatestTLSVersion",
+        "parameters": {},
+        "groupNames": [
+          "F.21 - Foundation"
+        ],
+        "policyDefinitionName": "f0e6e85b-9b9f-4a4b-b67b-f730d42f1b0b"
+      },
+      {
+        "policyDefinitionReferenceId": "Use-FunctionApps-LatestHTTPVersion",
+        "parameters": {},
+        "groupNames": [
+          "F.21 - Foundation"
+        ],
+        "policyDefinitionName": "e2c1c086-2d84-4019-bff3-c44ccd95113c"
+      },
+      {
+        "policyDefinitionReferenceId": "Use-AppService-LatestHTTPVersion",
+        "parameters": {},
+        "groupNames": [
+          "F.21 - Foundation"
+        ],
+        "policyDefinitionName": "8c122334-9d20-4eb8-89ea-ac9a705b74ae"
+      },
+      {
+        "policyDefinitionReferenceId": "Use-AppService-LatestPHPVersion",
+        "parameters": {},
+        "groupNames": [
+          "F.21 - Foundation"
+        ],
+        "policyDefinitionName": "7261b898-8a84-4db8-9e04-18527132abb3"
+      },
+      {
+        "policyDefinitionReferenceId": "Use-AppService-LatestJavaVersion",
+        "parameters": {},
+        "groupNames": [
+          "F.21 - Foundation"
+        ],
+        "policyDefinitionName": "496223c3-ad65-4ecd-878a-bae78737e9ed"
+      },
+      {
+        "policyDefinitionReferenceId": "Use-FunctionsApps-LatestJavaVersion",
+        "parameters": {},
+        "groupNames": [
+          "F.21 - Foundation"
+        ],
+        "policyDefinitionName": "9d0b6ea4-93e2-4578-bf2f-6bb17d22b4bc"
+      },
+      {
+        "policyDefinitionReferenceId": "Use-AppService-LatestPythonVersion",
+        "parameters": {},
+        "groupNames": [
+          "F.21 - Foundation"
+        ],
+        "policyDefinitionName": "7008174a-fd10-4ef0-817e-fc820a951d73"
+      },
+      {
+        "policyDefinitionReferenceId": "Use-FunctionApp-LatestPythonVersion",
+        "parameters": {},
+        "groupNames": [
+          "F.21 - Foundation"
+        ],
+        "policyDefinitionName": "7238174a-fd10-4ef0-817e-fc820a951d73"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-PostgreSQL-SSLConnection",
+        "parameters": {},
+        "groupNames": [
+          "F.05 - Foundation"
+        ],
+        "policyDefinitionName": "d158790f-bfb0-486c-8631-2dc6b4e8e6af"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-MySQL-SSLConnection",
+        "parameters": {},
+        "groupNames": [
+          "F.05 - Foundation"
+        ],
+        "policyDefinitionName": "e802a67a-daf5-4436-9ea6-f6d821dd0c5d"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-EmailAddressSubsription-SecurityIssues",
+        "parameters": {},
+        "groupNames": [
+          "F.17 - Foundation"
+        ],
+        "policyDefinitionName": "4f4f78b8-e367-4b10-a341-d9a4ad5cf1c7"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-AutomationAccountVariables-Encryption",
+        "parameters": {},
+        "groupNames": [
+          "F.04 - Foundation"
+        ],
+        "policyDefinitionName": "3657f5a0-770e-44a3-b44e-9431ba1e9735"
+      },
+      {
+        "policyDefinitionReferenceId": "Audit-EndpointProtection-Installed",
+        "parameters": {},
+        "groupNames": [
+          "F.17 - Foundation"
+        ],
+        "policyDefinitionName": "1f7c564c-0a90-4d44-b7e1-9d456cffaee8"
+      },
+      {
+        "policyDefinitionReferenceId": "Audit-VirtualMachine-EncryptionWindows",
+        "parameters": {},
+        "groupNames": [
+          "F.04 - Foundation"
+        ],
+        "policyDefinitionName": "3dc5edcd-002d-444c-b216-e123bbfa37c0"
+      },
+      {
+        "policyDefinitionReferenceId": "Audit-VirtualMachine-EncryptionLinux",
+        "parameters": {},
+        "groupNames": [
+          "F.04 - Foundation"
+        ],
+        "policyDefinitionName": "ca88aadc-6e2b-416c-9de2-5a0f01d1693f"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-Defender-AppService",
+        "parameters": {},
+        "groupNames": [
+          "F.16 - Foundation"
+        ],
+        "policyDefinitionName": "2913021d-f2fd-4f3d-b958-22354e2bdbcb"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-Defender-SQLServers",
+        "parameters": {},
+        "groupNames": [
+          "F.16 - Foundation"
+        ],
+        "policyDefinitionName": "7fe3b40f-802b-4cdd-8bd4-fd799c948cc2"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-Defender-DNS",
+        "parameters": {},
+        "groupNames": [
+          "F.16 - Foundation"
+        ],
+        "policyDefinitionName": "bdc59948-5574-49b3-bb91-76b7c986428d"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-Defender-KeyVault",
+        "parameters": {},
+        "groupNames": [
+          "F.16 - Foundation"
+        ],
+        "policyDefinitionName": "0e6763cc-5078-4e64-889d-ff4d9a839047"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-Defender-OpenSourceRelationalDatabases",
+        "parameters": {},
+        "groupNames": [
+          "F.16 - Foundation"
+        ],
+        "policyDefinitionName": "0a9fbe0d-c5c4-4da8-87d8-f4fd77338835"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-Defender-ResourceManager",
+        "parameters": {},
+        "groupNames": [
+          "F.16 - Foundation"
+        ],
+        "policyDefinitionName": "c3d20c29-b36d-48fe-808b-99a87530ad99"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-Defender-Servers",
+        "parameters": {},
+        "groupNames": [
+          "F.16 - Foundation"
+        ],
+        "policyDefinitionName": "4da35fc9-c9e7-4960-aec9-797fe7d9051d"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-Defender-SQLServersOnMachines",
+        "parameters": {},
+        "groupNames": [
+          "F.16 - Foundation"
+        ],
+        "policyDefinitionName": "6581d072-105e-4418-827f-bd446d56421b"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-Defender-Storage",
+        "parameters": {},
+        "groupNames": [
+          "F.16 - Foundation"
+        ],
+        "policyDefinitionName": "308fbb08-4ab8-4e67-9b29-592e93fb94fa"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-TDE-SQLDatabases",
+        "parameters": {},
+        "groupNames": [
+          "F.05 - Foundation"
+        ],
+        "policyDefinitionName": "17k78e20-9358-41c9-923c-fb736d382a12"
+      },
+      {
+        "policyDefinitionReferenceId": "Assessment-Vulnerability-SQLManagedInstance",
+        "parameters": {},
+        "groupNames": [
+          "F.17 - Foundation"
+        ],
+        "policyDefinitionName": "1b7aa243-30e4-4c9e-bca8-d0d3022b634a"
+      },
+      {
+        "policyDefinitionReferenceId": "Audit-InfrastructureEncryption-AzureDBPostgreSQL",
+        "parameters": {},
+        "groupNames": [
+          "F.05 - Foundation"
+        ],
+        "policyDefinitionName": "24fba194-95d6-48c0-aea7-f65bf859c598"
+      },
+      {
+        "policyDefinitionReferenceId": "Audit-AzureSQLDatabase-TLSV1.2",
+        "parameters": {},
+        "groupNames": [
+          "F.21 - Foundation"
+        ],
+        "policyDefinitionName": "32e6bbec-16b6-44c2-be37-c5b672d103cf"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-InfrastructureEncryption-MySQL",
+        "parameters": {},
+        "groupNames": [
+          "F.05 - Foundation"
+        ],
+        "policyDefinitionName": "3a58212a-c829-4f13-9872-6371df2fd0b4"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-SQLauditing-ActionGroups",
+        "parameters": {},
+        "groupNames": [
+          "F.09 - Foundation"
+        ],
+        "policyDefinitionName": "7ff426e2-515f-405a-91c8-4f2333442eb5"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-SQLServer-Auditing",
+        "parameters": {},
+        "groupNames": [
+          "F.09 - Foundation"
+        ],
+        "policyDefinitionName": "a6fb4358-5bf4-4ad7-ba82-2cd2f41ce5e9"
+      },
+      {
+        "policyDefinitionReferenceId": "Audit-SQLManaged-TLSV1.2",
+        "parameters": {},
+        "groupNames": [
+          "F.21 - Foundation"
+        ],
+        "policyDefinitionName": "a8793640-60f7-487c-b5c3-1d37215905c4"
+      },
+      {
+        "policyDefinitionReferenceId": "Audit-SQLServers-VulnerabilityAssessment",
+        "parameters": {},
+        "groupNames": [
+          "F.17 - Foundation"
+        ],
+        "policyDefinitionName": "ef2a8f2a-b3d9-49cd-a8a8-9a3aaaf647d9"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-AppGW-WAF",
+        "parameters": {},
+        "groupNames": [
+          "F.17 - Foundation"
+        ],
+        "policyDefinitionName": "564feb30-bf6a-4854-b4bb-0d2d2d1e6c66"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-FrontDoor-WAF",
+        "parameters": {},
+        "groupNames": [
+          "F.17 - Foundation"
+        ],
+        "policyDefinitionName": "055aa869-bc98-4af8-bafc-23f1ab6ffe2c"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-StorageAccount-SecureTransfer",
+        "parameters": {},
+        "groupNames": [
+          "F.05 - Foundation"
+        ],
+        "policyDefinitionName": "404c3081-a854-4457-ae30-26a93ef643f9"
+      },
+      {
+        "policyDefinitionReferenceId": "Deny-Subnet-Without-Nsg",
+        "parameters": {},
+        "groupNames": [
+          "F.13 - Foundation"
+        ],
+        "policyDefinitionName": "Deny-Subnet-Without-Nsg"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-AzureADDomainServices-TLSV1.2",
+        "parameters": {
+          "effect": {
+            "value": "Deny"
+          }
+        },
+        "groupNames": [
+          "F.21 - Foundation"
+        ],
+        "policyDefinitionName": "3aa87b5a-7813-4b57-8a43-42dd9df5aaa7"
+      },
+      {
+        "policyDefinitionReferenceId": "Deny-AppService-TLS1.1AndLower",
+        "parameters": {
+          "effect": {
+            "value": "Deny"
+          }
+        },
+        "groupNames": [
+          "F.21 - Foundation"
+        ],
+        "policyDefinitionName": "d6545c6b-dd9d-4265-91e6-0b451e2f1c50"
+      },
+      {
+        "policyDefinitionReferenceId": "Deny-StorageAccount-NetworkAccess",
+        "parameters": {
+          "effect": {
+            "value": "Deny"
+          }
+        },
+        "groupNames": [
+          "F.07 - Foundation"
+        ],
+        "policyDefinitionName": "34c877ad-507e-4c82-993e-3452a6e0ad3c"
+      },
+      {
+        "policyDefinitionReferenceId": "Deny-StorageAccount-MinimumTLS",
+        "parameters": {
+          "effect": {
+            "value": "Deny"
+          }
+        },
+        "groupNames": [
+          "F.21 - Foundation"
+        ],
+        "policyDefinitionName": "fe83a0eb-a853-422d-aac2-1bffd182c5d0"
+      },
+      {
+        "policyDefinitionReferenceId": "Deny-RDPSsh-Internet",
+        "parameters": {},
+        "groupNames": [
+          "F.21 - Foundation"
+        ],
+        "policyDefinitionName": "Deny-RdpSsh-Internet"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-AppserviceApi-TLSversion",
+        "parameters": {},
+        "groupNames": [
+          "F.21 - Foundation"
+        ],
+        "policyDefinitionName": "Enforce-AppServiceApi-UpgradeTLSVersion"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-AppService-UpgradeTLSVersion",
+        "parameters": {},
+        "groupNames": [
+          "F.21 - Foundation"
+        ],
+        "policyDefinitionName": "Enforce-AppService-UpgradeTLSVersion"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-Appservicefunction-UpgradeTLSVersion",
+        "parameters": {},
+        "groupNames": [
+          "F.21 - Foundation"
+        ],
+        "policyDefinitionName": "Enforce-AppServiceFunction-UpgradeTLSVersion"
+      },
+      {
+        "policyDefinitionReferenceId": "Deny-NetworkAudit-VirtualNetworkNSGRule",
+        "parameters": {},
+        "groupNames": [
+          "F.20 - Foundation"
+        ],
+        "policyDefinitionName": "Deny-NetworkAudit-VirtualNetworkNsgRule"
+      },
+      {
+        "policyDefinitionReferenceId": "Deny-Network-NSGSourceAny",
+        "parameters": {},
+        "groupNames": [
+          "F.20 - Foundation"
+        ],
+        "policyDefinitionName": "Deny-Network-NsgSourceAny"
+      },
+      {
+        "policyDefinitionReferenceId": "Deny-VirtualMachine-MgmtPorts",
+        "parameters": {},
+        "groupNames": [
+          "F.21 - Foundation"
+        ],
+        "policyDefinitionName": "22730e10-96f6-4aac-ad84-9383d35b5917"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-KeyVaultSecret-ExpirationDate",
+        "parameters": {
+          "effect": {
+            "value": "Audit"
+          }
+        },
+        "groupNames": [
+          "F.18 - Foundation"
+        ],
+        "policyDefinitionName": "98728c90-32c7-4049-8429-847dc0f4fe37"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-KeyVaultKeys-ExpirationDate",
+        "parameters": {
+          "effect": {
+            "value": "Deny"
+          }
+        },
+        "groupNames": [
+          "F.18 - Foundation"
+        ],
+        "policyDefinitionName": "152b15f7-8e1f-4c1f-ab71-8c010ba5dbc0"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-Certificate-MaximumValidityPeriod",
+        "parameters": {
+          "effect": {
+            "value": "deny"
+          },
+          "maximumValidityInMonths": {
+            "value": 24
+          }
+        },
+        "groupNames": [
+          "F.18 - Foundation"
+        ],
+        "policyDefinitionName": "0a075868-4c26-42ef-914c-5bc007359560"
+      },
+      {
+        "policyDefinitionReferenceId": "Deny-Certificate-NotExpiredWithinSpecifiedDays",
+        "parameters": {
+          "effect": {
+            "value": "deny"
+          },
+          "daysToExpire": {
+            "value": 60
+          }
+        },
+        "groupNames": [
+          "F.18 - Foundation"
+        ],
+        "policyDefinitionName": "f772fb64-8e40-40ad-87bc-7706e1949427"
+      },
+      {
+        "policyDefinitionReferenceId": "Deny-Keys-NotExpiredWithinSpecifiedDays",
+        "parameters": {
+          "effect": {
+            "value": "Deny"
+          },
+          "minimumDaysBeforeExpiration": {
+            "value": 60
+          }
+        },
+        "groupNames": [
+          "F.18 - Foundation"
+        ],
+        "policyDefinitionName": "5ff38825-c5d8-47c5-b70e-069a21955146"
+      },
+      {
+        "policyDefinitionReferenceId": "Deny-Secrets-NotExpiredWithinSpecifiedDays",
+        "parameters": {
+          "effect": {
+            "value": "Audit"
+          },
+          "minimumDaysBeforeExpiration": {
+            "value": 60
+          }
+        },
+        "groupNames": [
+          "F.18 - Foundation"
+        ],
+        "policyDefinitionName": "b0eb591a-5e70-4534-a8bf-04b9c489584a"
+      },
+      {
+        "policyDefinitionReferenceId": "Audit-Budget-CostManagement",
+        "parameters": {
+          "effect": {
+            "value": "AuditIfNotExists"
+          }
+        },
+        "groupNames": [
+          "F.24 - Foundation"
+        ],
+        "policyDefinitionName": "Audit-Budget-CostManagement"
+      },
+      {
+        "policyDefinitionReferenceId": "Deny-ContainerApps-Http",
+        "parameters": {},
+        "groupNames": [
+          "F.05 - Foundation"
+        ],
+        "policyDefinitionName": "0e80e269-43a4-4ae9-b5bc-178126b8a5cb"
+      },
+      {
+        "policyDefinitionReferenceId": "Deny-Appservice-Http",
+        "parameters": {},
+        "groupNames": [
+          "F.05 - Foundation"
+        ],
+        "policyDefinitionName": "0f98368e-36bc-4716-8ac2-8f8067203b63"
+      },
+      {
+        "policyDefinitionReferenceId": "Deny-AppserviceSlots-Http",
+        "parameters": {},
+        "groupNames": [
+          "F.05 - Foundation"
+        ],
+        "policyDefinitionName": "ae1b9a8c-dfce-4605-bd91-69213b4a26fc"
+      },
+      {
+        "policyDefinitionReferenceId": "Deny-FunctionApp-Http",
+        "parameters": {},
+        "groupNames": [
+          "F.05 - Foundation"
+        ],
+        "policyDefinitionName": "5e5dbe3f-2702-4ffc-8b1e-0cae008a5c71"
+      },
+      {
+        "policyDefinitionReferenceId": "Deny-FunctionAppSlots-Http",
+        "parameters": {},
+        "groupNames": [
+          "F.05 - Foundation"
+        ],
+        "policyDefinitionName": "5e5dbe3f-2702-4ffc-8b1e-0cae008a5c71"
+      },
+      {
+        "policyDefinitionReferenceId": "Deny-Kubernetes-Http",
+        "parameters": {},
+        "groupNames": [
+          "F.05 - Foundation"
+        ],
+        "policyDefinitionName": "1a5b4dca-0b6f-4cf5-907c-56316bc1bf3d"
+      },
+      {
+        "policyDefinitionReferenceId": "Deny-RedisCache-Http",
+        "parameters": {},
+        "groupNames": [
+          "F.05 - Foundation"
+        ],
+        "policyDefinitionName": "22bee202-a82f-4305-9a2a-6d7f44d4dedb"
+      },
+      {
+        "policyDefinitionReferenceId": "Deny-BotService-Http",
+        "parameters": {},
+        "groupNames": [
+          "F.05 - Foundation"
+        ],
+        "policyDefinitionName": "6164527b-e1ee-4882-8673-572f425f5e0a"
+      },
+      {
+        "policyDefinitionReferenceId": "Audit-Resourcegroup-Lockbasedontag",
+        "parameters": {
+          "tagName": {
+            "value": "Environment"
+          },
+          "tagValue": {
+            "value": [
+              "Production",
+              "Shared"
+            ]
+          },
+          "exemptResourceGroups": {
+            "value": [
+              "NetworkWatcherRG",
+              "rg-infr-privatelinkzones-p-weu-01",
+              "AzureBackupRG_westeurope_1",
+              "*<AzureDevOpsRG>*",
+              "rg-infr-alerting-p-weu-01",
+              "rg-infr-bastion-p-weu-01"
+            ]
+          }
+        },
+        "groupNames": [
+          "F.08 - Foundation"
+        ],
+        "policyDefinitionName": "Audit-Resourcegroup-Lockbasedontag"
+      },
+      {
+        "policyDefinitionReferenceId": "Audit-AppGw-LogAnalytics",
+        "parameters": {},
+        "groupNames": [
+          "F.09 - Foundation"
+        ],
+        "policyDefinitionName": "8a04f872-51e9-4313-97fb-fc1c3543011c"
+      },
+      {
+        "policyDefinitionReferenceId": "Audit-FrontDoor-Resourcelogs",
+        "parameters": {},
+        "groupNames": [
+          "F.09 - Foundation"
+        ],
+        "policyDefinitionName": "8a04f872-51e9-4313-97fb-fc1c35430fd8"
+      },
+      {
+        "policyDefinitionReferenceId": "Audit-FrontDoorStdPrm-Resourcelogs",
+        "parameters": {},
+        "groupNames": [
+          "F.09 - Foundation"
+        ],
+        "policyDefinitionName": "cd906338-3453-47ba-9334-2d654bf845af"
+      },
+      {
+        "policyDefinitionReferenceId": "Audit-DataLakaAnalytics-ResourceLogs",
+        "parameters": {},
+        "groupNames": [
+          "F.09 - Foundation"
+        ],
+        "policyDefinitionName": "c95c74d9-38fe-4f0d-af86-0c7d626a315c"
+      },
+      {
+        "policyDefinitionReferenceId": "Audit-AzureDataLakeStore-ResourceLogs",
+        "parameters": {},
+        "groupNames": [
+          "F.09 - Foundation"
+        ],
+        "policyDefinitionName": "057ef27e-665e-4328-8ea3-04b3122bd9fb"
+      },
+      {
+        "policyDefinitionReferenceId": "Audit-AppService-ResourceLogs",
+        "parameters": {},
+        "groupNames": [
+          "F.09 - Foundation"
+        ],
+        "policyDefinitionName": "91a78b24-f231-4a8a-8da9-02c35b2b6510"
+      },
+      {
+        "policyDefinitionReferenceId": "Audit-BatchAccounts-ResourceLogs",
+        "parameters": {},
+        "groupNames": [
+          "F.09 - Foundation"
+        ],
+        "policyDefinitionName": "428256e6-1fac-4f48-a757-df34c2b3336d"
+      },
+      {
+        "policyDefinitionReferenceId": "Audit-IoTHub-ResourceLogs",
+        "parameters": {},
+        "groupNames": [
+          "F.09 - Foundation"
+        ],
+        "policyDefinitionName": "383856f8-de7f-44a2-81fc-e5135b5c2aa4"
+      },
+      {
+        "policyDefinitionReferenceId": "Audit-KeyVault-ResourceLogs",
+        "parameters": {},
+        "groupNames": [
+          "F.09 - Foundation"
+        ],
+        "policyDefinitionName": "cf820ca0-f99e-4f3e-84fb-66e913812d21"
+      },
+      {
+        "policyDefinitionReferenceId": "Audit-KeyVaultManagedHSM-ResourceLogs",
+        "parameters": {},
+        "groupNames": [
+          "F.09 - Foundation"
+        ],
+        "policyDefinitionName": "a2a5b911-5617-447e-a49e-59dbe0e0434b"
+      },
+      {
+        "policyDefinitionReferenceId": "Audit-Kubernetes-ResourceLogs",
+        "parameters": {},
+        "groupNames": [
+          "F.09 - Foundation"
+        ],
+        "policyDefinitionName": "245fc9df-fa96-4414-9a0b-3738c2f7341c"
+      },
+      {
+        "policyDefinitionReferenceId": "Audit-LogicApps-ResourceLogs",
+        "parameters": {},
+        "groupNames": [
+          "F.09 - Foundation"
+        ],
+        "policyDefinitionName": "34f95f76-5386-4de7-b824-0d8478470c9d"
+      },
+      {
+        "policyDefinitionReferenceId": "Audit-ServiceBus-ResourceLogs",
+        "parameters": {},
+        "groupNames": [
+          "F.09 - Foundation"
+        ],
+        "policyDefinitionName": "f8d36e2f-389b-4ee4-898d-21aeb69a0f45"
+      },
+      {
+        "policyDefinitionReferenceId": "Audit-StreamAnalytics-ResourceLogs",
+        "parameters": {},
+        "groupNames": [
+          "F.09 - Foundation"
+        ],
+        "policyDefinitionName": "f9be5368-9bf5-4b84-9e0a-7850da98bb46"
+      },
+      {
+        "policyDefinitionReferenceId": "Audit-SearchServices-ResourceLogs",
+        "parameters": {},
+        "groupNames": [
+          "F.09 - Foundation"
+        ],
+        "policyDefinitionName": "b4330a05-a843-4bc8-bf9a-cacce50c67f4"
+      },
+      {
+        "policyDefinitionReferenceId": "Audit-EventHub-ResourceLogs",
+        "parameters": {},
+        "groupNames": [
+          "F.09 - Foundation"
+        ],
+        "policyDefinitionName": "83a214f7-d01a-484b-91a9-ed54470c9a6a"
+      },
+      {
+        "policyDefinitionReferenceId": "Audit-AUM-periodic-updates",
+        "parameters": {},
+        "groupNames": [
+          "F.09 - Foundation"
+        ],
+        "policyDefinitionName": "bd876905-5b84-4f73-ab2d-2e7a7c4568d9"
+      }
+    ]
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "name": "Deny-VNet-DnsServers",
+  "properties": {
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "displayName": "Enforce Virtual Network DNS servers",
+    "description": "This policy prevent settings non authorized dns servers for Virtual Networks.",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "Network"
+    },
+    "parameters": {
+      "effect": {
+        "type": "String",
+        "allowedValues": [
+          "Audit",
+          "Deny",
+          "Disabled"
+        ],
+        "defaultValue": "Deny",
+        "metadata": {
+          "displayName": "Effect",
+          "description": "Enable or disable the execution of the policy"
+        }
+      },
+      "exemptSubscriptions": {
+        "type": "Array",
+        "metadata": {
+          "displayName": "Exempt Subscription IDs",
+          "description": "Any Subscription IDs included in this list will not have this Policy applied to them."
+        },
+        "defaultValue": []
+      },
+      "dnsServers": {
+        "type": "Array",
+        "defaultValue": [
+          "168.63.129.16"
+        ],
+        "metadata": {
+          "description": "The list of DNS servers to enforce exclusive existance of.",
+          "displayName": "DNS Servers list"
+        }
+      }
+    },
+    "policyRule": {
+      "if": {
+          "allOf": [
+              {
+                  "equals": "Microsoft.Network/virtualNetworks",
+                  "field": "type"
+              },
+              {
+                "value": "[subscription().subscriptionId]",
+                "notIn": "[parameters('exemptSubscriptions')]"
+              },
+              {
+                  "anyOf": [
+                      {
+                          "exists": false,
+                          "field": "Microsoft.Network/virtualNetworks/dhcpOptions.dnsServers"
+                      },
+                      {
+                          "count": {
+                              "field": "Microsoft.Network/virtualNetworks/dhcpOptions.dnsServers[*]",
+                              "where": {
+                                  "field": "Microsoft.Network/virtualNetworks/dhcpOptions.dnsServers[*]",
+                                  "notIn": "[parameters('dnsServers')]"
+                              }
+                          },
+                          "greater": 0
+                      }
+                  ]
+              }
+          ]
+      },
+      "then": {
+          "effect": "[parameters('effect')]"
+      }
+  }
+  }
+}

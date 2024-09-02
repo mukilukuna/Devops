@@ -1,0 +1,225 @@
+{
+    "securityRules": [
+        {
+            "name": "AllowADDC-TCP",
+            "properties": {
+                "protocol": "TCP",
+                "sourcePortRange": "*",
+                "access": "Allow",
+                "priority": 100,
+                "direction": "Inbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [
+                    "53",
+                    "88",
+                    "135",
+                    "137",
+                    "139",
+                    "389",
+                    "445",
+                    "464",
+                    "636",
+                    "3268",
+                    "3269",
+                    "49152-65535"
+                ],
+                "sourceAddressPrefixes": [
+                    "*<AzureIPSpace>*"
+                    //Add with on-prem DC and Clients
+                ],
+                "destinationAddressPrefixes": [],
+                "destinationApplicationSecurityGroups": [
+                    {
+                        "id": "*<idenWeu-applicationSecurityGroupAddc_ResourceId>*"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "AllowADDC-UDP",
+            "properties": {
+                "protocol": "UDP",
+                "sourcePortRange": "*",
+                "access": "Allow",
+                "priority": 200,
+                "direction": "Inbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [
+                    "53",
+                    "88",
+                    "123",
+                    "135",
+                    "137",
+                    "138",
+                    "139",
+                    "389",
+                    "464",
+                    "636"
+                ],
+                "sourceAddressPrefixes": [
+                    "*<AzureIPSpace>*"
+                    //Add with on-prem DC and Clients
+                ],
+                "destinationAddressPrefixes": [],
+                "destinationApplicationSecurityGroups": [
+                    {
+                        "id": "*<idenWeu-applicationSecurityGroupAddc_ResourceId>*"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "AllowDFSR-TCP",
+            "properties": {
+                "protocol": "TCP",
+                "sourcePortRange": "*",
+                "access": "Allow",
+                "priority": 300,
+                "direction": "Inbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [
+                    "5722"
+                ],
+                "sourceAddressPrefixes": [
+                    "10.10.10.10" //Update with AAD Connect and on-prem DC IP
+                ],
+                "destinationAddressPrefixes": [],
+                "destinationApplicationSecurityGroups": [
+                    {
+                        "id": "*<idenWeu-applicationSecurityGroupAddc_ResourceId>*"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "AllowADWebServices-TCP",
+            "properties": {
+                "protocol": "TCP",
+                "sourcePortRange": "*",
+                "access": "Allow",
+                "priority": 310,
+                "direction": "Inbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [
+                    "9389"
+                ],
+                "sourceAddressPrefixes": [
+                    "10.10.10.10", //Update with AAD Connect and on-prem DC IP
+                    "10.10.10.11" //Update with ADFS IP
+                ],
+                "destinationAddressPrefixes": [],
+                "destinationApplicationSecurityGroups": [
+                    {
+                        "id": "*<idenWeu-applicationSecurityGroupAddc_ResourceId>*"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "AllowWinRM-TCP",
+            "properties": {
+                "protocol": "TCP",
+                "sourcePortRange": "*",
+                "access": "Allow",
+                "priority": 320,
+                "direction": "Inbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [
+                    "5985"
+                ],
+                "sourceAddressPrefixes": [
+                    "10.10.10.10", //Update with AAD Connect and on-prem DC IP
+                    "10.10.10.11" //Update with AAD Connect and on-prem DC IP
+                ],
+                "destinationAddressPrefixes": [],
+                "destinationApplicationSecurityGroups": [
+                    {
+                        "id": "*<idenWeu-applicationSecurityGroupAddc_ResourceId>*"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "AllowAADConnect-TCP",
+            "properties": {
+                "protocol": "TCP",
+                "sourcePortRange": "*",
+                "access": "Allow",
+                "priority": 330,
+                "direction": "Inbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [
+                    "80",
+                    "443"
+                ],
+                "sourceAddressPrefixes": [
+                    "10.10.10.10"
+                ],
+                "destinationAddressPrefixes": [],
+                "destinationApplicationSecurityGroups": [
+                    {
+                        "id": "*<idenWeu-applicationSecurityGroupAddc_ResourceId>*"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "ICMP",
+            "properties": {
+                "protocol": "ICMP",
+                "sourceAddressPrefix": "VirtualNetwork",
+                "sourcePortRange": "*",
+                "destinationPortRange": "*",
+                "access": "Allow",
+                "priority": 500,
+                "direction": "Inbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [],
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": [],
+                "destinationApplicationSecurityGroups": [
+                    {
+                        "id": "*<idenWeu-applicationSecurityGroupAddc_ResourceId>*"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "AllowBastion",
+            "properties": {
+                "protocol": "*",
+                "sourcePortRange": "*",
+                "sourceAddressPrefix": "*<addressSpacePrefix>*.64/26",
+                "destinationAddressPrefix": "VirtualNetwork",
+                "access": "Allow",
+                "priority": 1000,
+                "direction": "Inbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [
+                    "3389",
+                    "22"
+                ],
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": []
+            }
+        },
+        {
+            "name": "Deny-VirtualNetwork-VirtualNetwork-Traffic",
+            "properties": {
+                "description": "Default deny VirtualNetwork to VirtualNetwork traffic to ensure zero trust model",
+                "protocol": "*",
+                "sourcePortRange": "*",
+                "destinationPortRange": "*",
+                "sourceAddressPrefix": "*",
+                "destinationAddressPrefix": "*",
+                "access": "Deny",
+                "priority": 4096,
+                "direction": "Inbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [],
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": []
+            }
+        }
+    ]
+}

@@ -1,0 +1,21 @@
+{
+    "nodeName": "/SandboxMg/",
+    "scope": {
+        "epac-dev": [
+            "*<canary-managementGroup-sandboxMg_ResourceId>*"
+        ],
+        "tenant": [
+            "*<managementGroup-sandboxMg_ResourceId>*"
+        ]
+    },
+    "definitionEntry": {
+        "initiativeName": "foundationsbxpolicies",
+        "friendlyNameToDocumentIfGuid": "SandboxPolicies"
+    },
+    "assignment": {
+        "description": "This assignment contains the Foundation Sandbox policies for goverance",
+        "displayName": "Sandbox - Foundation Sandbox Policy Assignment",
+        "name": "foundationsbxpolasgmt"
+    },
+    "parameters": {}
+}

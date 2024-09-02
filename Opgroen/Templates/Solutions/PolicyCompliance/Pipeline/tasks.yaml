@@ -1,0 +1,32 @@
+parameters:
+  - name: id
+    type: string
+  - name: azureResourceManagerConnection
+    type: string
+  - name: type
+    type: string
+  - name: startPolicyComplianceScan
+    type: string
+  - name: runAsJob
+    type: string
+    default: $False
+  - name: templateRepo
+    type: string
+  - name: templateProject
+    type: string
+  - name: version
+    type: string
+
+steps:
+  - ${{ if or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/staging')) }}:
+      - checkout: self
+      - checkout: git://${{ parameters.templateProject }}/${{ parameters.templateRepo }}@refs/tags/${{ parameters.version }}
+      - task: AzurePowerShell@5
+        displayName: 'Start policy remediation'
+        inputs:
+          azureSubscription: ${{ parameters.azureResourceManagerConnection }}
+          ScriptType: 'FilePath'
+          ScriptPath: '$(System.DefaultWorkingDirectory)/${{ parameters.templateRepo }}/Solutions/PolicyCompliance/Scripts/Start-PolicyRemediation.ps1'
+          ScriptArguments: '-Type "${{ parameters.type }}" -Id "${{ parameters.id }}" -StartPolicyComplianceScan ${{ parameters.startPolicyComplianceScan }} -runAsJob ${{ parameters.runAsJob }}'
+          azurePowerShellVersion: 'LatestVersion'
+          pwsh: true

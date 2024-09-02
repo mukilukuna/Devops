@@ -1,0 +1,67 @@
+{
+    "name": "Deny-NextHop-Internet",
+    "properties": {
+      "Description": "This policy denies direct traffic to intenet as next hop type",
+      "DisplayName": "Network: Deny Next Hop Internet for Route Table",
+      "Mode": "All",
+      "metadata": {
+        "version": "1.0.0",
+        "category": "Network"
+      },
+      "Parameters": {
+        "effect": {
+          "type": "String",
+          "metadata": {
+            "description": "The effect of the policy",
+            "displayName": "Effect"
+          },
+          "allowedValues": [
+            "Audit",
+            "Deny",
+            "Disabled"
+          ],
+          "defaultValue": "Deny"
+        }
+      },
+      "PolicyRule": {
+        "if": {
+          "anyOf": [
+            {
+              "allOf": [
+                {
+                  "field": "type",
+                  "equals": "Microsoft.Network/routeTables"
+                },
+                {
+                  "count": {
+                    "field": "Microsoft.Network/routeTables/routes[*]",
+                    "where": {
+                      "field": "Microsoft.Network/routeTables/routes[*].nextHopType",
+                      "equals": "Internet"
+                    }
+                  },
+                  "greater": 0
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "field": "type",
+                  "equals": "Microsoft.Network/routeTables/routes"
+                },
+                {
+                  "field": "Microsoft.Network/routeTables/routes/nextHopType",
+                  "equals": "Internet"
+                }
+              ]
+            }
+          ]
+        },
+        "then": {
+          "effect": "[parameters('effect')]"
+        }
+      }
+    }
+  }
+  

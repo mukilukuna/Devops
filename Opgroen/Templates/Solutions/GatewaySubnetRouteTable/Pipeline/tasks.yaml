@@ -1,0 +1,66 @@
+parameters:
+  - name: subscriptionId
+    type: string
+  - name: resourceGroupName
+    type: string
+  - name: azureResourceManagerConnection
+    type: string
+  - name: location
+    type: string
+  - name: csmParametersFile
+    type: string
+  - name: templateRepo
+    type: string
+  - name: templateProject
+    type: string
+  - name: version
+    type: string
+  - name: templateFileName
+    type: string
+    default: template.bicep
+  - name: outPutPrefix
+    type: string
+    default: ''
+  - name: vnetName
+    type: string
+
+steps:
+  - ${{ if and(ne(variables['Build.SourceBranch'], 'refs/heads/main'), ne(variables['Build.SourceBranch'], 'refs/heads/staging')) }}:
+      - checkout: self
+      - checkout: git://${{ parameters.templateProject }}/${{ parameters.templateRepo }}@refs/tags/${{ parameters.version }}
+      - template: /.Global/Pipelines/validate.yaml
+        parameters:
+          templateRepo: ${{ parameters.templateRepo }}
+          templateFileName: ${{ parameters.templateFileName }}
+          workloadName: GatewaySubnetRouteTable
+          workloadType: Solutions
+          subscriptionId: ${{ parameters.subscriptionId }}
+          resourceGroupName: ${{ parameters.resourceGroupName }}
+          azureSubscription: ${{ parameters.azureResourceManagerConnection }}
+          location: ${{ parameters.location }}
+          parametersPath: ${{ parameters.csmParametersFile }}
+
+  - ${{ if or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/staging')) }}:
+      - checkout: self
+      - checkout: git://${{ parameters.templateProject }}/${{ parameters.templateRepo }}@refs/tags/${{ parameters.version }}
+      - task: AzurePowerShell@5
+        displayName: Get-VirtualNetworkPeerings
+        inputs:
+          azureSubscription: ${{ parameters.azureResourceManagerConnection }}
+          scriptPath: "$(System.DefaultWorkingDirectory)/${{ parameters.templateRepo }}/Solutions/GatewaySubnetRouteTable/Scripts/Get-VirtualNetworkPeerings.ps1"
+          ScriptArguments: '-SubscriptionId "${{ parameters.subscriptionId }}"'
+          TargetAzurePs: LatestVersion
+        env:
+          vnetName: ${{ parameters.vnetName }}
+      - template: /.Global/Pipelines/deploy.yaml
+        parameters:
+          outPutPrefix: ${{ parameters.outPutPrefix }}
+          templateRepo: ${{ parameters.templateRepo }}
+          templateFileName: ${{ parameters.templateFileName }}
+          workloadName: GatewaySubnetRouteTable
+          workloadType: Solutions
+          subscriptionId: ${{ parameters.subscriptionId }}
+          resourceGroupName: ${{ parameters.resourceGroupName }}
+          azureSubscription: ${{ parameters.azureResourceManagerConnection }}
+          location: ${{ parameters.location }}
+          parametersPath: ${{ parameters.csmParametersFile }}

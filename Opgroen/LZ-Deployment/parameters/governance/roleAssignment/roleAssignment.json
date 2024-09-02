@@ -1,0 +1,24 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "permissions": {
+      "value": [
+        {
+          "name": "*<connWeu-peeringUserAssignedIdentity_PrincipalId>*-Contributor",
+          "principalId": "*<connWeu-peeringUserAssignedIdentity_PrincipalId>*",
+          "roleDefinitionId": "b24988ac-6180-42a0-ab88-20f7382dd24c",
+          "description": "*<connWeu-peeringUserAssignedIdentity_PrincipalId>* Contributor role assignment",
+          "principalType": "ServicePrincipal"
+        },
+        {
+          "name": "*<connWeu-peeringUserAssignedIdentity_PrincipalId>*-NetworkContributor",
+          "principalId": "*<connWeu-peeringUserAssignedIdentity_PrincipalId>*",
+          "roleDefinitionId": "4d97b98b-1d4f-4787-a291-c67834d212e7",
+          "description": "*<connWeu-peeringUserAssignedIdentity_PrincipalId>* Network Contributor role assignment",
+          "principalType": "ServicePrincipal"
+        }
+      ]
+    }
+  }
+}

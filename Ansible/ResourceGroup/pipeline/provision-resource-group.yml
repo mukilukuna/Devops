@@ -1,4 +1,4 @@
-trigger:
+trigger: none
 
 pool: "Azure Pipelines"
 
@@ -18,9 +18,16 @@ stages:
             inputs:
               azureSubscription: "ServiceConnectionProjectAnsible"
               ScriptType: "FilePath"
-              ScriptPath: "$(System.DefaultWorkingDirectory)/home/vsts/work/1/s/Ansible/ResourceGroup/script/devops.ps1"
+              ScriptPath: "$(System.DefaultWorkingDirectory)/Ansible/ResourceGroup/script/devops.ps1"
               ScriptArguments: |
-                -location "westeurope"
+                -location $(location)
+                -resourceGroupName $(resourceGroupName)
+                -owner $(owner)
+                -costCenter $(costCenter)
+                -application $(application)
+                -description $(description)
+                -repo $(repo)
+              variables: -location "westeurope"
                 -resourceGroupName "ResourceGroupBeroepsProduct"
                 -owner "Lukuna B.V."
                 -costCenter "112245"

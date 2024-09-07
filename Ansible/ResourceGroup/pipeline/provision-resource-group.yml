@@ -5,15 +5,6 @@ trigger:
 
 pool: "Azure Pipelines"
 
-variables:
-  location: "westeurope"
-  resourceGroupName: "ResourceGroupBeroepsProduct"
-  owner: "Lukuna B.V."
-  costCenter: "112245"
-  application: "\"Beroeps Product\""
-  description: "\"Applicatie voor het versnellen van de productie van de Beroeps producten\""
-  repo: "https://github.com/mukilukuna/Devops"
-
 stages:
   - stage: StageProvisionResourceGroup
     displayName: "Stage: Provision Resource Group"
@@ -32,13 +23,13 @@ stages:
               ScriptType: "FilePath"
               ScriptPath: "$(System.DefaultWorkingDirectory)/Ansible/ResourceGroup/script/devops.ps1"
               ScriptArguments: |
-                -location $(location)
-                -resourceGroupName $(resourceGroupName)
-                -owner $(owner)
-                -costCenter $(costCenter)
-                -application $(application)
-                -description $(description)
-                -repo $(repo)
+                -location "westeurope"
+                -resourceGroupName "ResourceGroupBeroepsProduct"
+                -owner "Lukuna B.V."
+                -costCenter "112245"
+                -application "Beroeps Product"
+                -description "Applicatie voor het versnellen van de productie van de Beroeps producten"
+                -repo "https://github.com/mukilukuna/Devops"
               failOnStderr: true
               errorActionPreference: "stop"
               azurePowershellVersion: "LatestVersion"

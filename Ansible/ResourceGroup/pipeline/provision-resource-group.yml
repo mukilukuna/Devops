@@ -5,14 +5,14 @@ trigger:
 
 pool: "Azure Pipelines"
 
-#variables:
-#  location: "westeurope"
-#  resourceGroupName: "ResourceGroupBeroepsProduct"
-#  owner: "Lukuna B.V."
-#  costCenter: "112245"
-#  application: "\"Beroeps Product\""
-#  description: "\"Applicatie voor het versnellen van de productie van de Beroeps producten\""
-#  repo: "https://github.com/mukilukuna/Devops"
+variables:
+  location: "westeurope"
+  resourceGroupName: "ResourceGroupBeroepsProduct"
+  owner: "Lukuna B.V."
+  costCenter: "112245"
+  application: "\"Beroeps Product\""
+  description: "\"Applicatie voor het versnellen van de productie van de Beroeps producten\""
+  repo: "https://github.com/mukilukuna/Devops"
 
 stages:
   - stage: StageProvisionResourceGroup

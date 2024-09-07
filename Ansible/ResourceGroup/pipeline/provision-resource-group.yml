@@ -1,7 +1,5 @@
 trigger:
-  branches:
-    include:
-     - main
+- main # Zorg ervoor dat dit correct is ingesprongen
 
 pool: "Azure Pipelines"
 
@@ -32,13 +30,13 @@ stages:
               ScriptType: "FilePath"
               ScriptPath: "$(System.DefaultWorkingDirectory)/Ansible/ResourceGroup/script/devops.ps1"
               ScriptArguments: |
-                -location "westeurope"
-                -resourceGroupName "ResourceGroupBeroepsProduct"
-                -owner "Lukuna B.V."
-                -costCenter "112245"
-                -application "Beroeps Product"
-                -description "Applicatie voor het versnellen van de productie van de Beroeps producten"
-                -repo "https://github.com/mukilukuna/Devops"
+                -location $(location)
+                -resourceGroupName $(resourceGroupName)
+                -owner $(owner)
+                -costCenter $(costCenter)
+                -application $(application)
+                -description $(description)
+                -repo $(repo)
               failOnStderr: true
               errorActionPreference: "stop"
               azurePowershellVersion: "LatestVersion"

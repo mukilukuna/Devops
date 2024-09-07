@@ -1,5 +1,7 @@
 trigger:
-- main # Zorg ervoor dat dit correct is ingesprongen
+  branches:
+    include:
+      - main
 
 pool: "Azure Pipelines"
 
@@ -8,8 +10,8 @@ variables:
   resourceGroupName: "ResourceGroupBeroepsProduct"
   owner: "Lukuna B.V."
   costCenter: "112245"
-  application: "Beroeps Product"
-  description: "Applicatie voor het versnellen van de productie van de Beroeps producten"
+  application: "\"Beroeps Product\""
+  description: "\"Applicatie voor het versnellen van de productie van de Beroeps producten\""
   repo: "https://github.com/mukilukuna/Devops"
 
 stages:

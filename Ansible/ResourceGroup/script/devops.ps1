@@ -1,13 +1,15 @@
+
 param(
-    $location,
-    $resourceGroupName,
-    $owner,
-    $costCenter,
-    $application,
-    $description,
-    $repo
+    [string]$location,
+    [string]$resourceGroupName,
+    [string]$owner,
+    [string]$costCenter,
+    [string]$application,
+    [string]$description,
+    [string]$repo
 )
 
+# Tags worden toegewezen aan de meegegeven waarden
 $tag = @{
     Owner       = $owner;
     CostCenter  = $costCenter;

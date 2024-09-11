@@ -1,8 +1,7 @@
-# Retrieve the OneDrive path from the registry
-$oneDrivePath = (Get-ItemProperty -Path "HKCU:\Software\Microsoft\OneDrive" -Name "UserFolder").UserFolder
+
 
 # Define source and destination paths
-$sourcePath = Join-Path -Path $oneDrivePath -ChildPath "Documenten\Powershell\Modules"
+$sourcePath = "C:\Users\MukiLukunaITSynergy\OneDrive - IT Synergy\Documenten\PowerShell\Modules"
 $destinationPath = "$env:ProgramFiles\WindowsPowerShell\Modules"
 
 # Check if the source directory exists

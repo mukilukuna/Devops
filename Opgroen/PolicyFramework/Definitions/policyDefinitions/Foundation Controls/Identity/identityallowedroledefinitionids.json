@@ -1,0 +1,67 @@
+{
+  "name": "identityallowedroledefinitionids",
+  "properties": {
+    "Description": "This policy defines a white list of role definitions that can be used in IAM. The exemptPrincipalIDs parameter can be used to create an exemption",
+    "DisplayName": "Identity: Allowed Role Definition Id's in Role Assignments",
+    "Mode": "All",
+    "Metadata": {
+      "version": "1.0.0",
+      "category": "Governance"
+    },
+    "Parameters": {
+      "roleDefinitionIds": {
+        "type": "Array",
+        "metadata": {
+          "displayName": "Approved Role Definitions",
+          "description": "The list of allowed role definition IDs. Example: If you were to put in 8e3af657-a8ff-443c-a75c-2fe8c4bcb635 as a value then only the Owner role definition could be assigned."
+        }
+      },
+      "exemptPrincipalIDs": {
+        "type": "Array",
+        "metadata": {
+          "displayName": "Exempt Principal IDs",
+          "description": "Any Principal IDs included in this list will not have this Policy applied to them."
+        },
+        "defaultValue": []
+      },
+      "effect": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Effect",
+          "description": "Enable or disable the execution of the policy."
+        },
+        "allowedValues": [
+          "Deny",
+          "Audit",
+          "Disabled"
+        ],
+        "defaultValue": "Deny"
+      }
+    },
+    "PolicyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Authorization/roleAssignments"
+          },
+          {
+            "not": {
+              "value": "[last(split(field('Microsoft.Authorization/roleAssignments/roleDefinitionId'),'/'))]",
+              "in": "[parameters('roleDefinitionIds')]"
+            }
+          },
+          {
+            "not": {
+              "field": "Microsoft.Authorization/roleAssignments/principalId",
+              "in": "[parameters('exemptPrincipalIDs')]"
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "[parameters('effect')]"
+      }
+    }
+  }
+}

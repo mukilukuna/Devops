@@ -1,0 +1,79 @@
+{
+  "@schema": "../../../Schemas/policy-set-definition-schema.json",
+  "name": "foundationtagrequiredinherit",
+  "properties": {
+    "Description": "This initiative deploys Foundation policies for tagging governance.",
+    "DisplayName": "Foundation Tagging Policy Set Definition - Required, Inherit",
+    "PolicyDefinitionGroups": [
+      {
+        "name": "F.14 - Foundation",
+        "category": "Foundation",
+        "displayName": "F.14 - Enforce Mandatory Tags",
+        "description": "Enforce Mandatory Tags"
+      }
+    ],
+    "Parameters": {
+      "tagName": {
+        "type": "String",
+        "metadata": {
+          "displayName": "tagName",
+          "description": "Name of the tag"
+        }
+      }
+    },
+    "PolicyDefinitions": [
+      {
+        "policyDefinitionName": "Deploy-Tags-RequiredOnResources",
+        "policyDefinitionReferenceId": "Deploy-Tags-RequiredOnResources",
+        "parameters": {
+          "tagName": {
+            "value": "[parameters('tagName')]"
+          }
+        },
+        "groupNames": [
+          "F.14 - Foundation"
+        ]
+      },
+      {
+        "policyDefinitionName": "Deploy-Tags-RequiredOnResourceGroups",
+        "policyDefinitionReferenceId": "Deploy-Tags-RequiredOnResourceGroups",
+        "parameters": {
+          "tagName": {
+            "value": "[parameters('tagName')]"
+          }
+        },
+        "groupNames": [
+          "F.14 - Foundation"
+        ]
+      },
+      {
+        "policyDefinitionName": "Deploy-Tags-InheritFromSubscription",
+        "policyDefinitionReferenceId": "Deploy-Tags-InheritFromSubscription",
+        "parameters": {
+          "tagName": {
+            "value": "[parameters('tagName')]"
+          }
+        },
+        "groupNames": [
+          "F.14 - Foundation"
+        ]
+      },
+      {
+        "policyDefinitionName": "Deploy-Tags-InheritFromResourceGroup",
+        "policyDefinitionReferenceId": "Deploy-Tags-InheritFromResourceGroup",
+        "parameters": {
+          "tagName": {
+            "value": "[parameters('tagName')]"
+          }
+        },
+        "groupNames": [
+          "F.14 - Foundation"
+        ]
+      }
+    ],
+    "Metadata": {
+      "version": "1.0.0",
+      "category": "Governance"
+    }
+  }
+}

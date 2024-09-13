@@ -1,0 +1,46 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workloadName": {
+            "value": "*<workloadName>*"
+        },
+        "applicationName": {
+            "value": "defaultroutetable"
+        },
+        "environmentName": {
+            "value": "*<environmentName>*"
+        },
+        "regionName": {
+            "value": "*<regionName>*"
+        },
+        "index": {
+            "value": 1
+        },
+        "disableBgp": {
+            "value": true
+        },
+        "routes": {
+            "value": [
+                {
+                    "name": "defaultRoute",
+                    "properties": {
+                        "addressPrefix": "0.0.0.0/0",
+                        "nextHopType": "VirtualAppliance",
+                        "nextHopIpAddress": "10.143.0.68",
+                        "hasBgpOverride": false
+                    }
+                },
+                {
+                    "name": "hubRoute",
+                    "properties": {
+                        "addressPrefix": "10.143.0.0/23",
+                        "nextHopType": "VirtualAppliance",
+                        "nextHopIpAddress": "10.143.0.68",
+                        "hasBgpOverride": false
+                    }
+                }
+            ]
+        }
+    }
+}

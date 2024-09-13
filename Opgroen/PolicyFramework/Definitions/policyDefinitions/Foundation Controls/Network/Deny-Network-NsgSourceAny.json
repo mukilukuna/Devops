@@ -1,0 +1,80 @@
+{
+  "name": "Deny-Network-NsgSourceAny",
+  "properties": {
+    "Description": "This policy will prevent a NSG rule with source '*' during creation or update.",
+    "DisplayName": "Network: Prevent source Any in NSG rule",
+    "Mode": "All",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "Network"
+    },
+    "Parameters": {
+      "effect": {
+        "type": "String",
+        "metadata": {
+          "description": "The effect of the policy",
+          "displayName": "Effect"
+        },
+        "allowedValues": [
+          "Audit",
+          "Deny",
+          "Disabled"
+        ],
+        "defaultValue": "Deny"
+      }
+    },
+    "PolicyRule": {
+      "if": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "equals": "Microsoft.Network/networkSecurityGroups",
+                "field": "type"
+              },
+              {
+                "count": {
+                  "field": "Microsoft.Network/networkSecurityGroups/securityRules[*]",
+                  "where": {
+                    "allOf": [
+                      {
+                        "field": "Microsoft.Network/networkSecurityGroups/securityRules[*].sourceAddressPrefix",
+                        "equals": "*"
+                      },
+                      {
+                        "anyOf": [
+                          {
+                            "not": {
+                              "field": "Microsoft.Network/networkSecurityGroups/securityRules[*].sourceAddressPrefixes[*]",
+                              "notIn": []
+                            }
+                          },
+                          {
+                            "field": "Microsoft.Network/networkSecurityGroups/securityRules[*].sourceAddressPrefixes[*]",
+                            "exists": false
+                          }
+                        ]
+                      },
+                      {
+                        "field": "Microsoft.Network/networkSecurityGroups/securityRules[*].access",
+                        "equals": "Allow"
+                      },
+                      {
+                        "field": "Microsoft.Network/networkSecurityGroups/securityRules[*].direction",
+                        "equals": "Inbound"
+                      }
+                    ]
+                  }
+                },
+                "greater": 0
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "[parameters('effect')]"
+      }
+    }
+  }
+}

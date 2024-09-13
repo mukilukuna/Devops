@@ -1,0 +1,26 @@
+[CmdletBinding()]
+param(
+  [Parameter(Mandatory = $True)]
+  [ValidateNotNullOrEmpty()]
+  [string] $SubscriptionId,
+
+  [Parameter(Mandatory = $True)]
+  [ValidateNotNullOrEmpty()]
+  [string] $ResourceGroupName,
+
+  [Parameter(Mandatory = $True)]
+  [ValidateNotNullOrEmpty()]
+  [string] $AutomationAccountName,
+
+  [Parameter(Mandatory = $True)]
+  [ValidateNotNullOrEmpty()]
+  [string] $runbookName,
+
+  [parameter(Mandatory = $True)]
+  [ValidateNotNullOrEmpty()]
+  [String] $RunbookPath,
+
+  [Parameter(Mandatory = $False)]
+  [ValidateNotNullOrEmpty()]
+  [string] $AccessToken = $(Get-AzAccessToken).Token
+)

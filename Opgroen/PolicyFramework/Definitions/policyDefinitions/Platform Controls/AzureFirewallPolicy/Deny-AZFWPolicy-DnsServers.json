@@ -1,0 +1,69 @@
+{
+  "name": "Deny-AZFWPolicy-DnsServers",
+  "properties": {
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "displayName": "Enforce Firewall Policy DNS servers",
+    "description": "This policy prevent settings non authorized dns servers for firewall policies.",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "Network"
+    },
+    "parameters": {
+      "effect": {
+        "type": "String",
+        "allowedValues": [
+          "Audit",
+          "Deny",
+          "Disabled"
+        ],
+        "defaultValue": "Deny",
+        "metadata": {
+          "displayName": "Effect",
+          "description": "Enable or disable the execution of the policy"
+        }
+      },
+      "dnsServers": {
+        "type": "Array",
+        "defaultValue": [
+          "168.63.129.16"
+        ],
+        "metadata": {
+          "description": "The list of DNS servers to enforce exclusive existance of.",
+          "displayName": "DNS Servers list"
+        }
+      }
+    },
+    "policyRule": {
+      "if": {
+        "AllOf": [
+          {
+            "equals": "Microsoft.Network/firewallPolicies",
+            "field": "type"
+          },
+          {
+            "anyOf": [
+              {
+                "exists": false,
+                "field": "Microsoft.Network/firewallPolicies/dnsSettings.servers"
+              },
+              {
+                "count": {
+                  "field": "Microsoft.Network/firewallPolicies/dnsSettings.servers[*]",
+                  "where": {
+                    "field": "Microsoft.Network/firewallPolicies/dnsSettings.servers[*]",
+                    "notIn": "[parameters('dnsServers')]"
+                  }
+                },
+                "greater": 0
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "[parameters('effect')]"
+      }
+    }
+  }
+}

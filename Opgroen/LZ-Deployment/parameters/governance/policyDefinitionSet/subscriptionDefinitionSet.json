@@ -1,0 +1,60 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "initiativeName": {
+            "value": "newSpokeDefaultPolicies"
+        },
+        "displayName": {
+            "value": "*Foundation New Spoke Policies DefinitionSet for *<newSpoke-SubscriptionName>*"
+        },
+        "desc": {
+            "value": "This initiave deploys policies for New spoke Deployments."
+        },
+        "metadata": {
+            "value": {
+                "version": "1.0.0",
+                "category": "Governance"
+            }
+        },
+        "initiativeParameters": {
+            "value": {}
+        },
+        "policyDefinitionId": {
+            "value": [
+                {
+                    "policyDefinitionId": "*<managementGroup-customerMg_ResourceId>*/providers/Microsoft.Authorization/policyDefinitions/networkdeployvnetwithhubpeering",
+                    "policyDefinitionReferenceId": "Create Spoke vNet with Hub Peering",
+                    "parameters": {
+                        "vNetName": {
+                            "value": "vnet-*<workloadName>*-*<applicationName>*-*<environmentName>*-*<regionName>*-*<vNetIndex>*"
+                        },
+                        "vNetLocation": {
+                            "value": "*<location>*"
+                        },
+                        "vNetRgName": {
+                            "value": "rg-infr-connectivity-*<environmentName>*-weu-01"
+                        },
+                        "vNetCidrRange": {
+                            "value": "*<vNetCidrRange>*"
+                        },
+                        "hubResourceId": {
+                            "value": "*<connWeu-virtualNetwork_ResourceId>*"
+                        },
+                        "dnsServers": {
+                            "value": [
+                                "*<connWeu-azureFirewall_PrivateIp>*"
+                            ]
+                        },
+                        "vNetPeerUseRemoteGateway": {
+                            "value": true
+                        }
+                    }
+                }
+            ]
+        },
+        "defaultPolicyDefinitions": {
+            "value": []
+        }
+    }
+}

@@ -1,0 +1,157 @@
+{
+  "name": "landingzone-online-isolated-mc-policies",
+  "properties": {
+    "DisplayName": "Online-Isolated Landing Zone Managed Cloud Policy Set Definitions",
+    "Description": "This initiative deploys Online-Isolated Landing Zone Managed Cloud policies cloud governance and automation.",
+    "Metadata": {
+      "version": "1.0.0",
+      "category": "Governance"
+    },
+    "PolicyDefinitionGroups": [
+      {
+        "name": "I.01 - landing zones",
+        "category": "Online-Isolated",
+        "displayName": "I.01 - Online Isolation",
+        "description": "Network Isolation"
+      },
+      {
+        "name": "I.02 - landing zones",
+        "category": "Online-Isolated",
+        "displayName": "I.02 - Prevent Hybrid Connectivity",
+        "description": "Prevent Hybrid Connectivity"
+      },
+      {
+        "name": "I.03 - landing zones",
+        "category": "Online-Isolated",
+        "displayName": "L.03 - Isolated DNS Administration",
+        "description": "Isolated DNS Administration"
+      },
+      {
+        "name": "I.04 - landing zones",
+        "category": "Online-Connected",
+        "displayName": "I.04 - Limit Public Endpoint Access",
+        "description": "Limit Public Endpoint Access"
+      }
+    ],
+    "Parameters": {
+      "effect": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Effect",
+          "description": "Enable or disable the execution of the policy"
+        },
+        "allowedValues": [
+          "Audit",
+          "Deny",
+          "Disabled"
+        ],
+        "defaultValue": "Deny"
+      }
+    },
+    "PolicyDefinitions": [
+      {
+        "policyDefinitionReferenceId": "Deny-Vnet-Peering",
+        "parameters": {
+          "effect": {
+            "value": "[parameters('effect')]"
+          }
+        },
+        "groupNames": [
+          "I.01 - landing zones"],
+        "policyDefinitionName": "Deny-Network-Peering"
+      },
+      {
+        "policyDefinitionReferenceId": "Deny-ExpressRoute-Deployment",
+        "parameters": {
+          "effect": {
+            "value": "[parameters('effect')]"
+          }
+        },
+        "groupNames": [
+          "I.02 - landing zones"],
+        "policyDefinitionName": "Deny-Expressroute-deployment"
+      },
+      {
+        "policyDefinitionReferenceId": "Deny-RdpSsh-Internet",
+        "parameters": {
+          "effect": {
+            "value": "[parameters('effect')]"
+          }
+        },
+        "groupNames": [
+          "I.01 - landing zones"],
+        "policyDefinitionName": "Deny-RdpSsh-Internet"
+      },
+      {
+        "policyDefinitionReferenceId": "Deny-VpnGateway- Deployment",
+        "parameters": {
+          "effect": {
+            "value": "[parameters('effect')]"
+          }
+        },
+        "groupNames": [
+          "I.02 - landing zones"],
+        "policyDefinitionName": "Deny-VPNGateway-Deployment"
+      },
+      {
+        "policyDefinitionReferenceId": "Deny-Vwan-Deployment",
+        "parameters": {
+          "effect": {
+            "value": "[parameters('effect')]"
+          }
+        },
+        "groupNames": [
+          "I.01 - landing zones"],
+        "policyDefinitionName": "Deny-Vwan-Deployment"
+      },
+      {
+        "policyDefinitionReferenceId": "Enable-WafOnAppGW-BodyInspection",
+        "parameters": {},
+        "groupNames": [
+          "I.04 - landing zones"
+        ],
+        "policyDefinitionName": "ca85ef9a-741d-461d-8b7a-18c2da82c666"
+      },
+      {
+        "policyDefinitionReferenceId": "Enable-WafFWrules-ForAppGW",
+        "parameters": {},
+        "groupNames": [
+          "I.04 - landing zones"
+        ],
+        "policyDefinitionName": "632d3993-e2c0-44ea-a7db-2eca131f356d"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-AppGWWAF-SpecifiedMode",
+        "parameters": {},
+        "groupNames": [
+          "I.04 - landing zones"
+        ],
+        "policyDefinitionName": "12430be1-6cc8-4527-a9a8-e3d38f250096"
+      },
+      {
+        "policyDefinitionReferenceId": "Enable-WafOnFrontDoor-BodyInspection",
+        "parameters": {},
+        "groupNames": [
+          "I.04 - landing zones"
+        ],
+        "policyDefinitionName": "4598f028-de1f-4694-8751-84dceb5f86b9"
+      },
+      {
+        "policyDefinitionReferenceId": "Enable-WafFrontDoor-RateLimit",
+        "parameters": {},
+        "groupNames": [
+          "I.04 - landing zones"
+        ],
+        "policyDefinitionName": "e52e8487-4a97-48ac-b3e6-1c3cef45d298"
+      },
+      {
+        "policyDefinitionReferenceId": "Enforce-FrontDoorWAF-SpecifiedMode",
+        "parameters": {},
+        "groupNames": [
+          "I.04 - landing zones"
+        ],
+        "policyDefinitionName": "425bea59-a659-4cbb-8d31-34499bd030b8"
+      }
+    ]
+  }
+}

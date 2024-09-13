@@ -1,0 +1,338 @@
+variables:
+  # This pipeline is used to deploy Policy definitions, Initiative definitions and Assignments into Azure.
+  - name: PAC_OUTPUT_FOLDER
+    value: ./Output
+  - name: PAC_DEFINITIONS_FOLDER
+    value: ./Definitions
+
+  # Use the plain text name of each service connection as a reference
+  - name: devServiceConnection
+    value: "PolicyFramework-OTA-Owner"
+  - name : tenantPlanServiceConnection
+    value: "PolicyFramework-PRD-Reader"
+  - name: tenantDeployServiceConnection
+    value: "PolicyFramework-PRD-Contributor"
+  - name: tenantRolesServiceConnection
+    value: "PolicyFramework-PRD-UAA"
+
+  # Customer values
+
+  - template: ./variables.yaml
+
+  # System.Debug: true
+
+# what to build trigger
+trigger:
+  branches:
+    include:
+      - /*
+  paths:
+    include:
+      - /*
+
+pr: none
+
+# pool: Linux_pool
+# empty = Azure pool
+
+stages:
+  - stage: devStage
+    displayName: "DEV Plan, Deploy and Roles"
+    condition: and(in(variables['Build.Reason'], 'Manual', 'IndividualCI', 'BatchedCI'), not(contains(variables['Build.SourceBranch'], 'refs/heads/main')))
+    variables:
+      pacEnvironmentSelector: epac-dev
+    jobs:
+      - deployment: allJob
+        environment: PAC-DEV
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+                - task: qetza.replacetokens.replacetokens-task.replacetokens@6
+                  displayName: Replace tokens
+                  inputs: # https://github.com/qetza/replacetokens-task/blob/main/tasks/ReplaceTokensV6/README.md#inputs
+                    sources: |
+                      $(PAC_DEFINITIONS_FOLDER)/**/*.json
+                      $(PAC_DEFINITIONS_FOLDER)/**/*.jsonc
+                    ifNoFilesFound: "warn"
+                    missingVarAction: keep
+                    missingVarLog: error
+                    telemetryOptout: true
+                    tokenPattern: "custom"
+                    tokenPrefix: "*<"
+                    tokenSuffix: ">*"
+                - task: AzurePowerShell@5
+                  name: planStep
+                  displayName: Plan
+                  inputs:
+                    azureSubscription: $(devServiceConnection)
+                    pwsh: true
+                    azurePowerShellVersion: "LatestVersion"
+                    ScriptPath: "Scripts/Deploy/Build-DeploymentPlans.ps1"
+                    ScriptArguments:
+                      -pacEnvironmentSelector $(pacEnvironmentSelector) `
+                      -devOpsType "ado" `
+                      -InformationAction Continue
+                # Publish pipeline Artifact for ADO Service
+                - publish: "$(PAC_OUTPUT_FOLDER)/plans-$(pacEnvironmentSelector)"
+                  artifact: "plans-$(pacEnvironmentSelector)"
+                  condition: and(succeeded(), eq(variables['planStep.deployPolicyChanges'], 'yes'))
+                # Publish build artifact for ADO Server
+                # - task: PublishBuildArtifacts@1
+                #   inputs:
+                #     pathToPublish: "$(PAC_OUTPUT_FOLDER)/plans-$(pacEnvironmentSelector)"
+                #     artifactName: "plans-$(pacEnvironmentSelector)"
+                #   condition: succeeded()
+                # End Publish
+                - task: AzurePowerShell@5
+                  displayName: Deploy PAC-DEV Policy
+                  condition: and(succeeded(), eq(variables['planStep.deployPolicyChanges'], 'yes'))
+                  inputs:
+                    azureSubscription: $(devServiceConnection)
+                    pwsh: true
+                    azurePowerShellVersion: "LatestVersion"
+                    ScriptPath: "Scripts/Deploy/Deploy-PolicyPlan.ps1"
+                    ScriptArguments:
+                      -pacEnvironmentSelector $(pacEnvironmentSelector) `
+                      -InformationAction Continue
+                - task: AzurePowerShell@5
+                  displayName: Deploy PAC-DEV Role Assignments
+                  condition: and(not(failed()), not(canceled()), eq(variables['planStep.deployRoleChanges'], 'yes'))
+                  inputs:
+                    azureSubscription: $(devServiceConnection)
+                    pwsh: true
+                    azurePowerShellVersion: "LatestVersion"
+                    ScriptPath: "Scripts/Deploy/Deploy-RolesPlan.ps1"
+                    ScriptArguments:
+                      -pacEnvironmentSelector $(pacEnvironmentSelector) `
+                      -InformationAction Continue
+  - stage: tenantPlanFeatureStage
+    displayName: "Tenant Plan - Feature Branch"
+    dependsOn:
+      - devStage
+    condition: and(not(failed()), not(canceled()), in(variables['Build.Reason'], 'Manual', 'IndividualCI', 'BatchedCI'), not(contains(variables['Build.SourceBranch'], 'refs/heads/main')))
+    variables:
+      pacEnvironmentSelector: tenant
+    jobs:
+      - job: planJob
+        steps:
+          - checkout: self
+          - task: qetza.replacetokens.replacetokens-task.replacetokens@6
+            displayName: Replace tokens
+            inputs: # https://github.com/qetza/replacetokens-task/blob/main/tasks/ReplaceTokensV6/README.md#inputs
+              sources: |
+                $(PAC_DEFINITIONS_FOLDER)/**/*.json
+                $(PAC_DEFINITIONS_FOLDER)/**/*.jsonc
+              ifNoFilesFound: "warn"
+              missingVarAction: keep
+              missingVarLog: error
+              telemetryOptout: true
+              tokenPattern: "custom"
+              tokenPrefix: "*<"
+              tokenSuffix: ">*"      
+          - task: AzurePowerShell@5
+            name: planStep
+            displayName: Plan
+            inputs:
+              azureSubscription: $(tenantPlanServiceConnection)
+              pwsh: true
+              azurePowerShellVersion: "LatestVersion"
+              ScriptPath: "Scripts/Deploy/Build-DeploymentPlans.ps1"
+              ScriptArguments:
+                -pacEnvironmentSelector $(pacEnvironmentSelector) `
+                -devOpsType "ado" `
+                -InformationAction Continue
+          # Publish pipeline Artifact for ADO Service
+          - publish: "$(PAC_OUTPUT_FOLDER)/plans-$(pacEnvironmentSelector)"
+            artifact: "plans-feature-branch-$(pacEnvironmentSelector)"
+            condition: and(succeeded(), eq(variables['planStep.deployPolicyChanges'], 'yes'))
+            # Publish build artifact for ADO Server
+            # - task: PublishBuildArtifacts@1
+            #   inputs:
+            #     pathToPublish: "$(PAC_OUTPUT_FOLDER)/plans-$(pacEnvironmentSelector)"
+            #     artifactName: "plans-feature-branch-$(pacEnvironmentSelector)"
+            #   condition: succeeded()
+          # End Publish
+  - stage: tenantPlanMainStage
+    displayName: "Tenant Plan - Main Branch"
+    dependsOn:
+      - tenantPlanFeatureStage
+    condition: and(not(failed()), not(canceled()), in(variables['Build.Reason'], 'Manual', 'IndividualCI', 'BatchedCI'), contains(variables['Build.SourceBranch'], 'refs/heads/main'))
+    variables:
+      pacEnvironmentSelector: tenant
+    jobs:
+      - job: planJob
+        steps:
+          - checkout: self
+          - task: qetza.replacetokens.replacetokens-task.replacetokens@6
+            displayName: Replace tokens
+            inputs: # https://github.com/qetza/replacetokens-task/blob/main/tasks/ReplaceTokensV6/README.md#inputs
+              sources: |
+                $(PAC_DEFINITIONS_FOLDER)/**/*.json
+                $(PAC_DEFINITIONS_FOLDER)/**/*.jsonc
+              ifNoFilesFound: "warn"
+              missingVarAction: keep
+              missingVarLog: error
+              telemetryOptout: true
+              tokenPattern: "custom"
+              tokenPrefix: "*<"
+              tokenSuffix: ">*"
+          - task: AzurePowerShell@5
+            name: planStep
+            displayName: Plan
+            inputs:
+              azureSubscription: $(tenantPlanServiceConnection)
+              pwsh: true
+              azurePowerShellVersion: "LatestVersion"
+              ScriptPath: "Scripts/Deploy/Build-DeploymentPlans.ps1"
+              ScriptArguments:
+                -pacEnvironmentSelector $(pacEnvironmentSelector) `
+                -devOpsType "ado" `
+                -InformationAction Continue
+          # Publish pipeline Artifact for ADO Service
+          - publish: "$(PAC_OUTPUT_FOLDER)/plans-$(pacEnvironmentSelector)"
+            artifact: "plans-$(pacEnvironmentSelector)"
+            condition: and(succeeded(), eq(variables['planStep.deployPolicyChanges'], 'yes'))
+            # Publish build artifact for ADO Server
+            # - task: PublishBuildArtifacts@1
+            #   inputs:
+            #     pathToPublish: "$(PAC_OUTPUT_FOLDER)/plans-$(pacEnvironmentSelector)"
+            #     artifactName: "policy-plan-$(pacEnvironmentSelector)"
+            #   condition: succeeded()
+          # End Publish
+  - stage: tenantDeployPolicyStage
+    displayName: "Tenant Deploy Policy"
+    dependsOn:
+      - tenantPlanMainStage
+    condition: and(not(failed()), not(canceled()), eq(dependencies.tenantPlanMainStage.outputs['planJob.planStep.deployPolicyChanges'], 'yes'), in(variables['Build.Reason'], 'Manual', 'IndividualCI', 'BatchedCI'), contains(variables['Build.SourceBranch'], 'refs/heads/main'))
+    variables:
+      pacEnvironmentSelector: tenant
+      PAC_INPUT_FOLDER: "$(Pipeline.Workspace)"
+    jobs:
+      - deployment: deployPolicyJob
+        environment: PAC-POLICY
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+                - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+                  inputs:
+                    rootDirectory: '$(PAC_DEFINITIONS_FOLDER)'
+                    targetFiles: |
+                      **/*.json
+                      **/*.jsonc
+                    encoding: 'auto'
+                    tokenPattern: 'custom'
+                    tokenPrefix: '*<'
+                    tokenSuffix: '>*'
+                    writeBOM: true
+                    actionOnMissing: 'fail'
+                    keepToken: true
+                    actionOnNoFiles: 'continue'
+                    enableTransforms: false
+                    enableRecursion: false
+                    useLegacyPattern: false
+                    enableTelemetry: false 
+                - task: AzurePowerShell@5
+                  name: deployStep
+                  displayName: Deploy Tenant1 Policy
+                  inputs:
+                    azureSubscription: $(tenantDeployServiceConnection)
+                    pwsh: true
+                    azurePowerShellVersion: "LatestVersion"
+                    ScriptPath: "Scripts/Deploy/Deploy-PolicyPlan.ps1"
+                    ScriptArguments:
+                      -pacEnvironmentSelector $(pacEnvironmentSelector) `
+                      -InformationAction Continue 
+  - stage: tenantRolesStage
+    displayName: "Tenant Deploy Role Assignments"
+    dependsOn:
+      - tenantDeployPolicyStage
+    condition: and(not(failed()), not(canceled()), eq(dependencies.tenantPlanMainStage.outputs['planJob.planStep.deployRoleChanges'], 'yes'), in(variables['Build.Reason'], 'Manual', 'IndividualCI', 'BatchedCI'), contains(variables['Build.SourceBranch'], 'refs/heads/main'))
+    variables:
+      pacEnvironmentSelector: tenant
+      PAC_INPUT_FOLDER: "$(Pipeline.Workspace)"
+    jobs:
+      - deployment: rolesJob
+        environment: PAC-ROLES
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+                - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+                  inputs:
+                    rootDirectory: '$(PAC_DEFINITIONS_FOLDER)'
+                    targetFiles: |
+                      **/*.json
+                      **/*.jsonc
+                    encoding: 'auto'
+                    tokenPattern: 'custom'
+                    tokenPrefix: '*<'
+                    tokenSuffix: '>*'
+                    writeBOM: true
+                    actionOnMissing: 'fail'
+                    keepToken: true
+                    actionOnNoFiles: 'continue'
+                    enableTransforms: false
+                    enableRecursion: false
+                    useLegacyPattern: false
+                    enableTelemetry: false
+                - task: AzurePowerShell@5
+                  displayName: Deploy Tenant1 Role Assignments
+                  inputs:
+                    azureSubscription: $(tenantRolesServiceConnection)
+                    pwsh: true
+                    azurePowerShellVersion: "LatestVersion"
+                    ScriptPath: "Scripts/Deploy/Deploy-RolesPlan.ps1"
+                    ScriptArguments:
+                      -pacEnvironmentSelector $(pacEnvironmentSelector) `
+                      -InformationAction Continue
+                  condition: succeeded()
+  - stage: tenantCreateDocumentationStage
+    displayName: "Tenant Create Documentation"
+    dependsOn:
+      - tenantRolesStage
+    condition: and(not(failed()), not(canceled()), eq(dependencies.tenantPlanMainStage.outputs['planJob.planStep.deployPolicyChanges'], 'yes'), in(variables['Build.Reason'], 'Manual', 'IndividualCI', 'BatchedCI'), contains(variables['Build.SourceBranch'], 'refs/heads/main'))
+    variables:
+      pacEnvironmentSelector: tenant
+      PAC_INPUT_FOLDER: "$(Pipeline.Workspace)"
+    jobs:
+      - deployment: createDocumentationJob
+        environment: PAC-POLICY
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+                - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+                  inputs:
+                    rootDirectory: '$(PAC_DEFINITIONS_FOLDER)'
+                    targetFiles: |
+                      **/*.json
+                      **/*.jsonc
+                    encoding: 'auto'
+                    tokenPattern: 'custom'
+                    tokenPrefix: '*<'
+                    tokenSuffix: '>*'
+                    writeBOM: true
+                    actionOnMissing: 'fail'
+                    keepToken: true
+                    actionOnNoFiles: 'continue'
+                    enableTransforms: false
+                    enableRecursion: false
+                    useLegacyPattern: false
+                    enableTelemetry: false 
+                - task: AzurePowerShell@5
+                  displayName: Generate Documentation
+                  inputs:
+                    azureSubscription: $(tenantDeployServiceConnection)
+                    pwsh: true
+                    azurePowerShellVersion: "LatestVersion"
+                    ScriptPath: "Scripts/Operations/Build-PolicyDocumentation.ps1"
+                    ScriptArguments:
+                      -interactive $false
+                - publish: "$(PAC_OUTPUT_FOLDER)"
+                  artifact: "PolicyDocumentation"

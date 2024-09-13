@@ -1,0 +1,114 @@
+parameters:
+  - name: azureServiceConnection
+    type: string
+    default: Tenant Root Group
+  - name: subscriptionId
+    type: string
+    default: 8b600824-2fce-4a7a-970f-4adf4eef670f
+  - name: subscriptionName
+    type: string
+    default: sub-iaas-lz-weu-01
+  - name: costAnomalyAlertName
+    type: string
+  - name: costAnomalyAlertDisplayName
+    type: string
+  - name: startDate
+    type: string
+  - name: endDate
+    type: string
+  - name: notificationEmail
+    type: string
+    default: "robin.makkus@inspark.nl"
+  - name: notificationEmails
+    type: string
+    default: '"robin.makkus@inspark.nl", "xander.kaspers@inspark.nl"' # Note: The double quotes are required for the API call to work outer '' and inner "" are required.
+  - name: templateRepo
+    type: string
+  - name: templateProject
+    type: string
+  - name: version
+    type: string
+
+steps:
+  - ${{ if and(ne(variables['Build.SourceBranch'], 'refs/heads/main'), ne(variables['Build.SourceBranch'], 'refs/heads/staging')) }}:
+      - task: InvokeRESTAPI@1
+        displayName: Create Cost Management Anomaly Alert
+        inputs:
+            connectionType: connectedServiceNameARM
+            azureServiceConnection: ${{ parameters.azureServiceConnection }}
+            method: PUT
+            urlSuffix: subscriptions/${{ parameters.subscriptionId }}/providers/Microsoft.CostManagement/scheduledActions/${{ parameters.costAnomalyAlertName }}?api-version=2023-08-01
+            body: |
+              {
+                  "kind": "InsightAlert",
+                  "properties": {
+                  "status": "Enabled",
+                  "displayName": "${{ parameters.costAnomalyAlertDisplayName }}",
+                  "viewId": "/subscriptions/${{ parameters.subscriptionId }}/providers/Microsoft.CostManagement/views/ms:DailyAnomalyByResourceGroup",
+                  "notificationEmail": "${{ parameters.notificationEmail }}",
+                  "notification": {
+                      "subject": "${{ parameters.subscriptionName }} Cost Anomaly Detected",
+                      "message": "${{ parameters.subscriptionName }} (${{ parameters.subscriptionId }}) Cost Anomaly Detected",
+                      "to": [
+                        ${{ parameters.notificationEmails }}
+                      ],
+                      "language": "en",
+                      "regionalFormat": "en"
+                  },
+                  "schedule": {
+                      "frequency": "Daily",
+                      "startDate": "$(startDate)",
+                      "endDate": "$(endDate)"
+                  }
+                  }
+              }
+
+      - task: InvokeRESTAPI@1
+        displayName: Get Cost Management Anomaly Alert
+        inputs:
+            connectionType: connectedServiceNameARM
+            azureServiceConnection: ${{ parameters.azureServiceConnection }}
+            method: GET
+            urlSuffix: subscriptions/${{ parameters.subscriptionId }}/providers/Microsoft.CostManagement/scheduledActions?api-version=2023-08-01
+
+  - ${{ if or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/staging')) }}:
+
+      - task: InvokeRESTAPI@1
+        displayName: Create Cost Management Anomaly Alert
+        inputs:
+            connectionType: connectedServiceNameARM
+            azureServiceConnection: ${{ parameters.azureServiceConnection }}
+            method: PUT
+            urlSuffix: subscriptions/${{ parameters.subscriptionId }}/providers/Microsoft.CostManagement/scheduledActions/${{ parameters.costAnomalyAlertName }}?api-version=2023-08-01
+            body: |
+              {
+                  "kind": "InsightAlert",
+                  "properties": {
+                  "status": "Enabled",
+                  "displayName": "${{ parameters.costAnomalyAlertDisplayName }}",
+                  "viewId": "/subscriptions/${{ parameters.subscriptionId }}/providers/Microsoft.CostManagement/views/ms:DailyAnomalyByResourceGroup",
+                  "notificationEmail": "${{ parameters.notificationEmail }}",
+                  "notification": {
+                      "subject": "${{ parameters.subscriptionName }} Cost Anomaly Detected",
+                      "message": "${{ parameters.subscriptionName }} (${{ parameters.subscriptionId }}) Cost Anomaly Detected",
+                      "to": [
+                        ${{ parameters.notificationEmails }}
+                      ],
+                      "language": "en",
+                      "regionalFormat": "en"
+                  },
+                  "schedule": {
+                      "frequency": "Daily",
+                      "startDate": "$(startDate)",
+                      "endDate": "$(endDate)"
+                  }
+                  }
+              }
+
+      - task: InvokeRESTAPI@1
+        displayName: Get Cost Management Anomaly Alert
+        inputs:
+            connectionType: connectedServiceNameARM
+            azureServiceConnection: ${{ parameters.azureServiceConnection }}
+            method: GET
+            urlSuffix: subscriptions/${{ parameters.subscriptionId }}/providers/Microsoft.CostManagement/scheduledActions?api-version=2023-08-01

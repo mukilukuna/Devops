@@ -1,0 +1,133 @@
+{
+    "name": "Enforce-Firewall-Defaultroute",
+    "properties": {
+      "Description": "This policy enforce 0.0.0.0/0 route to firewall in secure hub",
+      "DisplayName": "Network: Enforce default route to firewall",
+      "Mode": "All",
+      "metadata": {
+        "version": "1.0.0",
+        "category": "Network"
+      },
+      "Parameters": {
+        "addressPrefix": {
+          "type": "String",
+          "metadata": {
+            "displayName": "Address Prefix",
+            "description": "The destination IP address range in CIDR notation that this Policy checks for within the UDR. Example: 0.0.0.0/0 to check for the presence of a default route."
+          },
+          "defaultValue": "0.0.0.0/0"
+        },
+        "nextHopType": {
+          "type": "String",
+          "metadata": {
+            "displayName": "Next Hop Type",
+            "description": "The next hope type that the policy checks for within the inspected route. The value can be Virtual Network, Virtual Network Gateway, Internet, Virtual Appliance, or None."
+          },
+          "allowedValues": [
+            "VnetLocal",
+            "VirtualNetworkGateway",
+            "Internet",
+            "VirtualAppliance",
+            "None"
+          ],
+          "defaultValue": "VirtualAppliance"
+        },
+        "nextHopIpAddress": {
+          "type": "Object",
+          "metadata": {
+            "displayName": "nextHopIpAddress Route Table Settings",
+            "description": "Location-specific settings for route tables."
+          },
+          "defaultValue": {
+            "westeurope": {
+              "virtualApplianceIpAddress": "172.27.0.68"
+            },
+            "disabled": {
+              "virtualApplianceIpAddress": ""
+            }
+          }
+        },
+        "effect": {
+          "type": "String",
+          "metadata": {
+            "displayName": "Effect",
+            "description": "Enable or disable the execution of the policy"
+          },
+          "allowedValues": [
+            "Audit",
+            "Deny",
+            "Disabled"
+          ],
+          "defaultValue": "Deny"
+        }
+      },
+      "PolicyRule": {
+        "if": {
+          "anyOf": [
+            {
+              "allOf": [
+                {
+                  "field": "type",
+                  "equals": "Microsoft.Network/routeTables"
+                },
+                {
+                  "count": {
+                    "field": "Microsoft.Network/routeTables/routes[*]",
+                    "where": {
+                      "allOf": [
+                        {
+                          "field": "Microsoft.Network/routeTables/routes[*].addressPrefix",
+                          "equals": "[parameters('addressPrefix')]"
+                        },
+                        {
+                          "anyOf": [
+                            {
+                              "field": "Microsoft.Network/routeTables/routes[*].nextHopType",
+                              "notEquals": "[parameters('nextHopType')]"
+                            },
+                            {
+                              "field": "Microsoft.Network/routeTables/routes[*].nextHopIpAddress",
+                              "notEquals": "[parameters('nextHopIpAddress')[field('location')].virtualApplianceIpAddress]"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "greater": 0
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "field": "type",
+                  "equals": "Microsoft.Network/routeTables/routes"
+                },
+                {
+                  "field": "Microsoft.Network/routeTables/routes/addressPrefix",
+                  "equals": "[parameters('addressPrefix')]"
+                },
+                {
+                  "anyOf": [
+                    {
+                      "field": "Microsoft.Network/routeTables/routes/nextHopType",
+                      "notEquals": "[parameters('nextHopType')]"
+                    },
+                    {
+                      "field": "Microsoft.Network/routeTables/routes/nextHopIpAddress",
+                      "notEquals": "[parameters('nextHopIpAddress')[field('location')].virtualApplianceIpAddress]"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "then": {
+          "effect": "[parameters('effect')]"
+        }
+      }
+    }
+  }
+  

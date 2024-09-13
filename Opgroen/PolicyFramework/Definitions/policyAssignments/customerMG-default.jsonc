@@ -1,0 +1,384 @@
+{
+  "nodeName": "/CustomerMg/",
+  "children": [
+    {
+      "nodeName": "Baseline/",
+      "children": [
+        {
+          "nodeName": "ManagedCloud",
+          "scope": {
+            "epac-dev": [
+              "*<canary-managementGroup-customerMg_ResourceId>*"
+            ],
+            "tenant": [
+              "*<managementGroup-customerMg_ResourceId>*"
+            ]
+          },
+          "notScopes": {
+            "epac-dev": [
+              "*<canary-managementGroup-sandboxMg_ResourceId>*",
+              "*<canary-managementGroup-onboardingMg_ResourceId>*"
+            ],
+            "tenant": [
+              "*<managementGroup-sandboxMg_ResourceId>*",
+              "*<managementGroup-onboardingMg_ResourceId>*"
+            ]
+          },
+          "assignment": {
+            "description": "This assignment contains the Foundation Managed Cloud policies for governance",
+            "displayName": "Foundation - Managed Cloud Assignment",
+            "name": "foundationmcpolasgmt"
+          },
+          "definitionEntry": {
+            "initiativeName": "foundationmcpolicies",
+            "friendlyNameToDocumentIfGuid": "Foundation Managed Cloud"
+          },
+          "parameters": {}
+        },
+        {
+          "nodeName": "Identity",
+          "scope": {
+            "epac-dev": [
+              "*<canary-managementGroup-customerMg_ResourceId>*"
+            ],
+            "tenant": [
+              "*<managementGroup-customerMg_ResourceId>*"
+            ]
+          },
+          "notScopes": {
+            "epac-dev": [
+              "*<canary-managementGroup-sandboxMg_ResourceId>*",
+              "*<canary-managementGroup-onboardingMg_ResourceId>*"
+            ],
+            "tenant": [
+              "*<managementGroup-sandboxMg_ResourceId>*",
+              "*<managementGroup-onboardingMg_ResourceId>*"
+            ]
+          },
+          "assignment": {
+            "description": "This assignment contains the Foundation Identity Baseline Cloud policies for governance",
+            "displayName": "Foundation - Identity Baseline Cloud Policy Assignment",
+            "name": "foundationidepolicies"
+          },
+          "definitionEntry": {
+            "initiativeName": "foundationidepolicies",
+            "friendlyNameToDocumentIfGuid": "Foundation Identity Baseline"
+          },
+          "parameters": {}
+        },
+        {
+          "nodeName": "Security",
+          "scope": {
+            "epac-dev": [
+              "*<canary-managementGroup-customerMg_ResourceId>*"
+            ],
+            "tenant": [
+              "*<managementGroup-customerMg_ResourceId>*"
+            ]
+          },
+          "notScopes": {
+            "epac-dev": [
+              "*<canary-managementGroup-sandboxMg_ResourceId>*",
+              "*<canary-managementGroup-onboardingMg_ResourceId>*"
+            ],
+            "tenant": [
+              "*<managementGroup-sandboxMg_ResourceId>*",
+              "*<managementGroup-onboardingMg_ResourceId>*"
+            ]
+          },
+          "assignment": {
+            "description": "This assignment contains the Foundation Security policies for Cloud goverance",
+            "displayName": "Foundation - Security Cloud Policy Assignment",
+            "name": "foundationsecpolasgmt"
+          },
+          "definitionEntry": {
+            "initiativeName": "foundationsecpolicies",
+            "friendlyNameToDocumentIfGuid": "Foundation Security"
+          },
+          "parameters": {}
+        },
+        {
+          "nodeName": "Tagging",
+          "scope": {
+            "epac-dev": [
+              "*<canary-managementGroup-customerMg_ResourceId>*"
+            ],
+            "tenant": [
+              "*<managementGroup-customerMg_ResourceId>*"
+            ]
+          },
+          "notScopes": {
+            "epac-dev": [
+              "*<canary-managementGroup-sandboxMg_ResourceId>*",
+              "*<canary-managementGroup-onboardingMg_ResourceId>*"
+            ],
+            "tenant": [
+              "*<managementGroup-sandboxMg_ResourceId>*",
+              "*<managementGroup-onboardingMg_ResourceId>*"
+            ]
+          },
+          "assignment": {
+            "description": "This assignment contains the Foundation tagging policies for Cloud goverance",
+            "displayName": "Foundation - Tagging Cloud Policy Assignment",
+            "name": "foundationtagpolasgmt"
+          },
+          "definitionEntry": {
+            "initiativeName": "foundationtagpolicies",
+            "friendlyNameToDocumentIfGuid": "Foundation Tagging"
+          },
+          "parameters": {}
+        },
+        // {
+        //   "nodeName": "/Tags/",
+        //   "children": [
+        //     {
+        //       "nodeName": "required-allowed-inherit/",
+        //       "scope": {
+        //         "epac-dev": ["*<canary-managementGroup-customerMg_ResourceId>*"]
+        //       },
+        //       "definitionEntryList": [
+        //         {
+        //           "policySetName": "foundationtagrequiredallowedinherit",
+        //           "displayName": "Require tag on Resource Group with allowed values and inherit from subscription and resource group.",
+        //           "assignment": {
+        //             "name": "tag-",
+        //             "displayName": "Require Tag - ",
+        //             "description": "Require Tag for Resource Groups when any resource group (not listed in in excludedRg) is created or updated - "
+        //           }
+        //         }
+        //       ],
+        //       "children": [
+        //         {
+        //           "nodeName": "CostCenter",
+        //           "assignment": {
+        //             "name": "CostCenter",
+        //             "displayName": "CostCenter",
+        //             "description": "CostCenter"
+        //           },
+        //           "parameters": {
+        //             "tagName": "CostCenter",
+        //             "allowedValues": ["00000", "12345", "ABCDEF"]
+        //           }
+        //         },
+        //         {
+        //           "nodeName": "Owner",
+        //           "assignment": {
+        //             "name": "Owner",
+        //             "displayName": "Owner",
+        //             "description": "Owner"
+        //           },
+        //           "parameters": {
+        //             "tagName": "Owner",
+        //             "allowedValues": ["InSpark"]
+        //           }
+        //         },
+        //         {
+        //           "nodeName": "Environment",
+        //           "assignment": {
+        //             "name": "Environment",
+        //             "displayName": "Environment",
+        //             "description": "Environment"
+        //           },
+        //           "parameters": {
+        //             "tagName": "Environment",
+        //             "allowedValues": [
+        //               "Development",
+        //               "Test",
+        //               "Acceptance",
+        //               "Production"
+        //             ]
+        //           }
+        //         }
+        //       ]
+        //     },
+        //     {
+        //       "nodeName": "required-inherit/",
+        //       "scope": {
+        //         "epac-dev": ["*<canary-managementGroup-customerMg_ResourceId>*"]
+        //       },
+        //       "definitionEntryList": [
+        //         {
+        //           "policySetName": "foundationtagrequiredinherit",
+        //           "displayName": "Require tag on Resource Group and inherit from subscription and resource group.",
+        //           "assignment": {
+        //             "name": "tag-",
+        //             "displayName": "Require Tag - ",
+        //             "description": "Require Tag for Resource Groups when any resource group (not listed in in excludedRg) is created or updated - "
+        //           }
+        //         }
+        //       ],
+        //       "children": [
+        //         {
+        //           "nodeName": "WorkloadName",
+        //           "assignment": {
+        //             "name": "WorkloadName",
+        //             "displayName": "WorkloadName",
+        //             "description": "WorkloadName"
+        //           },
+        //           "parameters": {
+        //             "tagName": "WorkloadName"
+        //           }
+        //         },
+        //         {
+        //           "nodeName": "ApplicationName",
+        //           "assignment": {
+        //             "name": "ApplicationName",
+        //             "displayName": "ApplicationName",
+        //             "description": "ApplicationName"
+        //           },
+        //           "parameters": {
+        //             "tagName": "ApplicationName"
+        //           }
+        //         },
+        //         {
+        //           "nodeName": "ManagedBy",
+        //           "assignment": {
+        //             "name": "ManagedBy",
+        //             "displayName": "ManagedBy",
+        //             "description": "ManagedBy"
+        //           },
+        //           "parameters": {
+        //             "tagName": "ManagedBy"
+        //           }
+        //         }
+        //       ]
+        //     }
+        //   ]
+        // },
+        {
+          "nodeName": "PrivateDnsZones",
+          "scope": {
+            "epac-dev": [
+              "*<canary-managementGroup-customerMg_ResourceId>*"
+            ],
+            "tenant": [
+              "*<managementGroup-customerMg_ResourceId>*"
+            ]
+          },
+          "notScopes": {
+            "epac-dev": [
+              "*<canary-managementGroup-sandboxMg_ResourceId>*",
+              "*<canary-managementGroup-onboardingMg_ResourceId>*",
+              "*<canary-managementGroup-online-isolatedMg_ResourceId>*"
+            ],
+            "tenant": [
+              "*<managementGroup-sandboxMg_ResourceId>*",
+              "*<managementGroup-onboardingMg_ResourceId>*",
+              "*<managementGroup-online-isolatedMg_ResourceId>*"
+            ]
+          },
+          "assignment": {
+            "description": "This assignment contains the Private DNS Zones policies for goverance and automation",
+            "displayName": "Foundation - Private DNS Zones Policy Assignment",
+            "name": "foundationdnspolasgmt"
+          },
+          "definitionEntry": {
+            "initiativeName": "foundationdnspolicies",
+            "friendlyNameToDocumentIfGuid": "Foundation Private DNS Zones"
+          },
+          "parameters": {}
+        },
+        {
+          "nodeName": "NetworkControls",
+          "scope": {
+            "epac-dev": [
+              "*<canary-managementGroup-customerMg_ResourceId>*"
+            ],
+            "tenant": [
+              "*<managementGroup-customerMg_ResourceId>*"
+            ]
+          },
+          "notScopes": {
+            "epac-dev": [
+              "*<canary-managementGroup-sandboxMg_ResourceId>*",
+              "*<canary-managementGroup-onboardingMg_ResourceId>*",
+              "*<canary-managementGroup-online-isolatedMg_ResourceId>*"
+            ],
+            "tenant": [
+              "*<managementGroup-sandboxMg_ResourceId>*",
+              "*<managementGroup-onboardingMg_ResourceId>*",
+              "*<managementGroup-online-isolatedMg_ResourceId>*"
+            ]
+          },
+          "assignment": {
+            "description": "This assignment contains the Foundation Network Control Policies for goverance and automation",
+            "displayName": "Foundation - Network Control Policy Assignment",
+            "name": "foundationnwcpolasgmt"
+          },
+          "definitionEntry": {
+            "initiativeName": "foundationnwcpolicies",
+            "friendlyNameToDocumentIfGuid": "Foundation Network Controls"
+          },
+          "parameters": {}
+        },
+        {
+          "nodeName": "DiagnosticsLogging",
+          "scope": {
+            "epac-dev": [
+              "*<canary-managementGroup-customerMg_ResourceId>*"
+            ],
+            "tenant": [
+              "*<managementGroup-customerMg_ResourceId>*"
+            ]
+          },
+          "notScopes": {
+            "epac-dev": [
+              "*<canary-managementGroup-sandboxMg_ResourceId>*",
+              "*<canary-managementGroup-onboardingMg_ResourceId>*",
+              "*<canary-managementGroup-online-isolatedMg_ResourceId>*",
+              "*<canary-managementGroup-securityMg_ResourceId>*",
+              "*<canary-managementGroup-online-confidential_ResourceId>*",
+              "*<canary-managementGroup-corporate-confidential_ResourceId>*"
+            ],
+            "tenant": [
+              "*<managementGroup-sandboxMg_ResourceId>*",
+              "*<managementGroup-onboardingMg_ResourceId>*",
+              "*<managementGroup-online-isolatedMg_ResourceId>*",
+              "*<managementGroup-securityMg_ResourceId>*",
+              "*<managementGroup-online-confidential_ResourceId>*",
+              "*<managementGroup-corporate-confidential_ResourceId>*"
+            ]
+          },
+          "assignment": {
+            "description": "This assignment contains the Foundation Diagnostic Logging Policies for goverance and automation",
+            "displayName": "Foundation - Diagnostic Logging Policy Assignment",
+            "name": "foundationdiagpolasgmt"
+          },
+          "definitionEntry": {
+            "initiativeName": "foundationdiagnosticspolicies",
+            "friendlyNameToDocumentIfGuid": "Foundation Diagnostic Logging"
+          },
+          "parameters": {
+            "logAnalytics": "*<mgmtWeu-logAnalytics_ResourceId>*"
+          }
+        }
+      ]
+    },
+    {
+      "nodeName": "RegulatoryCompliance/",
+      "scope": {
+        "epac-dev": [
+          "*<canary-managementGroup-customerMg_ResourceId>*"
+        ],
+        "tenant": [
+          "*<managementGroup-customerMg_ResourceId>*"
+        ]
+      },
+      "children": [
+        {
+          "nodeName": "ISO27001",
+          "assignment": {
+            "description": "This assignment contains the ISO27001 policies for governance",
+            "displayName": "Foundation - ISO27001 Assignment",
+            "name": "iso27001polasgmt"
+          },
+          "definitionEntry": {
+            "initiativeName": "89c6cddc-1c73-4ac1-b19c-54d1a15a42f2",
+            "friendlyNameToDocumentIfGuid": "ISO27001"
+          },
+          "parameters": {}
+        }
+      ]
+    }
+  ]
+}

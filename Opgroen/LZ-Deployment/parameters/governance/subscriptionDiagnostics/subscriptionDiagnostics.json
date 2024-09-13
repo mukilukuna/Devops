@@ -1,0 +1,45 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "logAnalyticsResourceId": {
+            "value": "*<mgmtWeu-logAnalytics_ResourceId>*"
+        },
+        "logs": {
+            "value": [
+                {
+                    "category": "Administrative",
+                    "enabled": true
+                },
+                {
+                    "category": "Security",
+                    "enabled": true
+                },
+                {
+                    "category": "ServiceHealth",
+                    "enabled": true
+                },
+                {
+                    "category": "Policy",
+                    "enabled": true
+                },
+                {
+                    "category": "ResourceHealth",
+                    "enabled": true
+                },
+                {
+                    "category": "Alert",
+                    "enabled": true
+                },
+                {
+                    "category": "Recommendation",
+                    "enabled": true
+                },
+                {
+                    "category": "Autoscale",
+                    "enabled": true
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,29 @@
+variables:
+  ## Pipeline and Templates
+  - name: parameterPath
+    value: parameters
+  - name: templateRepo
+    value: Templates
+  - name: templateProject
+    value: Foundation
+  - name: version
+    value: "v1.0.0"
+  - name: azureResourceManagerConnection
+    value: Tenant Root Group
+
+  ## Partner Management
+  - name: registerInSparkPAL # https://learn.microsoft.com/en-us/azure/cost-management-billing/manage/link-partner-id
+    value: true
+
+  ## Output
+  - name: outPutPrefix
+    value: newSpoke
+  - name: variableGroup
+    value: New-Spoke-Deployment
+
+  ## Variable Group
+  - group: Foundation
+  - group: Platform-Management-Weu
+  - group: Platform-Connectivity-Weu
+  - group: Platform-Identity-Weu
+  - group: New-Spoke-Deployment

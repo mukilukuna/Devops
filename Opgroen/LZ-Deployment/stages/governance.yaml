@@ -1,0 +1,260 @@
+parameters:
+  - name: azureResourceManagerConnection
+    type: string
+  - name: location
+    type: string
+    default: "westeurope"
+  - name: subscriptionId # Replace with or add managementGroupId if needed
+    type: string
+  - name: variableGroup
+    type: string
+  - name: variableFile
+    type: string
+  - name: AZURE_DEVOPS_EXT_PAT
+    type: string
+    default: $(System.AccessToken)
+  - name: organization
+    type: string
+    default: $(System.TeamFoundationCollectionUri)
+  - name: project
+    type: string
+    default: $(System.TeamProject)
+
+stages:
+  - stage: Governance
+    displayName: Governance
+    variables:
+      - template: ${{ parameters.variableFile }}
+
+    jobs:
+      - job: managementGroupMove
+        displayName: Management Group Move
+        dependsOn:
+        steps:
+          - template: /Features/SubscriptionMove/Pipeline/tasks.yaml@Templates
+            parameters:
+              managementGroupId: $(newSpoke-managementGroupId)
+              csmParametersFile: /$(parameterPath)/governance/managementGroupMove/managementGroupMove.json
+              azureResourceManagerConnection: $(azureResourceManagerConnection)
+              subscriptionId: $(newSpoke-SubscriptionId)
+              subscriptionName: $(newSpoke-subscriptionName)
+              location: ${{ parameters.location }}
+              templateRepo: ${{ variables.templateRepo }}
+              templateProject: ${{ variables.templateProject }}
+              version: ${{ variables.version }}
+
+      - ${{ if eq(variables.registerInSparkPAL, 'True') }}:
+        - job: partnerRegister
+          displayName: Register InSpark as Partner
+          dependsOn:
+            - managementGroupMove
+          steps:
+            - task: AzureCLI@2
+              displayName: Azure CLI
+              inputs:
+                azureSubscription: $(azureResourceManagerConnection)
+                powerShellErrorActionPreference: continue
+                scriptType: pscore
+                scriptLocation: inlineScript
+                inlineScript: |
+                  az --version
+
+                  $partnerInfo = az managementpartner show | ConvertFrom-Json
+
+                  if ($partnerInfo.partnerId -ne "2134251") {
+                    az managementpartner update --partner-id 2134251
+                  }
+                  elseif ($partnerInfo.partnerId -eq "2134251") {
+                    Write-Host "$partnerInfo"
+                  }
+                  else {
+                    az managementpartner create --partner-id 2134251
+                  }
+
+      - job: SpokePolicyDefinitionSet
+        displayName: SpokePolicyDefinitionSet
+        dependsOn:
+          - managementGroupMove
+        steps:
+          - template: /Features/PolicyDefinitionSetSub/Pipeline/tasks.yaml@Templates
+            parameters:
+              csmParametersFile: /$(ParameterPath)/governance/policyDefinitionSet/subscriptionDefinitionSet.json
+              azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}
+              subscriptionId: $(newSpoke-SubscriptionId)
+              location: ${{ parameters.location }}
+              templateRepo: ${{ variables.templateRepo }}
+              templateProject: ${{ variables.templateProject }}
+              version: ${{ variables.version }}
+          - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
+              - template: /.Global/Pipelines/addVariableToVariableGroup.yaml@Templates
+                parameters:
+                  AZURE_DEVOPS_EXT_PAT: ${{ parameters.AZURE_DEVOPS_EXT_PAT }}
+                  organization: ${{ parameters.organization }}
+                  project: ${{ parameters.project }}
+                  varKey: $(outPutPrefix)-SpokePolicyDefinition
+                  varValue: $(resourceId)
+                  isSecret: false
+                  environment: ${{ parameters.variableGroup }}
+                  templateRepo: ${{ variables.templateRepo }}
+
+      - job: CostManagement_Get_Date
+        displayName: Cost Management Alert Set Start and End Date
+        dependsOn:
+          - ManagementGroupMove
+        steps:
+          - pwsh: |
+              $startDate = $((Get-Date).AddDays(1) | Get-Date -Format o);
+              $endDate = $((Get-Date).AddYears(1) | Get-Date -Format o);
+              Write-Host "##vso[task.setvariable variable=startDate;isOutput=true;]$startDate";
+              Write-Host "##vso[task.setvariable variable=endDate;isOutput=true;]$endDate"
+            name: set_date
+            displayName: CostManagement Set Date
+
+      - job: CostManagement
+        displayName: Cost Management
+        variables:
+          startDate: $[ dependencies.CostManagement_Get_Date.outputs['set_date.startDate'] ]
+          endDate: $[ dependencies.CostManagement_Get_Date.outputs['set_date.endDate'] ]
+        pool: server # Required for agentless job
+        dependsOn:
+          - CostManagement_Get_Date
+        steps:
+          - template: /Features/CostAnomalyAlert/Pipeline/tasks.yaml@Templates
+            parameters:
+              azureServiceConnection: ${{ parameters.azureResourceManagerConnection }}
+              subscriptionId: $(newSpoke-SubscriptionId)
+              subscriptionName: $(newSpoke-subscriptionName)
+              costAnomalyAlertName: $(newSpoke-subscriptionName)costanomalyalert
+              costAnomalyAlertDisplayName: $(newSpoke-subscriptionName) Cost Anomaly Alert
+              startDate: $(startDate)
+              endDate: $(endDate)
+              notificationEmail: $(contactEmails) # "robin.makkus@inspark.nl"
+              notificationEmails: '"$(contactEmails)"' #'"robin.makkus@inspark.nl", "xander.kaspers@inspark.nl"' # Note: The double quotes are required for the API call to work outer '' and inner "" are required.
+              templateRepo: ${{ variables.templateRepo }}
+              templateProject: ${{ variables.templateProject }}
+              version: ${{ variables.version }}
+
+      - job: budget
+        displayName: budget
+        dependsOn:
+          - managementGroupMove
+        steps:
+          - template: /Features/AlertBudget/Pipeline/tasks.yaml@Templates
+            parameters:
+              subscriptionId: ${{ parameters.subscriptionId }}
+              csmParametersFile: /$(parameterPath)/governance/budgets/budget.json
+              azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}
+              location: westeurope
+              templateRepo: ${{ variables.templateRepo }}
+              templateProject: ${{ variables.templateProject }}
+              version: ${{ variables.version }}
+              budgetName: $(newSpoke-subscriptionName)-Budget
+
+      - job: SpokePolicyDefinitionAssignment
+        displayName: SpokePolicyDefinitionAssignment
+        dependsOn:
+          - managementGroupMove
+          - SpokePolicyDefinitionSet
+        steps:
+          - template: /Features/PolicyAssignmentSub/Pipeline/tasks.yaml@Templates
+            parameters:
+              csmParametersFile: /$(ParameterPath)/governance/policyAssignment/subscriptionDefinitionSetAssignment.json
+              azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}
+              subscriptionId: $(newSpoke-SubscriptionId)
+              location: ${{ parameters.location }}
+              templateRepo: ${{ variables.templateRepo }}
+              templateProject: ${{ variables.templateProject }}
+              version: ${{ variables.version }}
+
+      - job: subscriptionRBAC
+        displayName: Subscription RBAC
+        dependsOn:
+          - managementGroupMove
+          - SpokePolicyDefinitionAssignment
+        steps:
+          - template: /Features/RoleAssignmentSub/Pipeline/tasks.yaml@Templates
+            parameters:
+              csmParametersFile: /$(ParameterPath)/governance/roleAssignment/roleAssignment.json
+              azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}
+              subscriptionId: $(newSpoke-SubscriptionId)
+              location: ${{ parameters.location }}
+              templateRepo: ${{ variables.templateRepo }}
+              templateProject: ${{ variables.templateProject }}
+              version: ${{ variables.version }}
+
+      - job: hubSubscriptionRBAC
+        displayName: Hub Subscription RBAC
+        dependsOn:
+          - managementGroupMove
+          - SpokePolicyDefinitionAssignment
+        steps:
+          - template: /Features/RoleAssignmentSub/Pipeline/tasks.yaml@Templates
+            parameters:
+              csmParametersFile: /$(ParameterPath)/governance/roleAssignment/roleAssignment.json
+              azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}
+              subscriptionId: ${{ variables.hubSubscriptionId }}
+              location: ${{ parameters.location }}
+              templateRepo: ${{ variables.templateRepo }}
+              templateProject: ${{ variables.templateProject }}
+              version: ${{ variables.version }}
+
+      - job: subscriptionTag
+        displayName: Subscription Tags
+        dependsOn:
+          - managementGroupMove
+        steps:
+          - template: /Features/SubscriptionTag/Pipeline/tasks.yaml@Templates
+            parameters:
+              subscriptionId: $(newSpoke-SubscriptionId)
+              csmParametersFile: /$(parameterPath)/governance/subscriptionTag/tagsSubscriptionlevel.parameters.json
+              azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}
+              location: ${{ parameters.location }}
+              templateRepo: ${{ variables.templateRepo }}
+              templateProject: ${{ variables.templateProject }}
+              version: ${{ variables.version }}
+
+      - job: subscriptionDiagnostics
+        displayName: Subscription Diagnostics Activity Log
+        dependsOn:
+          - managementGroupMove
+        steps:
+          - template: /Features/SubscriptionDiagnostics/Pipeline/tasks.yaml@templates
+            parameters:
+              subscriptionId: $(newSpoke-SubscriptionId)
+              csmParametersFile: /$(parameterPath)/governance/subscriptionDiagnostics/subscriptionDiagnostics.json
+              azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}
+              location: ${{ parameters.location }}
+              templateRepo: ${{ variables.templateRepo }}
+              templateProject: ${{ variables.templateProject }}
+              version: ${{ variables.version }}
+
+      - job: defenderForCloudPricingTier
+        displayName: Defender For Cloud Pricing Tier
+        dependsOn:
+          - managementGroupMove
+        steps:
+          - template: /Features/SecurityCenter/Pipeline/tasks.yaml@templates
+            parameters:
+              subscriptionId: $(newSpoke-SubscriptionId)
+              csmParametersFile: /$(parameterPath)/governance/defenderForCloud/defenderForCloudTier.json
+              azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}
+              location: ${{ parameters.location }}
+              templateRepo: ${{ variables.templateRepo }}
+              templateProject: ${{ variables.templateProject }}
+              version: ${{ variables.version }}
+
+      - job: defenderForCloudSettings
+        displayName: Defender for Cloud Settings
+        dependsOn:
+          - managementGroupMove
+          - defenderForCloudPricingTier
+        steps:
+          - template: /Features/DefenderForCloudSettings/Pipeline/tasks.yaml@Templates
+            parameters:
+              subscriptionId: $(newSpoke-SubscriptionId)
+              csmParametersFile: /$(parameterPath)/governance/defenderForCloud/defenderForCloudSettings.json
+              azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}
+              location: ${{ parameters.location }}
+              templateRepo: ${{ variables.templateRepo }}
+              templateProject: ${{ variables.templateProject }}
+              version: ${{ variables.version }}

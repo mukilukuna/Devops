@@ -1,0 +1,54 @@
+variables:
+
+## Budget
+
+  - name: budget
+    value: 1000
+  - name: contactEmails
+    value: "rana.kisoensingh@opgroen.nl"
+
+## Resource Organization
+  - name: newSpoke-SubscriptionId
+    value: 2b66c6ee-7cc5-4c1b-9fc5-70554986a77b
+  - name: newSpoke-subscriptionName
+    value: sub-cfp-workload-a-weu-01
+  - name: newSpoke-managementGroupId
+    value: mg-onboarding
+  - name: location
+    value: westeurope
+
+## Tags
+  - name: CostCenterTag
+    value: IT
+  - name: OwnerTag
+    value: IT
+  - name: EnvironmentTag
+    value: Acceptance
+  - name: WorkloadNameTag
+    value: CFP
+  - name: ApplicationNameTag
+    value: workload
+  - name: ManagedByTag
+    value: IT
+
+## Naming Convention
+  - name: workloadName
+    value: cfp
+  - name: applicationName
+    value: workload
+  - name: environmentName
+    value: a
+  - name: regionName
+    value: weu
+  - name: vNetIndex
+    value: '01'
+
+## Networking
+  - name: vNetCidrRange
+    value: "10.143.20.0/23"
+  - name: hubAddressSpacePrefix
+    value: "10.143.0"
+  - name: hubSubscriptionId
+    value: a3208214-d402-41dc-ac44-dc0d68ac1e90
+  - name: hubConnectivityResourceGroup
+    value: rg-infr-connectivity-p-weu-01

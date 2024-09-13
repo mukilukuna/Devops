@@ -1,0 +1,2546 @@
+{
+  "MainYaml": {
+    "prefix": "InSpark-MainYaml",
+    "body": [
+      "trigger: none",
+      "",
+      "pool:",
+      "  vmImage: 'ubuntu-latest'",
+      "",
+      "resources:",
+      "  repositories:",
+      "    - repository: templates",
+      "      type: git",
+      "      name: BRCTemplates",
+      "",
+      "variables:",
+      "  - template: ./variables.yaml # Global Variables",
+      "",
+      "stages:",
+      "  - template: stages/<stageName>.yaml",
+      "    parameters:",
+      "      azureResourceManagerConnection: $(azureResourceManagerConnection)",
+      "      subscriptionId: $(subscriptionId)",
+      "      variableGroup: $(variableGroup)",
+      "      variableFile: /variables.yaml",
+      "",
+      "  "
+    ],
+    "description": "Main Yaml Template",
+    "scope": "yaml, azure-pipelines"
+  },
+  "StageReference": {
+    "prefix": "InSpark-NewStageReference",
+    "body": [
+      "- template: stages/<stageName>.yaml",
+      "  parameters:",
+      "    azureResourceManagerConnection: $(azureResourceManagerConnection)",
+      "    subscriptionId: $(subscriptionId)",
+      "    variableGroup: $(variableGroup)",
+      "    variableFile: /variables.yaml",
+      "",
+      "  "
+    ],
+    "description": "Stage Reference Template",
+    "scope": "yaml, azure-pipelines"
+  },
+  "Stage": {
+    "prefix": "InSpark-NewStage",
+    "body": [
+      "parameters:",
+      "  - name: azureResourceManagerConnection",
+      "    type: string",
+      "  - name: location",
+      "    type: string",
+      "    default: 'westeurope'",
+      "  - name: subscriptionId # Replace with or add managementGroupId if needed",
+      "    type: string",
+      "  - name: variableGroup",
+      "    type: string",
+      "  - name: variableFile",
+      "    type: string",
+      "  - name: AZURE_DEVOPS_EXT_PAT",
+      "    type: string",
+      "    default: $(System.AccessToken)",
+      "  - name: organization",
+      "    type: string",
+      "    default: $(System.TeamFoundationCollectionUri)",
+      "  - name: project",
+      "    type: string",
+      "    default: $(System.TeamProject)",
+      "",
+      "stages:",
+      "  - stage: <stageName>",
+      "    displayName: <displayName>",
+      "    variables:",
+      "    - template: ${{ parameters.variableFile }}",
+      "",
+      "    jobs:",
+      "      - job: <jobName>",
+      "        displayName: <displayName>",
+      "        dependsOn: # Optional dependencies",
+      "        steps:",
+      "          "
+    ],
+    "description": "Stage Template",
+    "scope": "yaml, azure-pipelines"
+  },
+  "Job": {
+    "prefix": "InSpark-NewJob",
+    "body": [
+      "- job: <jobName>",
+      "  displayName: <displayName>",
+      "  dependsOn: # Optional dependencies",
+      "  steps:",
+      "    "
+    ],
+    "description": "Job Template",
+    "scope": "yaml, azure-pipelines"
+  },
+  "AddIdVariableToVariableGroup": {
+    "prefix": "InSpark-AddIdVariableToVariableGroup",
+    "body": [
+      "- ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:",
+      "  - template: /.Global/Pipelines/addVariableToVariableGroup.yaml@Templates",
+      "    parameters:",
+      "      AZURE_DEVOPS_EXT_PAT: ${{ parameters.AZURE_DEVOPS_EXT_PAT }}",
+      "      organization: ${{ parameters.organization }}",
+      "      project: ${{ parameters.project }}",
+      "      varKey: $(outputPrefix)-<resource>Id",
+      "      varValue: $(resourceId)",
+      "      isSecret: false",
+      "      environment: ${{ parameters.variableGroup }}",
+      "      templateRepo: ${{ variables.templateRepo }}",
+      "",
+      ""
+    ],
+    "description": "Add Resource Id Variable To Variable Group",
+    "scope": "yaml, azure-pipelines"
+  },
+  "AddNameVariableToVariableGroup": {
+    "prefix": "InSpark-AddNameVariableToVariableGroup",
+    "body": [
+      "- ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:",
+      "  - template: /.Global/Pipelines/addVariableToVariableGroup.yaml@Templates",
+      "    parameters:",
+      "      AZURE_DEVOPS_EXT_PAT: ${{ parameters.AZURE_DEVOPS_EXT_PAT }}",
+      "      organization: ${{ parameters.organization }}",
+      "      project: ${{ parameters.project }}",
+      "      varKey: $(outputPrefix)-<resource>Name",
+      "      varValue: $(resourceName)",
+      "      isSecret: false",
+      "      environment: ${{ parameters.variableGroup }}",
+      "      templateRepo: ${{ variables.templateRepo }}",
+      "",
+      ""
+    ],
+    "description": "Add Resource Name Variable To Variable Group",
+    "scope": "yaml, azure-pipelines"
+  },
+  "ActionGroup": {
+    "prefix": "InSpark-ActionGroup",
+    "body": [
+      "- template: /Features/ActionGroup/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/ActionGroup.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: ActionGroup",
+    "scope": "yaml, azure-pipelines"
+  },
+  "AlertBudget": {
+    "prefix": "InSpark-AlertBudget",
+    "body": [
+      "- template: /Features/AlertBudget/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(subscriptionName)/AlertBudget.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: AlertBudget",
+    "scope": "yaml, azure-pipelines"
+  },
+  "AnalysisServices": {
+    "prefix": "InSpark-AnalysisServices",
+    "body": [
+      "- template: /Features/AnalysisServices/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/AnalysisServices.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: AnalysisServices",
+    "scope": "yaml, azure-pipelines"
+  },
+  "APIManagement": {
+    "prefix": "InSpark-APIManagement",
+    "body": [
+      "- template: /Features/APIManagement/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/APIManagement.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: APIManagement",
+    "scope": "yaml, azure-pipelines"
+  },
+  "ApplicationGateway": {
+    "prefix": "InSpark-ApplicationGateway",
+    "body": [
+      "- template: /Features/ApplicationGateway/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/ApplicationGateway.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: ApplicationGateway",
+    "scope": "yaml, azure-pipelines"
+  },
+  "ApplicationGatewayWafPolicy": {
+    "prefix": "InSpark-ApplicationGatewayWafPolicy",
+    "body": [
+      "- template: /Features/ApplicationGatewayWafPolicy/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/ApplicationGatewayWafPolicy.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: ApplicationGatewayWafPolicy",
+    "scope": "yaml, azure-pipelines"
+  },
+  "ApplicationInsights": {
+    "prefix": "InSpark-ApplicationInsights",
+    "body": [
+      "- template: /Features/ApplicationInsights/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/ApplicationInsights.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: ApplicationInsights",
+    "scope": "yaml, azure-pipelines"
+  },
+  "ApplicationSecurityGroup": {
+    "prefix": "InSpark-ApplicationSecurityGroup",
+    "body": [
+      "- template: /Features/ApplicationSecurityGroup/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/ApplicationSecurityGroup.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: ApplicationSecurityGroup",
+    "scope": "yaml, azure-pipelines"
+  },
+  "AppServiceEnvironment": {
+    "prefix": "InSpark-AppServiceEnvironment",
+    "body": [
+      "- template: /Features/AppServiceEnvironment/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/AppServiceEnvironment.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: AppServiceEnvironment",
+    "scope": "yaml, azure-pipelines"
+  },
+  "AppServicePlan": {
+    "prefix": "InSpark-AppServicePlan",
+    "body": [
+      "- template: /Features/AppServicePlan/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/AppServicePlan.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: AppServicePlan",
+    "scope": "yaml, azure-pipelines"
+  },
+  "AutomationAccount": {
+    "prefix": "InSpark-AutomationAccount",
+    "body": [
+      "- template: /Features/AutomationAccount/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/AutomationAccount.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: AutomationAccount",
+    "scope": "yaml, azure-pipelines"
+  },
+  "Autoscale": {
+    "prefix": "InSpark-Autoscale",
+    "body": [
+      "- template: /Features/Autoscale/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/Autoscale.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: Autoscale",
+    "scope": "yaml, azure-pipelines"
+  },
+  "AVDApplication": {
+    "prefix": "InSpark-AVDApplication",
+    "body": [
+      "- template: /Features/AVDApplication/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/AVDApplication.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: AVDApplication",
+    "scope": "yaml, azure-pipelines"
+  },
+  "AVDApplicationGroup": {
+    "prefix": "InSpark-AVDApplicationGroup",
+    "body": [
+      "- template: /Features/AVDApplicationGroup/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/AVDApplicationGroup.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: AVDApplicationGroup",
+    "scope": "yaml, azure-pipelines"
+  },
+  "AVDHost": {
+    "prefix": "InSpark-AVDHost",
+    "body": [
+      "- template: /Features/AVDHost/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/AVDHost.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: AVDHost",
+    "scope": "yaml, azure-pipelines"
+  },
+  "AVDHostPool": {
+    "prefix": "InSpark-AVDHostPool",
+    "body": [
+      "- template: /Features/AVDHostPool/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/AVDHostPool.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: AVDHostPool",
+    "scope": "yaml, azure-pipelines"
+  },
+  "AVDWorkspace": {
+    "prefix": "InSpark-AVDWorkspace",
+    "body": [
+      "- template: /Features/AVDWorkspace/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/AVDWorkspace.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: AVDWorkspace",
+    "scope": "yaml, azure-pipelines"
+  },
+  "AzureBastion": {
+    "prefix": "InSpark-AzureBastion",
+    "body": [
+      "- template: /Features/AzureBastion/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/AzureBastion.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: AzureBastion",
+    "scope": "yaml, azure-pipelines"
+  },
+  "AzureCognitiveSearch": {
+    "prefix": "InSpark-AzureCognitiveSearch",
+    "body": [
+      "- template: /Features/AzureCognitiveSearch/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/AzureCognitiveSearch.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: AzureCognitiveSearch",
+    "scope": "yaml, azure-pipelines"
+  },
+  "AzureComputeGallery": {
+    "prefix": "InSpark-AzureComputeGallery",
+    "body": [
+      "- template: /Features/AzureComputeGallery/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/AzureComputeGallery.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: AzureComputeGallery",
+    "scope": "yaml, azure-pipelines"
+  },
+  "AzureContainerAppEnvironment": {
+    "prefix": "InSpark-AzureContainerAppEnvironment",
+    "body": [
+      "- template: /Features/AzureContainerAppEnvironment/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/AzureContainerAppEnvironment.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: AzureContainerAppEnvironment",
+    "scope": "yaml, azure-pipelines"
+  },
+  "AzureContainerApps": {
+    "prefix": "InSpark-AzureContainerApps",
+    "body": [
+      "- template: /Features/AzureContainerApps/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/AzureContainerApps.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: AzureContainerApps",
+    "scope": "yaml, azure-pipelines"
+  },
+  "AzureContainerInstance": {
+    "prefix": "InSpark-AzureContainerInstance",
+    "body": [
+      "- template: /Features/AzureContainerInstance/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/AzureContainerInstance.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: AzureContainerInstance",
+    "scope": "yaml, azure-pipelines"
+  },
+  "AzureContainerRegistry": {
+    "prefix": "InSpark-AzureContainerRegistry",
+    "body": [
+      "- template: /Features/AzureContainerRegistry/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/AzureContainerRegistry.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: AzureContainerRegistry",
+    "scope": "yaml, azure-pipelines"
+  },
+  "AzureFirewall": {
+    "prefix": "InSpark-AzureFirewall",
+    "body": [
+      "- template: /Features/AzureFirewall/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/AzureFirewall.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: AzureFirewall",
+    "scope": "yaml, azure-pipelines"
+  },
+  "AzureFirewallPolicy": {
+    "prefix": "InSpark-AzureFirewallPolicy",
+    "body": [
+      "- template: /Features/AzureFirewallPolicy/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/AzureFirewallPolicy.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: AzureFirewallPolicy",
+    "scope": "yaml, azure-pipelines"
+  },
+  "AzureFirewallRuleCollection": {
+    "prefix": "InSpark-AzureFirewallRuleCollection",
+    "body": [
+      "- template: /Features/AzureFirewallRuleCollection/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/AzureFirewallRuleCollection.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: AzureFirewallRuleCollection",
+    "scope": "yaml, azure-pipelines"
+  },
+  "AzureFrontDoor": {
+    "prefix": "InSpark-AzureFrontDoor",
+    "body": [
+      "- template: /Features/AzureFrontDoor/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/AzureFrontDoor.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: AzureFrontDoor",
+    "scope": "yaml, azure-pipelines"
+  },
+  "AzureFrontDoorWafPolicy": {
+    "prefix": "InSpark-AzureFrontDoorWafPolicy",
+    "body": [
+      "- template: /Features/AzureFrontDoorWafPolicy/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/AzureFrontDoorWafPolicy.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: AzureFrontDoorWafPolicy",
+    "scope": "yaml, azure-pipelines"
+  },
+  "AzureKubernetesService": {
+    "prefix": "InSpark-AzureKubernetesService",
+    "body": [
+      "- template: /Features/AzureKubernetesService/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/AzureKubernetesService.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: AzureKubernetesService",
+    "scope": "yaml, azure-pipelines"
+  },
+  "AzureMariaDBDatabase": {
+    "prefix": "InSpark-AzureMariaDBDatabase",
+    "body": [
+      "- template: /Features/AzureMariaDBDatabase/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/AzureMariaDBDatabase.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: AzureMariaDBDatabase",
+    "scope": "yaml, azure-pipelines"
+  },
+  "AzureMariaDBServer": {
+    "prefix": "InSpark-AzureMariaDBServer",
+    "body": [
+      "- template: /Features/AzureMariaDBServer/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/AzureMariaDBServer.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: AzureMariaDBServer",
+    "scope": "yaml, azure-pipelines"
+  },
+  "AzureMonitorPrivateLinkScopes": {
+    "prefix": "InSpark-AzureMonitorPrivateLinkScopes",
+    "body": [
+      "- template: /Features/AzureMonitorPrivateLinkScopes/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/AzureMonitorPrivateLinkScopes.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: AzureMonitorPrivateLinkScopes",
+    "scope": "yaml, azure-pipelines"
+  },
+  "AzureMonitorWorkbook": {
+    "prefix": "InSpark-AzureMonitorWorkbook",
+    "body": [
+      "- template: /Features/AzureMonitorWorkbook/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/AzureMonitorWorkbook.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: AzureMonitorWorkbook",
+    "scope": "yaml, azure-pipelines"
+  },
+  "AzureSQLDatabase": {
+    "prefix": "InSpark-AzureSQLDatabase",
+    "body": [
+      "- template: /Features/AzureSQLDatabase/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/AzureSQLDatabase.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: AzureSQLDatabase",
+    "scope": "yaml, azure-pipelines"
+  },
+  "AzureSQLElasticPool": {
+    "prefix": "InSpark-AzureSQLElasticPool",
+    "body": [
+      "- template: /Features/AzureSQLElasticPool/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/AzureSQLElasticPool.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: AzureSQLElasticPool",
+    "scope": "yaml, azure-pipelines"
+  },
+  "AzureSQLFailoverGroup": {
+    "prefix": "InSpark-AzureSQLFailoverGroup",
+    "body": [
+      "- template: /Features/AzureSQLFailoverGroup/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/AzureSQLFailoverGroup.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: AzureSQLFailoverGroup",
+    "scope": "yaml, azure-pipelines"
+  },
+  "AzureSQLServer": {
+    "prefix": "InSpark-AzureSQLServer",
+    "body": [
+      "- template: /Features/AzureSQLServer/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/AzureSQLServer.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: AzureSQLServer",
+    "scope": "yaml, azure-pipelines"
+  },
+  "ContentDeliveryNetwork": {
+    "prefix": "InSpark-ContentDeliveryNetwork",
+    "body": [
+      "- template: /Features/ContentDeliveryNetwork/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/ContentDeliveryNetwork.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: ContentDeliveryNetwork",
+    "scope": "yaml, azure-pipelines"
+  },
+  "ContentDeliveryNetworkWafPolicy": {
+    "prefix": "InSpark-ContentDeliveryNetworkWafPolicy",
+    "body": [
+      "- template: /Features/ContentDeliveryNetworkWafPolicy/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/ContentDeliveryNetworkWafPolicy.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: ContentDeliveryNetworkWafPolicy",
+    "scope": "yaml, azure-pipelines"
+  },
+  "DataFactoryV2": {
+    "prefix": "InSpark-DataFactoryV2",
+    "body": [
+      "- template: /Features/DataFactoryV2/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/DataFactoryV2.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: DataFactoryV2",
+    "scope": "yaml, azure-pipelines"
+  },
+  "DefenderForCloudSettings": {
+    "prefix": "InSpark-DefenderForCloudSettings",
+    "body": [
+      "- template: /Features/DefenderForCloudSettings/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(subscriptionName)/DefenderForCloudSettings.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: DefenderForCloudSettings",
+    "scope": "yaml, azure-pipelines"
+  },
+  "DiagnosticSettingsPolicies": {
+    "prefix": "InSpark-DiagnosticSettingsPolicies",
+    "body": [
+      "- template: /Solutions/DiagnosticSettingsPolicies/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(managementGroupName)/DiagnosticSettingsPolicies.json",
+      "    managementGroupId: ${{ parameters.managementGroupId }}",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Solution: DiagnosticSettingsPolicies",
+    "scope": "yaml, azure-pipelines"
+  },
+  "ExpressRouteCircuit": {
+    "prefix": "InSpark-ExpressRouteCircuit",
+    "body": [
+      "- template: /Features/ExpressRouteCircuit/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/ExpressRouteCircuit.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: ExpressRouteCircuit",
+    "scope": "yaml, azure-pipelines"
+  },
+  "ExpressRouteGateway": {
+    "prefix": "InSpark-ExpressRouteGateway",
+    "body": [
+      "- template: /Features/ExpressRouteGateway/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/ExpressRouteGateway.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: ExpressRouteGateway",
+    "scope": "yaml, azure-pipelines"
+  },
+  "FunctionApp": {
+    "prefix": "InSpark-FunctionApp",
+    "body": [
+      "- template: /Features/FunctionApp/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/FunctionApp.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: FunctionApp",
+    "scope": "yaml, azure-pipelines"
+  },
+  "GatewaySubnetRouteTable": {
+    "prefix": "InSpark-GatewaySubnetRouteTable",
+    "body": [
+      "- template: /Solutions/GatewaySubnetRouteTable/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/GatewaySubnetRouteTable.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Solution: GatewaySubnetRouteTable",
+    "scope": "yaml, azure-pipelines"
+  },
+  "HubExample": {
+    "prefix": "InSpark-HubExample",
+    "body": [
+      "- template: /Solutions/HubExample/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/HubExample.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Solution: HubExample",
+    "scope": "yaml, azure-pipelines"
+  },
+  "Image": {
+    "prefix": "InSpark-Image",
+    "body": [
+      "- template: /Features/Image/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/Image.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: Image",
+    "scope": "yaml, azure-pipelines"
+  },
+  "ImageVersion": {
+    "prefix": "InSpark-ImageVersion",
+    "body": [
+      "- template: /Features/ImageVersion/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/ImageVersion.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: ImageVersion",
+    "scope": "yaml, azure-pipelines"
+  },
+  "IpGroup": {
+    "prefix": "InSpark-IpGroup",
+    "body": [
+      "- template: /Features/IpGroup/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/IpGroup.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: IpGroup",
+    "scope": "yaml, azure-pipelines"
+  },
+  "KeyVault": {
+    "prefix": "InSpark-KeyVault",
+    "body": [
+      "- template: /Features/KeyVault/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/KeyVault.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: KeyVault",
+    "scope": "yaml, azure-pipelines"
+  },
+  "Lighthouse": {
+    "prefix": "InSpark-Lighthouse",
+    "body": [
+      "- template: /Features/Lighthouse/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(subscriptionName)/Lighthouse.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: Lighthouse",
+    "scope": "yaml, azure-pipelines"
+  },
+  "LoadBalancer": {
+    "prefix": "InSpark-LoadBalancer",
+    "body": [
+      "- template: /Features/LoadBalancer/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/LoadBalancer.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: LoadBalancer",
+    "scope": "yaml, azure-pipelines"
+  },
+  "LogAnalytics": {
+    "prefix": "InSpark-LogAnalytics",
+    "body": [
+      "- template: /Features/LogAnalytics/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/LogAnalytics.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: LogAnalytics",
+    "scope": "yaml, azure-pipelines"
+  },
+  "LogicApp": {
+    "prefix": "InSpark-LogicApp",
+    "body": [
+      "- template: /Features/LogicApp/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/LogicApp.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: LogicApp",
+    "scope": "yaml, azure-pipelines"
+  },
+  "ManagedCloudPolicies": {
+    "prefix": "InSpark-ManagedCloudPolicies",
+    "body": [
+      "- template: /Solutions/ManagedCloudPolicies/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(managementGroupName)/ManagedCloudPolicies.json",
+      "    managementGroupId: ${{ parameters.managementGroupId }}",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Solution: ManagedCloudPolicies",
+    "scope": "yaml, azure-pipelines"
+  },
+  "ManagementGroup": {
+    "prefix": "InSpark-ManagementGroup",
+    "body": [
+      "- template: /Features/ManagementGroup/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(tenantName)/ManagementGroup.json",
+      "",
+      ""
+    ],
+    "description": "Feature: ManagementGroup",
+    "scope": "yaml, azure-pipelines"
+  },
+  "NATGateway": {
+    "prefix": "InSpark-NATGateway",
+    "body": [
+      "- template: /Features/NATGateway/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/NATGateway.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: NATGateway",
+    "scope": "yaml, azure-pipelines"
+  },
+  "NetworkInterface": {
+    "prefix": "InSpark-NetworkInterface",
+    "body": [
+      "- template: /Features/NetworkInterface/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/NetworkInterface.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: NetworkInterface",
+    "scope": "yaml, azure-pipelines"
+  },
+  "NetworkSecurityGroup": {
+    "prefix": "InSpark-NetworkSecurityGroup",
+    "body": [
+      "- template: /Features/NetworkSecurityGroup/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/NetworkSecurityGroup.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: NetworkSecurityGroup",
+    "scope": "yaml, azure-pipelines"
+  },
+  "NetworkWatcherConnectionMonitor": {
+    "prefix": "InSpark-NetworkWatcherConnectionMonitor",
+    "body": [
+      "- template: /Features/NetworkWatcherConnectionMonitor/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/NetworkWatcherConnectionMonitor.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: NetworkWatcherConnectionMonitor",
+    "scope": "yaml, azure-pipelines"
+  },
+  "PoliciesSpoke": {
+    "prefix": "InSpark-PoliciesSpoke",
+    "body": [
+      "- template: /Solutions/PoliciesSpoke/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(managementGroupName)/PoliciesSpoke.json",
+      "    managementGroupId: ${{ parameters.managementGroupId }}",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Solution: PoliciesSpoke",
+    "scope": "yaml, azure-pipelines"
+  },
+  "PolicyAssignmentMG": {
+    "prefix": "InSpark-PolicyAssignmentMG",
+    "body": [
+      "- template: /Features/PolicyAssignmentMG/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(managementGroupName)/PolicyAssignmentMG.json",
+      "    managementGroupId: ${{ parameters.managementGroupId }}",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: PolicyAssignmentMG",
+    "scope": "yaml, azure-pipelines"
+  },
+  "PolicyAssignmentRG": {
+    "prefix": "InSpark-PolicyAssignmentRG",
+    "body": [
+      "- template: /Features/PolicyAssignmentRG/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/PolicyAssignmentRG.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: PolicyAssignmentRG",
+    "scope": "yaml, azure-pipelines"
+  },
+  "PolicyAssignmentSub": {
+    "prefix": "InSpark-PolicyAssignmentSub",
+    "body": [
+      "- template: /Features/PolicyAssignmentSub/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(subscriptionName)/PolicyAssignmentSub.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: PolicyAssignmentSub",
+    "scope": "yaml, azure-pipelines"
+  },
+  "PolicyDefinition": {
+    "prefix": "InSpark-PolicyDefinition",
+    "body": [
+      "- template: /Features/PolicyDefinition/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(managementGroupName)/PolicyDefinition.json",
+      "    managementGroupId: ${{ parameters.managementGroupId }}",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: PolicyDefinition",
+    "scope": "yaml, azure-pipelines"
+  },
+  "PolicyDefinitionSet": {
+    "prefix": "InSpark-PolicyDefinitionSet",
+    "body": [
+      "- template: /Features/PolicyDefinitionSet/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(managementGroupName)/PolicyDefinitionSet.json",
+      "    managementGroupId: ${{ parameters.managementGroupId }}",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: PolicyDefinitionSet",
+    "scope": "yaml, azure-pipelines"
+  },
+  "PolicyExemptionMG": {
+    "prefix": "InSpark-PolicyExemptionMG",
+    "body": [
+      "- template: /Features/PolicyExemptionMG/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(managementGroupName)/PolicyExemptionMG.json",
+      "    managementGroupId: ${{ parameters.managementGroupId }}",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: PolicyExemptionMG",
+    "scope": "yaml, azure-pipelines"
+  },
+  "PolicyExemptionRG": {
+    "prefix": "InSpark-PolicyExemptionRG",
+    "body": [
+      "- template: /Features/PolicyExemptionRG/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/PolicyExemptionRG.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: PolicyExemptionRG",
+    "scope": "yaml, azure-pipelines"
+  },
+  "PolicyExemptionSub": {
+    "prefix": "InSpark-PolicyExemptionSub",
+    "body": [
+      "- template: /Features/PolicyExemptionSub/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(subscriptionName)/PolicyExemptionSub.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: PolicyExemptionSub",
+    "scope": "yaml, azure-pipelines"
+  },
+  "PowerBIEmbedded": {
+    "prefix": "InSpark-PowerBIEmbedded",
+    "body": [
+      "- template: /Features/PowerBIEmbedded/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/PowerBIEmbedded.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: PowerBIEmbedded",
+    "scope": "yaml, azure-pipelines"
+  },
+  "PrivateDNSZones": {
+    "prefix": "InSpark-PrivateDNSZones",
+    "body": [
+      "- template: /Features/PrivateDNSZones/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/PrivateDNSZones.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: PrivateDNSZones",
+    "scope": "yaml, azure-pipelines"
+  },
+  "PrivateDNSZonesLink": {
+    "prefix": "InSpark-PrivateDNSZonesLink",
+    "body": [
+      "- template: /Features/PrivateDNSZonesLink/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/PrivateDNSZonesLink.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: PrivateDNSZonesLink",
+    "scope": "yaml, azure-pipelines"
+  },
+  "PrivateDNSZonesRecord": {
+    "prefix": "InSpark-PrivateDNSZonesRecord",
+    "body": [
+      "- template: /Features/PrivateDNSZonesRecord/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/PrivateDNSZonesRecord.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: PrivateDNSZonesRecord",
+    "scope": "yaml, azure-pipelines"
+  },
+  "PrivateLink": {
+    "prefix": "InSpark-PrivateLink",
+    "body": [
+      "- template: /Features/PrivateLink/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/PrivateLink.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: PrivateLink",
+    "scope": "yaml, azure-pipelines"
+  },
+  "PublicIP": {
+    "prefix": "InSpark-PublicIP",
+    "body": [
+      "- template: /Features/PublicIP/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/PublicIP.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: PublicIP",
+    "scope": "yaml, azure-pipelines"
+  },
+  "RecoveryServicesVault": {
+    "prefix": "InSpark-RecoveryServicesVault",
+    "body": [
+      "- template: /Features/RecoveryServicesVault/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/RecoveryServicesVault.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: RecoveryServicesVault",
+    "scope": "yaml, azure-pipelines"
+  },
+  "RecoveryServicesVaultBackupItem": {
+    "prefix": "InSpark-RecoveryServicesVaultBackupItem",
+    "body": [
+      "- template: /Features/RecoveryServicesVaultBackupItem/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/RecoveryServicesVaultBackupItem.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: RecoveryServicesVaultBackupItem",
+    "scope": "yaml, azure-pipelines"
+  },
+  "RecoveryServicesVaultBackupPolicy": {
+    "prefix": "InSpark-RecoveryServicesVaultBackupPolicy",
+    "body": [
+      "- template: /Features/RecoveryServicesVaultBackupPolicy/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/RecoveryServicesVaultBackupPolicy.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: RecoveryServicesVaultBackupPolicy",
+    "scope": "yaml, azure-pipelines"
+  },
+  "RedisCache": {
+    "prefix": "InSpark-RedisCache",
+    "body": [
+      "- template: /Features/RedisCache/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/RedisCache.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: RedisCache",
+    "scope": "yaml, azure-pipelines"
+  },
+  "ResourceGroup": {
+    "prefix": "InSpark-ResourceGroup",
+    "body": [
+      "- template: /Features/ResourceGroup/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(subscriptionName)/ResourceGroup.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: ResourceGroup",
+    "scope": "yaml, azure-pipelines"
+  },
+  "ResourceGroupLock": {
+    "prefix": "InSpark-ResourceGroupLock",
+    "body": [
+      "- template: /Features/ResourceGroupLock/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/ResourceGroupLock.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: ResourceGroupLock",
+    "scope": "yaml, azure-pipelines"
+  },
+  "RoleAssignmentMG": {
+    "prefix": "InSpark-RoleAssignmentMG",
+    "body": [
+      "- template: /Features/RoleAssignmentMG/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(managementGroupName)/RoleAssignmentMG.json",
+      "    managementGroupId: ${{ parameters.managementGroupId }}",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: RoleAssignmentMG",
+    "scope": "yaml, azure-pipelines"
+  },
+  "RoleAssignmentRG": {
+    "prefix": "InSpark-RoleAssignmentRG",
+    "body": [
+      "- template: /Features/RoleAssignmentRG/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/RoleAssignmentRG.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: RoleAssignmentRG",
+    "scope": "yaml, azure-pipelines"
+  },
+  "RoleAssignmentSub": {
+    "prefix": "InSpark-RoleAssignmentSub",
+    "body": [
+      "- template: /Features/RoleAssignmentSub/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(subscriptionName)/RoleAssignmentSub.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: RoleAssignmentSub",
+    "scope": "yaml, azure-pipelines"
+  },
+  "RoleAssignmentTenant": {
+    "prefix": "InSpark-RoleAssignmentTenant",
+    "body": [
+      "- template: /Features/RoleAssignmentTenant/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(tenantName)/RoleAssignmentTenant.json",
+      "",
+      ""
+    ],
+    "description": "Feature: RoleAssignmentTenant",
+    "scope": "yaml, azure-pipelines"
+  },
+  "RoleDefinition": {
+    "prefix": "InSpark-RoleDefinition",
+    "body": [
+      "- template: /Features/RoleDefinition/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(managementGroupName)/RoleDefinition.json",
+      "    managementGroupId: ${{ parameters.managementGroupId }}",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: RoleDefinition",
+    "scope": "yaml, azure-pipelines"
+  },
+  "RouteTable": {
+    "prefix": "InSpark-RouteTable",
+    "body": [
+      "- template: /Features/RouteTable/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/RouteTable.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: RouteTable",
+    "scope": "yaml, azure-pipelines"
+  },
+  "SecurityCenter": {
+    "prefix": "InSpark-SecurityCenter",
+    "body": [
+      "- template: /Features/SecurityCenter/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(subscriptionName)/SecurityCenter.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: SecurityCenter",
+    "scope": "yaml, azure-pipelines"
+  },
+  "SelfHostedAgents": {
+    "prefix": "InSpark-SelfHostedAgents",
+    "body": [
+      "- template: /Solutions/SelfHostedAgents/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/SelfHostedAgents.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Solution: SelfHostedAgents",
+    "scope": "yaml, azure-pipelines"
+  },
+  "ServiceBus": {
+    "prefix": "InSpark-ServiceBus",
+    "body": [
+      "- template: /Features/ServiceBus/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/ServiceBus.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: ServiceBus",
+    "scope": "yaml, azure-pipelines"
+  },
+  "SQLManagedInstance": {
+    "prefix": "InSpark-SQLManagedInstance",
+    "body": [
+      "- template: /Features/SQLManagedInstance/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/SQLManagedInstance.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: SQLManagedInstance",
+    "scope": "yaml, azure-pipelines"
+  },
+  "StorageAccount": {
+    "prefix": "InSpark-StorageAccount",
+    "body": [
+      "- template: /Features/StorageAccount/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/StorageAccount.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: StorageAccount",
+    "scope": "yaml, azure-pipelines"
+  },
+  "StorageAccountContainer": {
+    "prefix": "InSpark-StorageAccountContainer",
+    "body": [
+      "- template: /Features/StorageAccountContainer/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/StorageAccountContainer.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: StorageAccountContainer",
+    "scope": "yaml, azure-pipelines"
+  },
+  "StorageAccountFileShare": {
+    "prefix": "InSpark-StorageAccountFileShare",
+    "body": [
+      "- template: /Features/StorageAccountFileShare/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/StorageAccountFileShare.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: StorageAccountFileShare",
+    "scope": "yaml, azure-pipelines"
+  },
+  "Subscription": {
+    "prefix": "InSpark-Subscription",
+    "body": [
+      "- template: /Features/Subscription/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(managementGroupName)/Subscription.json",
+      "    managementGroupId: ${{ parameters.managementGroupId }}",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: Subscription",
+    "scope": "yaml, azure-pipelines"
+  },
+  "SubscriptionDiagnostics": {
+    "prefix": "InSpark-SubscriptionDiagnostics",
+    "body": [
+      "- template: /Features/SubscriptionDiagnostics/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(subscriptionName)/SubscriptionDiagnostics.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: SubscriptionDiagnostics",
+    "scope": "yaml, azure-pipelines"
+  },
+  "SubscriptionMove": {
+    "prefix": "InSpark-SubscriptionMove",
+    "body": [
+      "- template: /Features/SubscriptionMove/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(managementGroupName)/SubscriptionMove.json",
+      "    managementGroupId: ${{ parameters.managementGroupId }}",
+      "    location: ${{ parameters.location }}",
+      "    # Optional. Set both if you want to set the subscription name. subscriptionId: ${{ parameters.subscriptionId }}",
+      "    # Optional. Set both if you want to set the subscription name. subscriptionName: $(subscriptionName)",
+      "",
+      ""
+    ],
+    "description": "Feature: SubscriptionMove",
+    "scope": "yaml, azure-pipelines"
+  },
+  "SubscriptionTag": {
+    "prefix": "InSpark-SubscriptionTag",
+    "body": [
+      "- template: /Features/SubscriptionTag/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(subscriptionName)/SubscriptionTag.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: SubscriptionTag",
+    "scope": "yaml, azure-pipelines"
+  },
+  "SubscriptionTaggingPolicies": {
+    "prefix": "InSpark-SubscriptionTaggingPolicies",
+    "body": [
+      "- template: /Solutions/SubscriptionTaggingPolicies/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(managementGroupName)/SubscriptionTaggingPolicies.json",
+      "    managementGroupId: ${{ parameters.managementGroupId }}",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Solution: SubscriptionTaggingPolicies",
+    "scope": "yaml, azure-pipelines"
+  },
+  "TrafficManager": {
+    "prefix": "InSpark-TrafficManager",
+    "body": [
+      "- template: /Features/TrafficManager/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/TrafficManager.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: TrafficManager",
+    "scope": "yaml, azure-pipelines"
+  },
+  "TrafficManagerEndpoint": {
+    "prefix": "InSpark-TrafficManagerEndpoint",
+    "body": [
+      "- template: /Features/TrafficManagerEndpoint/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/TrafficManagerEndpoint.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: TrafficManagerEndpoint",
+    "scope": "yaml, azure-pipelines"
+  },
+  "UpdateManagement": {
+    "prefix": "InSpark-UpdateManagement",
+    "body": [
+      "- template: /Features/UpdateManagement/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/UpdateManagement.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: UpdateManagement",
+    "scope": "yaml, azure-pipelines"
+  },
+  "UserAssignedIdentity": {
+    "prefix": "InSpark-UserAssignedIdentity",
+    "body": [
+      "- template: /Features/UserAssignedIdentity/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/UserAssignedIdentity.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: UserAssignedIdentity",
+    "scope": "yaml, azure-pipelines"
+  },
+  "VirtualMachine": {
+    "prefix": "InSpark-VirtualMachine",
+    "body": [
+      "- template: /Features/VirtualMachine/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/VirtualMachine.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: VirtualMachine",
+    "scope": "yaml, azure-pipelines"
+  },
+  "VirtualNetwork": {
+    "prefix": "InSpark-VirtualNetwork",
+    "body": [
+      "- template: /Features/VirtualNetwork/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/VirtualNetwork.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: VirtualNetwork",
+    "scope": "yaml, azure-pipelines"
+  },
+  "VirtualNetworkGateway": {
+    "prefix": "InSpark-VirtualNetworkGateway",
+    "body": [
+      "- template: /Features/VirtualNetworkGateway/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/VirtualNetworkGateway.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: VirtualNetworkGateway",
+    "scope": "yaml, azure-pipelines"
+  },
+  "VirtualNetworkPeering": {
+    "prefix": "InSpark-VirtualNetworkPeering",
+    "body": [
+      "- template: /Features/VirtualNetworkPeering/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/VirtualNetworkPeering.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: VirtualNetworkPeering",
+    "scope": "yaml, azure-pipelines"
+  },
+  "VirtualNetworkSubnet": {
+    "prefix": "InSpark-VirtualNetworkSubnet",
+    "body": [
+      "- template: /Features/VirtualNetworkSubnet/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/VirtualNetworkSubnet.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: VirtualNetworkSubnet",
+    "scope": "yaml, azure-pipelines"
+  },
+  "VirtualWan": {
+    "prefix": "InSpark-VirtualWan",
+    "body": [
+      "- template: /Features/VirtualWan/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/VirtualWan.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: VirtualWan",
+    "scope": "yaml, azure-pipelines"
+  },
+  "VirtualWanExpressRouteConnection": {
+    "prefix": "InSpark-VirtualWanExpressRouteConnection",
+    "body": [
+      "- template: /Features/VirtualWanExpressRouteConnection/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/VirtualWanExpressRouteConnection.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: VirtualWanExpressRouteConnection",
+    "scope": "yaml, azure-pipelines"
+  },
+  "VirtualWanExpressRouteGateway": {
+    "prefix": "InSpark-VirtualWanExpressRouteGateway",
+    "body": [
+      "- template: /Features/VirtualWanExpressRouteGateway/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/VirtualWanExpressRouteGateway.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: VirtualWanExpressRouteGateway",
+    "scope": "yaml, azure-pipelines"
+  },
+  "VirtualWanFirewall": {
+    "prefix": "InSpark-VirtualWanFirewall",
+    "body": [
+      "- template: /Features/VirtualWanFirewall/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/VirtualWanFirewall.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: VirtualWanFirewall",
+    "scope": "yaml, azure-pipelines"
+  },
+  "VirtualWanHub": {
+    "prefix": "InSpark-VirtualWanHub",
+    "body": [
+      "- template: /Features/VirtualWanHub/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/VirtualWanHub.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: VirtualWanHub",
+    "scope": "yaml, azure-pipelines"
+  },
+  "VirtualWanHubRouteTable": {
+    "prefix": "InSpark-VirtualWanHubRouteTable",
+    "body": [
+      "- template: /Features/VirtualWanHubRouteTable/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/VirtualWanHubRouteTable.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: VirtualWanHubRouteTable",
+    "scope": "yaml, azure-pipelines"
+  },
+  "VirtualWanP2SServerConfiguration": {
+    "prefix": "InSpark-VirtualWanP2SServerConfiguration",
+    "body": [
+      "- template: /Features/VirtualWanP2SServerConfiguration/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/VirtualWanP2SServerConfiguration.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: VirtualWanP2SServerConfiguration",
+    "scope": "yaml, azure-pipelines"
+  },
+  "VirtualWanP2SVPNGateway": {
+    "prefix": "InSpark-VirtualWanP2SVPNGateway",
+    "body": [
+      "- template: /Features/VirtualWanP2SVPNGateway/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/VirtualWanP2SVPNGateway.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: VirtualWanP2SVPNGateway",
+    "scope": "yaml, azure-pipelines"
+  },
+  "VirtualWanRouteTable": {
+    "prefix": "InSpark-VirtualWanRouteTable",
+    "body": [
+      "- template: /Features/VirtualWanRouteTable/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/VirtualWanRouteTable.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: VirtualWanRouteTable",
+    "scope": "yaml, azure-pipelines"
+  },
+  "VirtualWanS2SVpnSite": {
+    "prefix": "InSpark-VirtualWanS2SVpnSite",
+    "body": [
+      "- template: /Features/VirtualWanS2SVpnSite/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/VirtualWanS2SVpnSite.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: VirtualWanS2SVpnSite",
+    "scope": "yaml, azure-pipelines"
+  },
+  "VirtualWanVirtualNetworkConnection": {
+    "prefix": "InSpark-VirtualWanVirtualNetworkConnection",
+    "body": [
+      "- template: /Features/VirtualWanVirtualNetworkConnection/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/VirtualWanVirtualNetworkConnection.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: VirtualWanVirtualNetworkConnection",
+    "scope": "yaml, azure-pipelines"
+  },
+  "VirtualWanVpnConnection": {
+    "prefix": "InSpark-VirtualWanVpnConnection",
+    "body": [
+      "- template: /Features/VirtualWanVpnConnection/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/VirtualWanVpnConnection.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: VirtualWanVpnConnection",
+    "scope": "yaml, azure-pipelines"
+  },
+  "VirtualWanVpnGateway": {
+    "prefix": "InSpark-VirtualWanVpnGateway",
+    "body": [
+      "- template: /Features/VirtualWanVpnGateway/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/VirtualWanVpnGateway.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: VirtualWanVpnGateway",
+    "scope": "yaml, azure-pipelines"
+  },
+  "VnetPeering": {
+    "prefix": "InSpark-VnetPeering",
+    "body": [
+      "- template: /Features/VnetPeering/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/VnetPeering.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: VnetPeering",
+    "scope": "yaml, azure-pipelines"
+  },
+  "VPNConnection": {
+    "prefix": "InSpark-VPNConnection",
+    "body": [
+      "- template: /Features/VPNConnection/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/VPNConnection.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: VPNConnection",
+    "scope": "yaml, azure-pipelines"
+  },
+  "WebApp": {
+    "prefix": "InSpark-WebApp",
+    "body": [
+      "- template: /Features/WebApp/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/WebApp.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: WebApp",
+    "scope": "yaml, azure-pipelines"
+  },
+  "WebAppDeploymentSlot": {
+    "prefix": "InSpark-WebAppDeploymentSlot",
+    "body": [
+      "- template: /Features/WebAppDeploymentSlot/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/WebAppDeploymentSlot.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: WebAppDeploymentSlot",
+    "scope": "yaml, azure-pipelines"
+  },
+  "WebAvailabilityTest": {
+    "prefix": "InSpark-WebAvailabilityTest",
+    "body": [
+      "- template: /Features/WebAvailabilityTest/Pipeline/tasks.yaml@templates",
+      "  parameters:",
+      "    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}",
+      "    templateRepo: ${{ variables.templateRepo }}",
+      "    templateProject: ${{ variables.templateProject }}",
+      "    version: ${{ variables.version }}",
+      "    csmParametersFile: /parameters/$(resourceGroupName)/WebAvailabilityTest.json",
+      "    subscriptionId: ${{ parameters.subscriptionId }}",
+      "    resourceGroupName: $(resourceGroupName)",
+      "    location: ${{ parameters.location }}",
+      "",
+      ""
+    ],
+    "description": "Feature: WebAvailabilityTest",
+    "scope": "yaml, azure-pipelines"
+  }
+}

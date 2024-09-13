@@ -1,0 +1,58 @@
+{
+  "name": "Deny-AZFW-sku",
+  "properties": {
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "displayName": "Azure Firewall should be deployed with correct sku",
+    "description": "This policy defines the allowed sku size for Azure Firewall",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "Network"
+    },
+    "parameters": {
+      "effect": {
+        "type": "String",
+        "allowedValues": [
+          "Audit",
+          "Deny",
+          "Disabled"
+        ],
+        "defaultValue": "Deny",
+        "metadata": {
+          "displayName": "Effect",
+          "description": "Enable or disable the execution of the policy"
+        }
+      },
+      "sku": {
+        "type": "String",
+        "allowedValues": [
+          "Basic",
+          "Standard",
+          "Premium"
+        ],
+        "defaultValue": "Standard",
+        "metadata": {
+          "displayName": "Allowed Azure Firewall SKU",
+          "description": "Which Azure Firewal SKU is allowed"
+        }
+      }
+    },
+    "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "Microsoft.Network/azureFirewalls/sku.name",
+              "exists": true
+            },
+            {
+              "field": "Microsoft.Network/azureFirewalls/sku.tier",
+              "notEquals": "[parameters('sku')]"
+            }
+          ]
+        },
+        "then": {
+          "effect": "[parameters('effect')]"
+        }
+      }
+    }
+  }

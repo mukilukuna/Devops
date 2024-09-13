@@ -1,0 +1,19 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "virtualNetworkResourceId": {
+      "value": "/subscriptions/31622cac-0e47-4fbf-b491-40b2e19c6e4c/resourceGroups/infr-weu-networking-rg/providers/Microsoft.Network/virtualNetworks/infr-weu-vnet-p"
+    },
+    "azureRegions": {
+      "value": [
+        "weu",
+        "neu",
+        "eus"
+      ]
+    },
+    "customPrivateLinkDnsZones": {
+      "value": []
+    }
+  }
+}

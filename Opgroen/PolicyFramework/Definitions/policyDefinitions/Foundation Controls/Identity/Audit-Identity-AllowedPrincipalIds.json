@@ -1,0 +1,53 @@
+{
+  "name": "Audit-Identity-AllowedPrincipalIds",
+  "properties": {
+    "Description": "This policy defines a white list of principal IDs that can be used in IAM.",
+    "DisplayName": "Identity: Allowed Principal Id's in Role Assignments",
+    "Mode": "All",
+    "Metadata": {
+      "version": "1.0.0",
+      "category": "Governance"
+    },
+    "Parameters": {
+      "principalIds": {
+        "type": "Array",
+        "metadata": {
+          "displayName": "Allowed Principal IDs",
+          "description": "The list of allowed Principal IDs."
+        }
+      },
+      "effect": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Effect",
+          "description": "Enable or disable the execution of the policy."
+        },
+        "allowedValues": [
+          "Deny",
+          "Audit",
+          "Disabled"
+        ],
+        "defaultValue": "Audit"
+      }
+    },
+    "PolicyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Authorization/roleAssignments"
+          },
+          {
+            "not": {
+              "field": "Microsoft.Authorization/roleAssignments/principalId",
+              "in": "[parameters('principalIds')]"
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "[parameters('effect')]"
+      }
+    }
+  }
+}

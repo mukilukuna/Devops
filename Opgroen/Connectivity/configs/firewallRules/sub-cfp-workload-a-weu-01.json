@@ -1,0 +1,43 @@
+{
+    "ruleCollectionGroupName": "azure-sub-ccs-workload-a-weu-01-collection-group",
+    "azureFirewallPolicyResourceName": "*<connWeu-azureFirewallPolicyLandingZones_ResourceName>*",
+    "priority": 100,
+    "ruleCollections": [
+        {
+            "ruleCollectionType": "FirewallPolicyFilterRuleCollection",
+            "name": "Allow-Inbound-Network-Rules",
+            "priority": 1000,
+            "action": {
+                "type": "Allow"
+            },
+            "rules": []
+        },
+        {
+            "ruleCollectionType": "FirewallPolicyFilterRuleCollection",
+            "name": "Allow-Outbound-Network-Rules",
+            "priority": 2000,
+            "action": {
+                "type": "Allow"
+            },
+            "rules": []
+        },
+        {
+            "ruleCollectionType": "FirewallPolicyFilterRuleCollection",
+            "name": "Allow-Inbound-Application-Rules",
+            "priority": 3000,
+            "action": {
+                "type": "Allow"
+            },
+            "rules": []
+        },
+        {
+            "ruleCollectionType": "FirewallPolicyFilterRuleCollection",
+            "name": "Allow-Outbound-Application-Rules",
+            "priority": 4000,
+            "action": {
+                "type": "Allow"
+            },
+            "rules": []
+        }
+    ]
+}

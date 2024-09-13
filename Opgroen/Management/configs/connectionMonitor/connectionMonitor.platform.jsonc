@@ -1,0 +1,70 @@
+{
+    "endpoints": [
+        {
+            "name": "*<mgmtWeu-virtualMachineNpm01_ResourceName>*(*<mgmtWeu-npmRG_ResourceName>*)",
+            "resourceId": "*<mgmtWeu-virtualMachineNpm01_ResourceId>*",
+            "type": "AzureVM",
+            "address": "*<mgmtWeu-virtualMachineNpm01_PrivateIp>*"
+        },
+        {
+            "name": "*<mgmtWeu-virtualMachineNpm02_ResourceName>*(*<mgmtWeu-npmRG_ResourceName>*)",
+            "resourceId": "*<mgmtWeu-virtualMachineNpm02_ResourceId>*",
+            "type": "AzureVM",
+            "address": "*<mgmtWeu-virtualMachineNpm02_PrivateIp>*"
+        },
+        {
+            "name": "*<connWeu-azureFirewall_PrivateIp>*",
+            "type": "ExternalAddress",
+            "address": "*<connWeu-azureFirewall_PrivateIp>*"
+        },
+        {
+            "name": "172.21.99.103",
+            "type": "ExternalAddress",
+            "address": "172.21.99.103"
+        }
+    ],
+    "testConfigurations": [
+        {
+            "name": "ICMP",
+            "testFrequencySec": 30,
+            "protocol": "ICMP",
+            "successThreshold": {
+                "checksFailedPercent": 10,
+                "roundTripTimeMs": 30
+            },
+            "icmpConfiguration": {
+                "disableTraceRoute": false
+            }
+        }
+    ],
+    "testGroups": [
+        {
+            "name": "mgmtWeu-firewallWeu",
+            "sources": [
+                "*<mgmtWeu-virtualMachineNpm01_ResourceName>*(*<mgmtWeu-npmRG_ResourceName>*)",
+                "*<mgmtWeu-virtualMachineNpm02_ResourceName>*(*<mgmtWeu-npmRG_ResourceName>*)"
+            ],
+            "destinations": [
+                "*<connWeu-azureFirewall_PrivateIp>*"
+            ],
+            "testConfigurations": [
+                "ICMP"
+            ],
+            "disable": false
+        },
+        {
+            "name": "mgmtWeu-onPremise",
+            "sources": [
+                "*<mgmtWeu-virtualMachineNpm01_ResourceName>*(*<mgmtWeu-npmRG_ResourceName>*)",
+                "*<mgmtWeu-virtualMachineNpm02_ResourceName>*(*<mgmtWeu-npmRG_ResourceName>*)"
+            ],
+            "destinations": [
+                "172.21.99.103"
+            ],
+            "testConfigurations": [
+                "ICMP"
+            ],
+            "disable": false
+        }
+    ]
+}

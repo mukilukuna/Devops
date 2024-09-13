@@ -1,0 +1,241 @@
+{
+  "ruleCollectionGroupName": "azure-platformManagement-collection-group",
+  "azureFirewallPolicyResourceName": "*<connWeu-azureFirewallPolicyFoundation_ResourceName>*",
+  "priority": 400,
+  "ruleCollections": [
+    {
+      "ruleCollectionType": "FirewallPolicyFilterRuleCollection",
+      "name": "Allow-Inbound-Network-Rules",
+      "priority": 1000,
+      "action": {
+        "type": "Allow"
+      },
+      "rules": []
+    },
+    {
+      "ruleCollectionType": "FirewallPolicyFilterRuleCollection",
+      "name": "Allow-Outbound-Network-Rules",
+      "priority": 2000,
+      "action": {
+        "type": "Allow"
+      },
+      "rules": []
+    },
+    {
+      "ruleCollectionType": "FirewallPolicyFilterRuleCollection",
+      "name": "Allow-Inbound-Application-Rules",
+      "priority": 3000,
+      "action": {
+        "type": "Allow"
+      },
+      "rules": []
+    },
+    {
+      "ruleCollectionType": "FirewallPolicyFilterRuleCollection",
+      "name": "Allow-Outbound-Application-Rules",
+      "priority": 4000,
+      "action": {
+        "type": "Allow"
+      },
+      "rules": [
+        {
+          "ruleType": "ApplicationRule",
+          "name": "Azure-Portal-Authentication",
+          "protocols": [
+            {
+              "protocolType": "Https",
+              "port": 443
+            },
+            {
+              "protocolType": "Http",
+              "port": 80
+            }
+          ],
+          "fqdnTags": [],
+          "webCategories": [],
+          "targetFqdns": [
+            "login.microsoft.com",
+            "login.microsoftonline.com",
+            "*.aadcdn.msftauth.net",
+            "*.aadcdn.msftauthimages.net",
+            "*.aadcdn.msauthimages.net",
+            "aadcdn.msauthimages.net",
+            "*.logincdn.msftauth.net",
+            "login.live.com",
+            "*.msauth.net",
+            "*.aadcdn.microsoftonline-p.com",
+            "*.microsoftonline-p.com",
+            "*..msftauth.net",
+            "*.msftauthimages.net",
+            "*.mcas.ms",
+            "*.cloudappsecurity.com",
+            "mcasproxy.azureedge.net"
+          ],
+          "targetUrls": [],
+          "terminateTLS": false,
+          "sourceAddresses": [
+            "*<mgmtAddressSpacePrefix>*.4",
+            "*<mgmtAddressSpacePrefix>*.5"
+          ],
+          "destinationAddresses": [],
+          "sourceIpGroups": []
+        },
+        {
+          "ruleType": "ApplicationRule",
+          "name": "Azure-Portal-Framework",
+          "protocols": [
+            {
+              "protocolType": "Https",
+              "port": 443
+            },
+            {
+              "protocolType": "Http",
+              "port": 80
+            }
+          ],
+          "fqdnTags": [],
+          "webCategories": [],
+          "targetFqdns": [
+            "portal.azure.com",
+            "*.portal.azure.com",
+            "*.hosting.portal.azure.net",
+            "*.reactblade.portal.azure.net",
+            "management.azure.com",
+            "*.ext.azure.com",
+            "*.graph.windows.net",
+            "*.graph.microsoft.com",
+            "graph.microsoft.com",
+            "graph.windows.net",
+            "*.portal.azure.net",
+            "*.nelreports.net",
+            "service.bmx.azure.com"
+          ],
+          "targetUrls": [],
+          "terminateTLS": false,
+          "sourceAddresses": [
+            "*<mgmtAddressSpacePrefix>*.4",
+            "*<mgmtAddressSpacePrefix>*.5"
+          ],
+          "destinationAddresses": [],
+          "sourceIpGroups": []
+        },
+        {
+          "ruleType": "ApplicationRule",
+          "name": "Azure-Account-Data",
+          "protocols": [
+            {
+              "protocolType": "Https",
+              "port": 443
+            },
+            {
+              "protocolType": "Http",
+              "port": 80
+            }
+          ],
+          "fqdnTags": [],
+          "webCategories": [],
+          "targetFqdns": [
+            "*.account.microsoft.com",
+            "*.bmx.azure.com",
+            "*.subscriptionrp.trafficmanager.net",
+            "*.signup.azure.com"
+          ],
+          "targetUrls": [],
+          "terminateTLS": false,
+          "sourceAddresses": [
+            "*<mgmtAddressSpacePrefix>*.4",
+            "*<mgmtAddressSpacePrefix>*.5"
+          ],
+          "destinationAddresses": [],
+          "sourceIpGroups": []
+        },
+        {
+          "ruleType": "ApplicationRule",
+          "name": "Azure-Service-Data",
+          "protocols": [
+            {
+              "protocolType": "Https",
+              "port": 443
+            },
+            {
+              "protocolType": "Http",
+              "port": 80
+            }
+          ],
+          "fqdnTags": [],
+          "webCategories": [],
+          "targetFqdns": [
+            "aka.ms",
+            "*.asazure.windows.net",
+            "*.azconfig.io",
+            "*.aad.azure.com",
+            "*.aadconnecthealth.azure.com",
+            "ad.azure.com",
+            "adf.azure.com",
+            "api.aadrm.com",
+            "api.loganalytics.io",
+            "api.azrbac.mspim.azure.com",
+            "*.applicationinsights.azure.com",
+            "appservice.azure.com",
+            "*.arc.azure.net",
+            "asazure.windows.net",
+            "bastion.azure.com",
+            "batch.azure.com",
+            "catalogapi.azure.com",
+            "catalogartifact.azureedge.net",
+            "changeanalysis.azure.com",
+            "cognitiveservices.azure.com",
+            "config.office.com",
+            "cosmos.azure.com",
+            "*.database.windows.net",
+            "datalake.azure.net",
+            "dev.azure.com",
+            "dev.azuresynapse.net",
+            "digitaltwins.azure.net",
+            "learn.microsoft.com",
+            "elm.iga.azure.com",
+            "eventhubs.azure.net",
+            "functions.azure.com",
+            "gallery.azure.com",
+            "go.microsoft.com",
+            "help.kusto.windows.net",
+            "identitygovernance.azure.com",
+            "iga.azure.com",
+            "informationprotection.azure.com",
+            "kusto.windows.net",
+            "learn.microsoft.com",
+            "logic.azure.com",
+            "marketplacedataprovider.azure.com",
+            "marketplaceemail.azure.com",
+            "media.azure.net",
+            "monitor.azure.com",
+            "mspim.azure.com",
+            "network.azure.com",
+            "purview.azure.com",
+            "quantum.azure.com",
+            "rest.media.azure.net",
+            "search.azure.com",
+            "servicebus.azure.net",
+            "servicebus.windows.net",
+            "shell.azure.com",
+            "sphere.azure.net",
+            "azure.status.microsoft",
+            "storage.azure.com",
+            "storage.azure.net",
+            "vault.azure.net",
+            "*.vault.azure.net",
+            "ux.console.azure.com"
+          ],
+          "targetUrls": [],
+          "terminateTLS": false,
+          "sourceAddresses": [
+            "*<mgmtAddressSpacePrefix>*.4",
+            "*<mgmtAddressSpacePrefix>*.5"
+          ],
+          "destinationAddresses": [],
+          "sourceIpGroups": []
+        }
+      ]
+    }
+  ]
+}

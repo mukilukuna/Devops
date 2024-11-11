@@ -24,4 +24,4 @@ $inactiveGuestUsers = $guestUsers | Where-Object {
 $inactiveGuestUsers | Select-Object DisplayName, UserPrincipalName, @{Name="LastSignInDateTime";Expression={$_.SignInActivity.LastSignInDateTime}}
 
 # Stap 7: Exporteer de lijst naar een CSV-bestand (optioneel)
-$inactiveGuestUsers | Select-Object DisplayName, UserPrincipalName, @{Name="LastSignInDateTime";Expression={$_.SignInActivity.LastSignInDateTime}} | Export-Csv -Path "C:\Pad\Naar\InactieveGastGebruikers.csv" -NoTypeInformation -Encoding UTF8
+$inactiveGuestUsers | Select-Object DisplayName, UserPrincipalName, @{Name="LastSignInDateTime";Expression={$_.SignInActivity.LastSignInDateTime}} | Export-Csv -Path "C:\temp\InactieveGastGebruikers.csv" -NoTypeInformation -Encoding UTF8

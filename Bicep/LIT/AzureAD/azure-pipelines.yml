@@ -16,6 +16,7 @@ steps:
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |
+      ls -la ./templates
       az group create --name $(resourceGroupName) --location $(location)
       az deployment group create --resource-group $(resourceGroupName) --template-file ./main.bicep
 

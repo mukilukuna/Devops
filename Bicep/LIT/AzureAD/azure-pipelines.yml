@@ -23,6 +23,6 @@ steps:
       echo "Recursieve inhoud van alle directories:"
       ls -laR
       az group create --name $(resourceGroupName) --location $(location)
-      az deployment group create --resource-group $(resourceGroupName) --template-file ./Bicep/LIT/AzureAD/main.bicep
+      az deployment group create --resource-group $(resourceGroupName) --template-file ./Bicep/LIT/AzureAD/Main.bicep
 
   displayName: 'Deploy Bicep Template'

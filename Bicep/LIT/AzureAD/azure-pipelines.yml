@@ -16,7 +16,12 @@ steps:
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |
-      ls -la ./templates
+       echo "Huidige werkdirectory:"
+      pwd
+      echo "Inhoud van de huidige directory:"
+      ls -la
+      echo "Recursieve inhoud van alle directories:"
+      ls -laR
       az group create --name $(resourceGroupName) --location $(location)
       az deployment group create --resource-group $(resourceGroupName) --template-file ./main.bicep
 

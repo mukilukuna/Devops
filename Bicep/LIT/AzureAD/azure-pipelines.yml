@@ -5,7 +5,7 @@ pool:
   vmImage: 'ubuntu-latest'  # De agent waarop de pipeline draait
 
 variables:
-  azureSubscription: 'your-azure-subscription'  # De naam van je Azure Service Connection
+  azureSubscription: 'ServiceConnectionProjectAnsible'  # De naam van je Azure Service Connection
   resourceGroupName: 'your-resource-group'  # De naam van je Resource Group in Azure
   location: 'WestEurope'  # De locatie van je Azure Resources
 

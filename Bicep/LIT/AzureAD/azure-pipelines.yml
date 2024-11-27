@@ -16,7 +16,7 @@ steps:
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |
-       echo "Huidige werkdirectory:"
+      echo "Huidige werkdirectory:"
       pwd
       echo "Inhoud van de huidige directory:"
       ls -la

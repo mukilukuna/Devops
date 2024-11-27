@@ -17,6 +17,6 @@ steps:
     scriptLocation: 'inlineScript'
     inlineScript: |
       az group create --name $(resourceGroupName) --location $(location)
-      az deployment group create --resource-group $(resourceGroupName) --template-file main.bicep
+      az deployment group create --resource-group $(resourceGroupName) --template-file ./main.bicep
 
   displayName: 'Deploy Bicep Template'

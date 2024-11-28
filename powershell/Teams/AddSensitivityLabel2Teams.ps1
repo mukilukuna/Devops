@@ -1,8 +1,8 @@
 # Lijst van Teams en de gevoeligheidslabels die je wilt toepassen
 $teams = @(
-    @{TeamName = "RAZ"; LabelGuid = "6f5b5cbf-641f-4fe8-8454-e84d86455685" },
-    @{TeamName = "Bedrijfsvoering"; LabelGuid = "6f5b5cbf-641f-4fe8-8454-e84d86455685" },
-    @{TeamName = "Projecten"; LabelGuid = "6f5b5cbf-641f-4fe8-8454-e84d86455685" }
+    @{TeamName = ""; LabelGuid = "" },
+    @{TeamName = ""; LabelGuid = "" },
+    @{TeamName = ""; LabelGuid = "" }
 )
 
 # Loop door de lijst van Teams en pas het gevoeligheidslabel toe

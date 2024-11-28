@@ -19,18 +19,14 @@ Install-ModuleIfNotInstalled -ModuleName "MicrosoftTeams"
 # Log in bij Microsoft Teams
 Connect-MicrosoftTeams
 
-Get-Team -DisplayName "RAZ" | Select-Object GroupId
+Get-Team -DisplayName "" | Select-Object GroupId
 
 # Team ID waar de kanalen moeten worden aangemaakt
-$teamId = "75f60ff4-04ce-4851-a4be-6f40d1b5a207"
+$teamId = ""
 
 # Lijst van kanalen om aan te maken
 $channels = @(
-    "Onderzoeksprogramma",
-    "Organisatie-bureau",
-    "Overdracht",
-    "Personeel",
-    "Sluis"
+    "Onderzoeksprogramma"
 )
 
 # Maak elk kanaal aan als gedeeld kanaal

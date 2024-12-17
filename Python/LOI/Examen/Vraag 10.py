@@ -14,4 +14,4 @@ def omrekenen_naar_euro(bedrag, valutacode):
     except KeyError:
         return None
 
-#lbyl principe, er wordt eerst gecontroleerd of de ingevoerde waarde valutacode voorkomt in de koers dictionary
+# lbyl principe, er wordt eerst gecontroleerd of de ingevoerde waarde valutacode voorkomt in de koers dictionary

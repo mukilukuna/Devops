@@ -52,20 +52,20 @@ try {
     Write-Host "INFO: Deleting any possible Teams directories (per user installation)."
     Remove-Item -path $TeamsPath -recurse -ErrorAction SilentlyContinue
 }
-catch  {
+catch {
     Write-Output "Uninstall failed with exception $_.exception.message"
 }
  
 # Per-Machine teams uninstall logic
 $GetTeams = get-wmiobject Win32_Product | Where-Object IdentifyingNumber -match "{731F6BAA-A986-45A4-8936-7C3AAAAA760B}"
-if ($null -ne $GetTeams){
+if ($null -ne $GetTeams) {
     Start-Process C:\Windows\System32\msiexec.exe -ArgumentList '/x "{731F6BAA-A986-45A4-8936-7C3AAAAA760B}" /qn /norestart' -Wait 2>&1
     Write-Host "INFO: Teams per-machine Install Found, uninstalling teams"
 }
  
 # WebRTC uninstall logic
 $GetWebRTC = get-wmiobject Win32_Product | Where-Object Name -match "Remote Desktop WebRTC Redirector Service"
-if ($null -ne $GetWebRTC){
+if ($null -ne $GetWebRTC) {
     $WebRTCProductCode = $GetWebRTC | Select-Object -ExpandProperty IdentifyingNumber
     Start-Process C:\Windows\System32\msiexec.exe -ArgumentList "/x $WebRTCProductCode /qn /norestart" -Wait 2>&1
     Write-Host "INFO: WebRTC Install Found, uninstalling Current version of WebRTC"
@@ -73,7 +73,7 @@ if ($null -ne $GetWebRTC){
 
 # Teams Meeting add-in uninstall logic
 $GetAddIn = get-wmiobject Win32_Product | Where-Object Name -match "Microsoft Teams Meeting Add-in for Microsoft Office"
-if ($null -ne $GetAddIn){
+if ($null -ne $GetAddIn) {
     $AddInProductCode = $GetAddIn | Select-Object -ExpandProperty IdentifyingNumber
     Start-Process C:\Windows\System32\msiexec.exe -ArgumentList "/x $AddInProductCode /qn /norestart" -Wait 2>&1
     Write-Host "INFO: Teams Meeting Add-in Found, uninstalling Current version of Teams Meeting Add-in"
@@ -99,15 +99,15 @@ Invoke-WebRequest -Uri $DLink2 -OutFile "C:\Windows\Temp\msteams_sa\install\MsRd
 # install Teams WebRTC Websocket Service
 Write-Host "INFO: Installing WebRTC component"
 Start-Process C:\Windows\System32\msiexec.exe `
--ArgumentList '/i C:\Windows\Temp\msteams_sa\install\MsRdcWebRTCSvc_x64.msi /l*v C:\Windows\temp\NerdioManagerLogs\ScriptedActions\msteams\WebRTC_install_log.txt /qn /norestart' -Wait 2>&1
+    -ArgumentList '/i C:\Windows\Temp\msteams_sa\install\MsRdcWebRTCSvc_x64.msi /l*v C:\Windows\temp\NerdioManagerLogs\ScriptedActions\msteams\WebRTC_install_log.txt /qn /norestart' -Wait 2>&1
 Write-Host "INFO: Finished running installers. Check C:\Windows\Temp\msteams_sa for logs on the MSI installations."
 Write-Host "INFO: All Commands Executed; script is now finished. Allow 5 minutes for teams to appear" -ForegroundColor Green
 
 # install Teams Meeting add-in
 $TeamsVersion = (Get-AppxPackage -Name MSTeams).Version
-$TMAPath = "{0}\WINDOWSAPPS\MSTEAMS_{1}_X64__8WEKYB3D8BBWE\MICROSOFTTEAMSMEETINGADDININSTALLER.MSI" -f $env:programfiles,$TeamsVersion
+$TMAPath = "{0}\WINDOWSAPPS\MSTEAMS_{1}_X64__8WEKYB3D8BBWE\MICROSOFTTEAMSMEETINGADDININSTALLER.MSI" -f $env:programfiles, $TeamsVersion
 $TMAVersion = (Get-AppLockerFileInformation -Path $TMAPath | Select-Object -ExpandProperty Publisher).BinaryVersion
-$TargetDir = "{0}\Microsoft\TeamsMeetingAddin\{1}\" -f ${env:ProgramFiles(x86)},$TMAVersion
+$TargetDir = "{0}\Microsoft\TeamsMeetingAddin\{1}\" -f ${env:ProgramFiles(x86)}, $TMAVersion
 $params = '/i "{0}" TARGETDIR="{1}" /qn ALLUSERS=1' -f $TMAPath, $TargetDir
 Write-Host "INFO: Installing Teams Meeting add-in"
 Start-Process msiexec.exe -ArgumentList $params
@@ -116,4 +116,4 @@ Write-Host "INFO: All Commands Executed; script is now finished. Allow 5 minutes
  
 # End Logging
 Stop-Transcript
-$VerbosePreference=$SaveVerbosePreference
+$VerbosePreference = $SaveVerbosePreference

@@ -4,9 +4,10 @@ $LatestFSLogixTempDest = "c:\temp\FSLogix"
 $ProgressPreference = 'SilentlyContinue'
 
 #check for temp or old files and create/remove if neccessary
-if (!(Test-Path -path "c:\temp")){
+if (!(Test-Path -path "c:\temp")) {
     New-Item -ItemType Directory "c:\temp"
-}elseif (Test-Path $LatestFSLogixTempDestZip, $LatestFSLogixTempDest) {
+}
+elseif (Test-Path $LatestFSLogixTempDestZip, $LatestFSLogixTempDest) {
     try {
         Remove-Item -Path $LatestFSLogixTempDestZip -Force -Recurse -ErrorAction SilentlyContinue
         Remove-Item -Path $LatestFSLogixTempDest -Force -Recurse -ErrorAction SilentlyContinue
@@ -16,7 +17,7 @@ if (!(Test-Path -path "c:\temp")){
     }
 }
 #get currect version
-$version = Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* |  Where-Object {$_.DisplayName -like "*fslogix*"}   | Select-Object -ExpandProperty DisplayVersion; 
+$version = Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* |  Where-Object { $_.DisplayName -like "*fslogix*" }   | Select-Object -ExpandProperty DisplayVersion; 
 write-host "currently installed FSLogixVersion:"
 $version
 

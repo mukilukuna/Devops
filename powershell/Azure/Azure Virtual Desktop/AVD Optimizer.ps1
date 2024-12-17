@@ -311,26 +311,26 @@ reg add "HKLM\SOFTWARE\FSLogix\Apps" /v "RoamRecycleBin" /t "REG_DWORD" /d 1 /f 
 #START#Roles deactiveren
 $CheckWSVersion = (Get-WmiObject -class Win32_OperatingSystem).Caption
 if ($CheckWSVersion -like "*Windows 10 Enterprise*" ) {
-$W10Features = @{
-    FeatureName   = "Printing-XPSServices-Features", "SMB1Protocol", "WorkFolders-Client", `
-        "FaxServicesClientPackage", "WindowsMediaPlayer", "MicrosoftWindowsPowerShellV2Root", `
-        "MicrosoftWindowsPowerShellV2"
-    Online        = $true
-    NoRestart     = $true
-    WarningAction = "SilentlyContinue"
-    ErrorAction   = "SilentlyContinue"
-}
-Disable-WindowsOptionalFeature @W10Features | Out-Null
+    $W10Features = @{
+        FeatureName   = "Printing-XPSServices-Features", "SMB1Protocol", "WorkFolders-Client", `
+            "FaxServicesClientPackage", "WindowsMediaPlayer", "MicrosoftWindowsPowerShellV2Root", `
+            "MicrosoftWindowsPowerShellV2"
+        Online        = $true
+        NoRestart     = $true
+        WarningAction = "SilentlyContinue"
+        ErrorAction   = "SilentlyContinue"
+    }
+    Disable-WindowsOptionalFeature @W10Features | Out-Null
 }
 if ($CheckWSVersion -like "*Windows 11 Enterprise*" ) {
-$W11Features = @{
-    FeatureName   = "Printing-XPSServices-Features", "SMB1Protocol", "WorkFolders-Client", "MicrosoftWindowsPowerShellV2Root", "MicrosoftWindowsPowerShellV2"
-    Online        = $true
-    NoRestart     = $true
-    WarningAction = "SilentlyContinue"
-    ErrorAction   = "SilentlyContinue"
-}
-Disable-WindowsOptionalFeature @W11Features | Out-Null
+    $W11Features = @{
+        FeatureName   = "Printing-XPSServices-Features", "SMB1Protocol", "WorkFolders-Client", "MicrosoftWindowsPowerShellV2Root", "MicrosoftWindowsPowerShellV2"
+        Online        = $true
+        NoRestart     = $true
+        WarningAction = "SilentlyContinue"
+        ErrorAction   = "SilentlyContinue"
+    }
+    Disable-WindowsOptionalFeature @W11Features | Out-Null
 }
 #END#Roles deactiveren
 
@@ -339,7 +339,7 @@ Disable-WindowsOptionalFeature @W11Features | Out-Null
 #,"*Microsoft.StorePurchaseApp*","*Microsoft.549981C3F5F10*"
 #$DefaultUWP = "*3dbuilder*","*bingfinance*","*bingnews*","*bingsports*","*soundrecorder*","*Microsoft.Communicationsapps*","* Microsoft.OutlookForWindows*","*king.com.CandyCrushSodaSaga*","*king.com.**","*ClearChannelRadioDigital.iHeartRadio*","*4DF9E0F8.Netflix*","*6Wunderkinder.Wunderlist*","*Drawboard.DrawboardPDF*","*2FE3CB00.PicsArt-PhotoStudio*","*D52A8D61.FarmVille2CountryEscape*","*TuneIn.TuneInRadio*","*GAMELOFTSA.Asphalt8Airborne*","*TheNewYorkTimes.NYTCrossword*","*DB6EA5DB.CyberLinkMediaSuiteEssentials*","*Facebook.Facebook*","*flaregamesGmbH.RoyalRevolt2*","*Playtika.CaesarsSlotsFreeCasino*","*A278AB0D.MarchofEmpires*","*KeeperSecurityInc.Keeper*","*ThumbmunkeysLtd.PhototasticCollage*","*XINGAG.XING*","*89006A2E.AutodeskSketchBook*","*D5EA27B7.Duolingo-LearnLanguagesforFree*","*46928bounde.EclipseManager*","*ActiproSoftwareLLC.562882FEEB491*","*HP.ePrint.HPePrint*","*Microsoft.BingFoodAndDrink*","*Microsoft.BingTravel*","*Microsoft.BingHealthAndFitness*","*Microsoft.WindowsReadingList*","AD2F1837.HPJumpStart","Microsoft.Microsoft3DViewer","Microsoft.Wallet","Microsoft.XboxGameOverlay","Microsoft.XboxIdentityProvider","Microsoft.XboxSpeechToTextOverlay","Microsoft.FreshPaint","Microsoft.Office.Sway","Microsoft.SkypeApp","Microsoft.Getstarted","Microsoft.XboxGamingOverlay","Microsoft.Xbox.TCUI","Microsoft.WindowsFeedbackHub","Microsoft.GetHelp","Microsoft.messaging","Microsoft.MixedReality.Portal","Microsoft.MicrosoftStickyNotes","Microsoft.OneConnect","Microsoft.MicrosoftSolitaireCollection*","Microsoft.GamingApp*","*Microsoft.MicrosoftOfficeHub*","*Microsoft.NetworkSpeedTest*","*Microsoft.News*","*Microsoft.Office.Lens*","*Microsoft.Office.OneNote*","*Microsoft.People*","*Microsoft.RemoteDesktop*","*Microsoft.WindowsMaps*","*Microsoft.WindowsSoundRecorder*","*Microsoft.XboxApp*","*MicrosoftTeams*","*Microsoft.YourPhone*","*Microsoft.XboxGamingOverlay_5.721.10202.0_neutral_~_8wekyb3d8bbwe*","*Microsoft.PowerAutomateDesktop*","*DevHome*"
 $AutoLoggersRegkeys = "CloudExperienceHostOOBE", "CloudExperienceHostOOBE", "WiFiSession", "WiFiDriverIHVSession", "WDIContextLog", "NtfsLog", "ReadyBoot", "TileStore", "UBPM"
-$ScheduledTasks = "*Compatibility*","NotificationTask","ScheduledDefrag","*Work Folders Logon Synchronization*"
+$ScheduledTasks = "*Compatibility*", "NotificationTask", "ScheduledDefrag", "*Work Folders Logon Synchronization*"
 Disable-WindowsOptionalFeature -Online -FeatureName WindowsMediaPlayer -NoRestart | Out-Null
 Get-WindowsPackage -Online -PackageName "*Windows-mediaplayer*" | ForEach-Object { 
     Remove-WindowsPackage -PackageName $_.PackageName -Online -ErrorAction SilentlyContinue -NoRestart | Out-Null
@@ -399,7 +399,7 @@ Get-Service -Name "SharedRealitySvc" -ErrorAction "SilentlyContinue" | Set-Servi
 Get-Service -Name "RetailDemo" -ErrorAction "SilentlyContinue" | Set-Service -StartupType "Disabled" -ErrorAction "SilentlyContinue" | Out-Null
 Get-Service -Name "Fax" -ErrorAction "SilentlyContinue" | Set-Service -StartupType "Disabled" -ErrorAction "SilentlyContinue" | Out-Null
 Get-Service -Name "appreadiness" -ErrorAction "SilentlyContinue" | Set-Service -StartupType "Disabled" -ErrorAction "SilentlyContinue" | Out-Null
-Get-AppXPackage -AllUsers | ForEach-Object {Add-AppxPackage -DisableDevelopmentMode -Register -ForceApplicationShutdown "$($_.InstallLocation)\AppXManifest.xml"}
+Get-AppXPackage -AllUsers | ForEach-Object { Add-AppxPackage -DisableDevelopmentMode -Register -ForceApplicationShutdown "$($_.InstallLocation)\AppXManifest.xml" }
 #END#SelfDefined run
 
 #START#End of script

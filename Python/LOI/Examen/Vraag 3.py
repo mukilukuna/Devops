@@ -6,4 +6,3 @@ while dum >= 0:
         j += 1
     print()
     dum -= 1
-

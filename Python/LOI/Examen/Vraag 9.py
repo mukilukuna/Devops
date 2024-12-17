@@ -1,4 +1,6 @@
 import hashlib
+
+
 def controleer_wachtwoord(user, passw):
     try:
         with open("password.bin", "rb") as file:
@@ -20,4 +22,3 @@ def controleer_wachtwoord(user, passw):
             return "Gebruiker niet gevonden"
     except FileNotFoundError:
         return "Bestand niet gevonden"
-

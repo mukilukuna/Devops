@@ -1,5 +1,5 @@
 param(
-	[string] $Mode
+    [string] $Mode
 )
 
 Add-Type -Language CSharp -TypeDefinition @'
@@ -194,12 +194,12 @@ namespace Rds {
 }
 '@
 
-$LogDir="$($env:windir)\system32\LogFiles"
-$LogFile="$($LogDir)\AVD.WarmUp.log"
+$LogDir = "$($env:windir)\system32\LogFiles"
+$LogFile = "$($LogDir)\AVD.WarmUp.log"
 function LogWriter($message) {
-	$message = "$(Get-Date ([datetime]::UtcNow) -Format "o") $message"
-	write-host($message)
-	if ([System.IO.Directory]::Exists($LogDir)) { try { write-output($message) | Out-File $LogFile -Append } catch {} }
+    $message = "$(Get-Date ([datetime]::UtcNow) -Format "o") $message"
+    write-host($message)
+    if ([System.IO.Directory]::Exists($LogDir)) { try { write-output($message) | Out-File $LogFile -Append } catch {} }
 }
 
 if ($mode -like "install") {
@@ -214,25 +214,27 @@ if ($mode -like "install") {
     $task = New-ScheduledTask -Action $action -Principal $principal -Trigger $trigger -Settings $settingsSet 
     Register-ScheduledTask -TaskName 'ITPC-AVD-WarmUpUser' -InputObject $task -ErrorAction Ignore
     Enable-ScheduledTask -TaskName 'ITPC-AVD-WarmUpUser'
-} else {
+}
+else {
 
     $localUserName = "warmup-user"
 
     $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#' #$%^&*()-_=+[]{}|;:,.<>?'
-    $localUserPWPlain = -join (1..32 | ForEach-Object { Get-Random -InputObject $characters.ToCharArray() }) +"!@1aA"
+    $localUserPWPlain = -join (1..32 | ForEach-Object { Get-Random -InputObject $characters.ToCharArray() }) + "!@1aA"
 
-    $localUserPW =  ConvertTo-SecureString -String $localUserPWPlain -AsPlainText -Force # https://www.sharepointdiary.com/2020/04/powershell-generate-random-password.html
+    $localUserPW = ConvertTo-SecureString -String $localUserPWPlain -AsPlainText -Force # https://www.sharepointdiary.com/2020/04/powershell-generate-random-password.html
 
 
     # Store default configuration
     LogWriter("Getting local configuration to use saved credentials for the warmup user")
-    $oldAuthenticationLevelOverride=$null
+    $oldAuthenticationLevelOverride = $null
     if (Test-Path "HKCU:\Software\Microsoft\Terminal Server Client") {
         $oldAuthenticationLevelOverride = Get-ItemProperty -Path "HKCU:\Software\Microsoft\Terminal Server Client" -Name "AuthenticationLevelOverride" -ErrorAction SilentlyContinue
-    } else {
+    }
+    else {
         New-Item -Path "HKCU:\Software\Microsoft\Terminal Server Client" -Force -ErrorAction SilentlyContinue
     }
-    if ($oldAuthenticationLevelOverride -eq $null) {$oldAuthenticationLevelOverride = 99} else {$oldAuthenticationLevelOverride = $oldAuthenticationLevelOverride.AuthenticationLevelOverride}
+    if ($oldAuthenticationLevelOverride -eq $null) { $oldAuthenticationLevelOverride = 99 } else { $oldAuthenticationLevelOverride = $oldAuthenticationLevelOverride.AuthenticationLevelOverride }
 
 
     try {
@@ -255,34 +257,35 @@ if ($mode -like "install") {
         # Login user
         LogWriter("Adding credentials of the warmup user to the key store")
         cmdkey /generic:TERMSRV/localhost /user:"$($env:Computername)\$($localUserName)" /pass:$localUserPWPlain
-        $startTime=Get-Date
+        $startTime = Get-Date
 
 
-	$i=0
-	do {
+        $i = 0
+        do {
             LogWriter("Login in user warmup user")
             if ($mstsc) {
-		$mstsc.Kill()
-		Start-Sleep -Seconds 6
-	    }
+                $mstsc.Kill()
+                Start-Sleep -Seconds 6
+            }
             $mstsc = Start-Process -PassThru -FilePath "mstsc.exe" -ArgumentList "/v:localhost"
     
             # Wait for the user to login 
             LogWriter("Waiting a few seconds")
             Start-Sleep -Seconds 20
             $i++		
-	} while ([Rds.Sessions]::GetSession($localUserName) -eq $null -and $i -le 10)
+        } while ([Rds.Sessions]::GetSession($localUserName) -eq $null -and $i -le 10)
 
         # Remove credentials
         LogWriter("Removing credentials from the key store")
         cmdkey /delete:TERMSRV/localhost
 
         # Check, if user is connected
-        $session=[Rds.Sessions]::GetSession($localUserName)
+        $session = [Rds.Sessions]::GetSession($localUserName)
 
         if ($session -eq $null) {
             LogWriter("Warning: Warm-up user is not connected. So, the workaround is not working for some reasons")
-        } else {
+        }
+        else {
             # Let the user for a while in the session and then logoff
             LogWriter("Let the user logged in for a while")
             Start-Sleep -Seconds 300
@@ -291,18 +294,21 @@ if ($mode -like "install") {
             # Remove profile of the user
             try {
                 LogWriter("Delete profile of the warm-up user")
-                @(Get-CimInstance -Class Win32_UserProfile | Where-Object { $_.Loaded -eq $false -and ($_.LocalPath.split('\')[-1] -like $localUserName -or $_.LocalPath.split('\')[-1] -like "$($localUserName).*")}) | Remove-CimInstance
+                @(Get-CimInstance -Class Win32_UserProfile | Where-Object { $_.Loaded -eq $false -and ($_.LocalPath.split('\')[-1] -like $localUserName -or $_.LocalPath.split('\')[-1] -like "$($localUserName).*") }) | Remove-CimInstance
 
-            } catch {
+            }
+            catch {
                 LogWriter("Error: Cannot delete the profile of the warmup user: $_")
             }
 
         }
         LogWriter("Terminate mstsc.exe, if running")
         $mstsc.Kill()
-    } catch {
+    }
+    catch {
         LogWriter("Error: $_")
-    } finally {
+    }
+    finally {
         # Remove user
         LogWriter("Disable and remove user")
         Remove-LocalGroupMember -SID "S-1-5-32-555" -Member $localUserName
@@ -313,7 +319,8 @@ if ($mode -like "install") {
         LogWriter("Restoring local configuration")
         if ($oldAuthenticationLevelOverride -eq 99) {
             Remove-ItemProperty "HKCU:\Software\Microsoft\Terminal Server Client" -Name "AuthenticationLevelOverride" -Force
-        } else {
+        }
+        else {
             New-ItemProperty -Path "HKCU:\Software\Microsoft\Terminal Server Client" -Name "AuthenticationLevelOverride" -Value $oldAuthenticationLevelOverride -Force
         }
     }

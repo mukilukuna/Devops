@@ -9,7 +9,7 @@ This script installs FSLogix on AVD Session hosts.
 
 #>
 
-$FslogixUrl= "https://aka.ms/fslogix_download"
+$FslogixUrl = "https://aka.ms/fslogix_download"
 
 # Start powershell logging
 $SaveVerbosePreference = $VerbosePreference
@@ -51,4 +51,4 @@ Write-Host "INFO: FSLogix install finished."
 
 # End Logging
 Stop-Transcript
-$VerbosePreference=$SaveVerbosePreference
+$VerbosePreference = $SaveVerbosePreference

@@ -1,4 +1,6 @@
 import re
+
+
 def test_wachtwoord(ww):
     min_lengte = 8
     verpl_tekens = ("[a-z]", "[A-Z]", "[0-9]", "[!#$%&()*+,-./:;<=>?@]")

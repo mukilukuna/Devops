@@ -1,16 +1,33 @@
-Connect-AzureAD
-$groups=Get-AzureADGroup -All $true
-$resultsarray =@()
-ForEach ($group in $groups){
-    $members = Get-AzureADGroupMember -ObjectId $group.ObjectId -All $true 
-    ForEach ($member in $members){
-       $UserObject = new-object PSObject
-       $UserObject | add-member  -membertype NoteProperty -name "Group Name" -Value $group.DisplayName
-       $UserObject | add-member  -membertype NoteProperty -name "Member Name" -Value $member.DisplayName
-       $UserObject | add-member  -membertype NoteProperty -name "ObjType" -Value $member.ObjectType
-       $UserObject | add-member  -membertype NoteProperty -name "UserType" -Value $member.UserType
-       $UserObject | add-member  -membertype NoteProperty -name "UserPrinicpalName" -Value $member.UserPrincipalName
-       $resultsarray += $UserObject
+# Verbinden met Microsoft Graph
+Connect-MgGraph -Scopes "Group.Read.All", "User.Read.All"
+
+# Haal alle groepen op
+$groups = Get-MgGroup -All
+
+$resultsarray = @()
+
+# Itereren over groepen en leden ophalen
+foreach ($group in $groups) {
+    Write-Output "Ophalen van leden voor groep: $($group.DisplayName)"
+    
+    try {
+        $members = Get-MgGroupMember -GroupId $group.Id -All
+        foreach ($member in $members) {
+            $UserObject = [PSCustomObject]@{
+                "Group Name"          = $group.DisplayName
+                "Member Name"         = $member.DisplayName
+                "ObjType"             = $member.ODataType
+                "UserPrincipalName"   = $member.UserPrincipalName
+            }
+            $resultsarray += $UserObject
+        }
+    } catch {
+        Write-Output "Fout bij het ophalen van leden voor groep '$($group.DisplayName)': $_"
     }
 }
-$resultsarray | Export-Csv -Encoding UTF8  -Delimiter ";" -Path "C:\scripts\output.csv" -NoTypeInformation
+
+# Exporteren naar CSV
+$OutputPath = "C:\scripts\output.csv"
+$resultsarray | Export-Csv -Path $OutputPath -NoTypeInformation -Delimiter ";" -Encoding UTF8
+
+Write-Output "Resultaten geëxporteerd naar: $OutputPath"

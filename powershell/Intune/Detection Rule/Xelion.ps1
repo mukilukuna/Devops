@@ -1,9 +1,12 @@
+# Definieer de naam van het pakket
 $packageName = "XelionWindowsDesktop"
 
-# Check if the appx package is installed
-$package = Get-AppxPackage | Where-Object { $_.Name -eq $packageName }
+# Controleer of het appx-pakket is geïnstalleerd
+$package = Get-AppxPackage -Name $packageName -ErrorAction SilentlyContinue
 
 if ($package) {
-    Write-Host "The $packageName appx package is installed."
     exit 1
+}
+else {
+    exit 0
 }

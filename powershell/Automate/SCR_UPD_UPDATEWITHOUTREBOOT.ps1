@@ -2,7 +2,8 @@
 try {
     Write-Output "Instellen van de uitvoeringsbeleid naar Bypass..."
     Set-ExecutionPolicy Bypass -Confirm:$false -Scope Process
-} catch {
+}
+catch {
     Write-Output "Fout bij het instellen van de uitvoeringsbeleid: $_"
     exit 1
 }
@@ -11,7 +12,8 @@ try {
 try {
     Write-Output "Installeren van PSWindowsUpdate..."
     Install-Script -Name PSWindowsUpdate -Force -Confirm:$false
-} catch {
+}
+catch {
     Write-Output "Fout bij het installeren van PSWindowsUpdate: $_"
     exit 1
 }
@@ -20,7 +22,8 @@ try {
 try {
     Write-Output "Zoeken en installeren van Windows-updates..."
     Get-WindowsUpdate -AcceptAll -ForceInstall -Install
-} catch {
+}
+catch {
     Write-Output "Fout bij het verwerken van Windows-updates: $_"
     exit 1
 }
@@ -38,7 +41,8 @@ try {
     # Geschiedenis ophalen en opslaan
     Get-WuaHistory | Select-Object Result, Product, Date, Title | Out-File -FilePath $UpdateHistoryPath -Force
     Write-Output "Updategeschiedenis opgeslagen in: $UpdateHistoryPath"
-} catch {
+}
+catch {
     Write-Output "Fout bij het ophalen van updategeschiedenis: $_"
 }
 

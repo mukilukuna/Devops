@@ -14,14 +14,15 @@ foreach ($group in $groups) {
         $members = Get-MgGroupMember -GroupId $group.Id -All
         foreach ($member in $members) {
             $UserObject = [PSCustomObject]@{
-                "Group Name"          = $group.DisplayName
-                "Member Name"         = $member.DisplayName
-                "ObjType"             = $member.ODataType
-                "UserPrincipalName"   = $member.UserPrincipalName
+                "Group Name"        = $group.DisplayName
+                "Member Name"       = $member.DisplayName
+                "ObjType"           = $member.ODataType
+                "UserPrincipalName" = $member.UserPrincipalName
             }
             $resultsarray += $UserObject
         }
-    } catch {
+    }
+    catch {
         Write-Output "Fout bij het ophalen van leden voor groep '$($group.DisplayName)': $_"
     }
 }

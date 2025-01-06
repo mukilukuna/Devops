@@ -25,4 +25,4 @@ $sourceUri = $ctx.FileEndPoint + "fslogix" + "?" + $sourceSasToken
 $destinationUri = $destinationCtx.FileEndPoint + "fslogix11" + "?" + $destinationSasToken
 
 #Met de gegenereerde SAS-tokens kunt u AzCopy gebruiken om de FSLogix-profielen te migreren. Zorg ervoor dat AzCopy is geïnstalleerd op uw systeem. Gebruik de volgende opdracht in de opdrachtprompt of PowerShell:
-azcopy copy $sourceUri $destinationUri --recursive --preserve-smb-permissions=true --preserve-smb-info=true
+azcopy copy $sourceUri $destinationUri --recursive --overwrite=ifSourceNewer --preserve-smb-permissions=true --preserve-smb-info=true

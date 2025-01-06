@@ -1,3 +1,10 @@
+<# Zorg ervoor dat de volgende is ingesteld:
+1. Azure PowerShell-module is geïnstalleerd.
+2. voldoende ruimte in de doelbestandsshare.
+3. AzCopy is geïnstalleerd op uw systeem.
+
+Gemaakt door: Muki lukuna samen met chatGPT
+#>
 Connect-AzAccount -UseDeviceAuthentication
 #Vervang <StorageAccountName> en <ResourceGroupName> door de naam van uw opslagaccount en resourcegroep om de context te verkrijgen:
 $storageAccount = Get-AzStorageAccount -ResourceGroupName "DST-EUAZU-RSG" -Name "dsteuazustodata"
@@ -19,5 +26,3 @@ $destinationUri = $destinationCtx.FileEndPoint + "fslogix11" + "?" + $destinatio
 
 #Met de gegenereerde SAS-tokens kunt u AzCopy gebruiken om de FSLogix-profielen te migreren. Zorg ervoor dat AzCopy is geïnstalleerd op uw systeem. Gebruik de volgende opdracht in de opdrachtprompt of PowerShell:
 azcopy copy $sourceUri $destinationUri --recursive --preserve-smb-permissions=true --preserve-smb-info=true
-
-

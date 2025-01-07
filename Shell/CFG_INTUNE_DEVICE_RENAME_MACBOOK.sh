@@ -2,7 +2,7 @@
 
 #Get current Mac serial number
 
-serial_Number=`system_profiler SPHardwareDataType | awk '/Serial/ {print $4}'`
+serial_Number=$(system_profiler SPHardwareDataType | awk '/Serial/ {print $4}')
 
 # Rename computer and host name
 scutil --set ComputerName ITSMB"$serial_Number"

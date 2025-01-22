@@ -1,14 +1,19 @@
-# Installeer en importeer de MSOnline module als deze nog niet is geïnstalleerd en geïmporteerd
-if (-not (Get-Module -Name MSOnline)) {
-    Install-Module -Name MSOnline -Force -AllowClobber
+# Installeer de Microsoft Graph PowerShell SDK als deze nog niet is geïnstalleerd
+if (-not (Get-Module -Name Microsoft.Graph -ListAvailable)) {
+    Install-Module -Name Microsoft.Graph -Scope CurrentUser -Force
 }
-Import-Module MSOnline
 
-# Verbinding maken met de Microsoft 365-tenant
-Connect-MsolService
+# Importeer de Microsoft Graph module
+Import-Module Microsoft.Graph
 
-# Haal alle gebruikers op in de Microsoft 365-tenant
-$gebruikers = Get-MsolUser -All
+# Definieer het pad voor het CSV-bestand
+$path = "C:\Users\MukiLukunaITSynergy\IT Synergy\KindeRdam - Professional Services\Project beheer inventarisatie\M365GebruikersInfo.csv"
+
+# Verbinding maken met Microsoft Graph
+Connect-MgGraph -Scopes "User.Read.All"
+
+# Haal alle gebruikers op
+$gebruikers = Get-MgUser -All
 
 # Array om de gebruikersgegevens op te slaan
 $gebruikersgegevens = @()
@@ -21,28 +26,28 @@ foreach ($gebruiker in $gebruikers) {
     $isSyncedFromAD = $false
 
     # Controleer of het postvak een gedeelde mailbox is
-    if ($gebruiker.IsLicensed -eq $false) {
+    if ($gebruiker.MailboxSettings -and $gebruiker.MailboxSettings.DelegateMeetingMessageDeliveryOptions) {
         $isSharedMailbox = $true
     }
 
     # Controleer of het account wordt gesynchroniseerd via Active Directory
-    if ($gebruiker.DirSyncEnabled) {
+    if ($gebruiker.OnPremisesSyncEnabled) {
         $isSyncedFromAD = $true
     }
 
-    # Maak een hashtable met de gebruikersgegevens
-    $gebruikerInfo = @{
-        "DisplayName" = $displayName
-        "E-mail" = $email
-        "IsSharedMailbox" = $isSharedMailbox
-        "IsSyncedFromAD" = $isSyncedFromAD
+    # Maak een object met de gebruikersgegevens
+    $gebruikerInfo = [PSCustomObject]@{
+        DisplayName      = $displayName
+        Email            = $email
+        IsSharedMailbox  = $isSharedMailbox
+        IsSyncedFromAD   = $isSyncedFromAD
     }
 
-    # Voeg de hashtable toe aan de array
-    $gebruikersgegevens += New-Object PSObject -Property $gebruikerInfo
+    # Voeg het object toe aan de array
+    $gebruikersgegevens += $gebruikerInfo
 }
 
 # Exporteer de gegevens naar een CSV-bestand
-$gebruikersgegevens | Export-Csv -Path "C:\Users\muki.lukuna\IT Synergy\Stichting Mano - Professional services\Inverntarisatie\M365GebruikersInfo.csv" -NoTypeInformation
+$gebruikersgegevens | Export-Csv -Path $path -NoTypeInformation
 
 Write-Host "Gebruikersinformatie is opgeslagen in M365GebruikersInfo.csv"

@@ -1,13 +1,37 @@
-#MODULE INSTAL
-Install-Module ExchangeOnlineManagement
+# Controleer of de ExchangeOnlineManagement-module is geïnstalleerd
+if (-not (Get-Module -ListAvailable -Name ExchangeOnlineManagement)) {
+    # Installeer de module als deze niet aanwezig is
+    Install-Module -Name ExchangeOnlineManagement -Force -AllowClobber
+}
+
+# Importeer de module
 Import-Module ExchangeOnlineManagement
 
-#VERBINDEN MET EXCHANGE ONLINE
-Connect-ExchangeOnline -UserPrincipalName #<ADMIN E-MAIL ACCOUNT INVOEREN>
+# Maak verbinding met Exchange Online
+Connect-ExchangeOnline
 
-# TOP 10 GROOTSTE MAILBOXEN TONEN
-Get-Mailbox -ResultSize Unlimited | Get-MailboxStatistics | Sort-Object TotalItemSize -Descending | Select-Object DisplayName, TotalItemSize -First 10
+# Ophalen van mailboxgegevens
+$mailboxes = Get-Mailbox -ResultSize Unlimited
+$mailboxDetails = foreach ($mailbox in $mailboxes) {
+    $permissions = Get-MailboxPermission -Identity $mailbox.Identity
+    $licenties = Get-MailboxStatistics -Identity $mailbox.Identity | Select-Object StorageLimitStatus
 
-#TOP 10 GROOTSTE MAILBOXEN EXPORTEREN NAAR EEN CSV IN C:\TEMP
-Get-Mailbox -ResultSize Unlimited | Get-MailboxStatistics | Sort-Object TotalItemSize -Descending | Select-Object DisplayName, TotalItemSize -First 100 | Export-CSV C:\TEMP\top100mailboxes.csv
+    # Aangepast object voor elk postvak
+    [PSCustomObject]@{
+        DisplayName  = $mailbox.DisplayName
+        EmailAddress = $mailbox.PrimarySmtpAddress
+        MailboxType  = $mailbox.RecipientTypeDetails
+        License      = $licenties.StorageLimitStatus
+        Permissions  = ($permissions | Where-Object { $_.User -ne $null } | Select-Object -ExpandProperty User) -join ', '
+    }
+}
 
+# Resultaten naar CSV exporteren
+$path = "C:\Users\MukiLukunaITSynergy\IT Synergy\KindeRdam - Professional Services\Project beheer inventarisatie\mailboxDetails.csv"
+$mailboxDetails | Export-Csv -Path $path -NoTypeInformation -Encoding UTF8
+
+# Verbinding met Exchange Online verbreken
+Disconnect-ExchangeOnline -Confirm:$false
+
+# Bevestiging van voltooide export
+Write-Host "Export voltooid. De gegevens zijn opgeslagen in $path"

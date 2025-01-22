@@ -1,3 +1,22 @@
+# Functie om te controleren of een module is geïnstalleerd
+function Check-And-Install-Module {
+    param (
+        [string]$ModuleName
+    )
+    if (-not (Get-Module -ListAvailable -Name $ModuleName)) {
+        Write-Host "Module $ModuleName is niet geïnstalleerd. Installeren..."
+        Install-Module -Name $ModuleName -Force -Scope CurrentUser
+    } else {
+        Write-Host "Module $ModuleName is al geïnstalleerd."
+    }
+}
+
+# Controleer en installeer de benodigde modules
+Check-And-Install-Module -ModuleName "ExchangeOnlineManagement"
+
+# Importeer de module
+Import-Module ExchangeOnlineManagement
+
 # Maak verbinding met Exchange Online
 Connect-ExchangeOnline
 
@@ -13,12 +32,12 @@ $mailboxDetails = foreach ($mailbox in $mailboxes) {
         EmailAddress = $mailbox.PrimarySmtpAddress
         MailboxType  = $mailbox.RecipientTypeDetails
         License      = $licenties.StorageLimitStatus
-        Permissions  = ($permissions | Select-Object User, AccessRights, IsInherited -ExpandProperty User).UserPrincipalName
+        Permissions  = ($permissions | Where-Object { $_.User -notlike "NT AUTHORITY\SELF" }) | ForEach-Object { $_.User }
     }
 }
 
 # Resultaten naar CSV exporteren
-$path = "C:\Users\muki.lukuna\IT Synergy\Stichting Mano - General\Professional services\Inverntarisatie\mailboxDetails.csv"
+$path = "C:\Users\MukiLukunaITSynergy\IT Synergy\KindeRdam - Professional Services\Project beheer inventarisatie\mailboxDetails.csv"
 $mailboxDetails | Export-Csv -Path $path -NoTypeInformation -Encoding UTF8
 
 # Verbinding met Exchange Online verbreken

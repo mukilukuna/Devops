@@ -2,13 +2,13 @@ import pandas as pd
 import os
 
 # Map waarin de bestanden zich bevinden
-folder_path = r'C:\temp\Constructif'
+folder_path = r'C:\Users\MukiLukunaITSynergy\IT Synergy\KindeRdam - Professional Services\Project beheer inventarisatie'
 
 # Lijst met de bestandsnamen
 excel_files = [
-    'CSFMailboxen.xlsx',
-    'Gebruikers_en_licenties.xlsx',
-    'LastSignInReport.xlsx'
+    'Exchange Mailboxes.xlsx',
+    'Licensing.xlsx',
+    'Mailboxes.xlsx'
 ]
 
 # Lege lijst om de ingelezen dataframes op te slaan
@@ -20,13 +20,13 @@ for file in excel_files:
     df = pd.read_excel(file_path)  # Leest de eerste sheet in
     dataframes.append(df)
 
-# Merge de dataframes samen op de primaire sleutel 'Display Name'
+# Merge de dataframes samen op de primaire sleutel 'Email address'
 # Begin met het samenvoegen van de eerste twee bestanden
 merged_df = pd.merge(dataframes[0], dataframes[1],
-                     on='Display Name', how='outer')
+                     on='Email address', how='outer')
 
 # Voeg het derde bestand toe aan de al samengevoegde dataframes
-merged_df = pd.merge(merged_df, dataframes[2], on='Display Name', how='outer')
+merged_df = pd.merge(merged_df, dataframes[2], on='Email address', how='outer')
 
 # Opslaan van de samengevoegde data naar een nieuw Excel-bestand
 output_file = os.path.join(folder_path, 'merged_output.xlsx')

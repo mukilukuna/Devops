@@ -3,7 +3,7 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "example" {
-  name     = "NEtwork-rg"
+  name     = "Network-rg"
   location = "West Europe"
 }
 

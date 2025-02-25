@@ -4,17 +4,17 @@ if (-not (Get-Module -Name PnP.PowerShell -ListAvailable)) {
 }
 
 $AdminUrl = "https://kinderdam-admin.sharepoint.com/"  # Vervang met de SharePoint Admin-URL
-$SiteUrl = "https://kinderdam.sharepoint.com/sites/Mockup"  # De site waar je bibliotheken wilt aanmaken
+$SiteUrl = "https://kinderdam.sharepoint.com/sites/OrganizationalAssets"  # De site waar je bibliotheken wilt aanmaken
 
 Connect-PnPOnline -Url $SiteUrl -UseWebLogin
 
 $libraryURL = @(
-    "https://kinderdam.sharepoint.com/sites/Mockup/Hefgroep",
-    "https://kinderdam.sharepoint.com/sites/Mockup/Grootrotterdam",
-    "https://kinderdam.sharepoint.com/sites/Mockup/Peuter&co",
-    "https://kinderdam.sharepoint.com/sites/Mockup/JOZ",
-    "https://kinderdam.sharepoint.com/sites/Mockup/SMWR",
-    "https://kinderdam.sharepoint.com/sites/Mockup/Kinderdam")
+    "https://kinderdam.sharepoint.com/sites/OrganizationalAssets/Hefgroep",
+    "https://kinderdam.sharepoint.com/sites/OrganizationalAssets/Grootrotterdam",
+    "https://kinderdam.sharepoint.com/sites/OrganizationalAssets/Peuter&co",
+    "https://kinderdam.sharepoint.com/sites/OrganizationalAssets/JOZ",
+    "https://kinderdam.sharepoint.com/sites/OrganizationalAssets/SMWR",
+    "https://kinderdam.sharepoint.com/sites/OrganizationalAssets/Kinderdam")
 $cdnType = "Private"
 $orgAssetType = "OfficeTemplateLibrary"
 

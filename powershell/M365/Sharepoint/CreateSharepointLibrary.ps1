@@ -4,7 +4,7 @@ if (-not (Get-Module -Name PnP.PowerShell -ListAvailable)) {
 }
 
 # SharePoint-site URL
-$SiteUrl = "https://kinderdam.sharepoint.com/sites/Mockup"  # De site waar je bibliotheken wilt aanmaken
+$SiteUrl = "https://kinderdam.sharepoint.com/sites/OrganizationalAssets/"  # De site waar je bibliotheken wilt aanmaken
 
 # Inloggen met device code
 Connect-PnPOnline -Url $SiteUrl -UseWebLogin

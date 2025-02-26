@@ -1,7 +1,7 @@
 <#
 Printer instellingen exporteren door middel van PrintBrm.exe 
 Printer instellingen zoals ip adres, driver, poorten en instellingen worden opgeslagen in een .printerexport bestand
-vervolgens exporteren met een andere script
+vervolgens importeren met een andere script
 Gemaakt door: Muki & ChatGPT
 Datum: 2025-2-26
 #>

@@ -6,7 +6,7 @@ Datum: 2025-2-26
 #>
 
 # Definieer het pad naar de logmap en logbestand
-$logDir = "C:\Temp"
+$logDir = "$env:windir\Temp"
 $logFile = "$logDir\printer_import.log"
 
 # Controleer of de logmap bestaat; zo niet, maak deze aan
@@ -38,7 +38,7 @@ Write-Log "Printer backup bestand gevonden. Start import..."
 
 # Importeer printerinstellingen
 try {
-    Start-Process -FilePath "C:\Windows\System32\spool\tools\PrintBrm.exe" -ArgumentList "/R /F $BackupPath /O FORCE" -Wait -NoNewWindow
+    Start-Process -FilePath "$env:windir\System32\spool\tools\PrintBrm.exe" -ArgumentList "/R /F $BackupPath /O FORCE" -Wait -NoNewWindow
     Write-Log "Printer instellingen succesvol geïmporteerd."
 } catch {
     Write-Log "FOUT: Kon printer instellingen niet importeren. $_"

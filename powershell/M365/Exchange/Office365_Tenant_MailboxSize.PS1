@@ -64,7 +64,7 @@ param(
     Mandatory = $false,
     HelpMessage = "Enter path to save the CSV file"
   )]
-  [string]$path = ".\MailboxSizeReport-$((Get-Date -format "MMM-dd-yyyy").ToString()).csv"
+  [string]$path = "c:\temp\MailboxSizeReport-$((Get-Date -format "MMM-dd-yyyy").ToString()).csv"
 )
 
 Function ConnectTo-EXO {

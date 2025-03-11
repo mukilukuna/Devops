@@ -56,7 +56,7 @@
 
 #region ---------------------------------------------------[Modifiable Parameters and defaults]------------------------------------
 # Customizations
-[System.Object]$Enrollmentaccounts = @("admin@verhoevemw.com", "l.groeneweg@verhoevemw.com", "MDM@verhoevemw.com") # @() = No Enrollment accounts. @("wds@tbone.se","wds2@tbone.se") = will filter them out and not assign them as primary users.
+[System.Object]$Enrollmentaccounts = @("admin@Bouwtal.onmicrosoft.com") # @() = No Enrollment accounts. @("wds@tbone.se","wds2@tbone.se") = will filter them out and not assign them as primary users.
 [System.Object]$DeviceGroups = @() # Group filter. @() = all devices. @("tbone-devices", "tbone-devices2") will filter only members of those groups
 [int]$SigninsTimeSpan = 30        # Number of days back in time to look back for Sign-In logs (Default 30 days)
 [int]$DeviceTimeSpan = 30        # Number of days back in time to look back for active devices (Default 30 days)

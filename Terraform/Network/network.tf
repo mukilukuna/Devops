@@ -3,8 +3,8 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "example" {
-  name     = "example-resources"
-  location = "UK South"
+  name     = "Network-rg"
+  location = "West Europe"
 }
 
 resource "azurerm_virtual_network" "example" {

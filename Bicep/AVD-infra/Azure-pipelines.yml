@@ -41,7 +41,7 @@ stages:
     - checkout: self
     - task: AzureCLI@2
       inputs:
-        azureSubscription: 'avd-service-connection'
+        azureSubscription: 'Visual Studio Enterprise-abonnement – MPN(098e34b6-d88e-447e-ba9a-245275343d63)'
         scriptType: 'bash'
         script: |
           az deployment group create \
@@ -61,7 +61,7 @@ stages:
     - checkout: self
     - task: AzureCLI@2
       inputs:
-        azureSubscription: 'avd-service-connection'
+        azureSubscription: 'Visual Studio Enterprise-abonnement – MPN(098e34b6-d88e-447e-ba9a-245275343d63)'
         scriptType: 'bash'
         script: |
           az deployment group create \

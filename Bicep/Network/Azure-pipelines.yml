@@ -11,24 +11,28 @@ stages:
   - job: BicepPlan
     displayName: 'Bicep Plan'
     steps:
+    - checkout: self
+    - script: |
+        echo "Current working directory: $(pwd)"
+        echo "Files in this directory:"
+        ls -R
+      displayName: 'Debug: List Files'
+
     - task: AzureCLI@2
       inputs:
         azureSubscription: 'Visual Studio Enterprise-abonnement – MPN(098e34b6-d88e-447e-ba9a-245275343d63)'
         scriptType: 'bash'  # Gebruik bash in plaats van PowerShell
         scriptLocation: 'inlineScript'
         inlineScript: |
-          # Controleer of Bicep is geïnstalleerd
-          if ! command -v bicep &> /dev/null
-          then
-            echo "Bicep CLI is niet geïnstalleerd. Installeren..."
-            curl -L https://aka.ms/bicep/install/linux | sudo bash
-          else
-            echo "Bicep CLI is al geïnstalleerd."
+          # Install Bicep CLI if missing
+          if ! command -v bicep &> /dev/null; then
+            sudo curl -L https://aka.ms/bicep/install/linux | sudo bash
           fi
-
-          # Valideer het Bicep-bestand met parameters
+          echo "Checking if main.bicep exists..."
+          ls -l main.bicep  # Verify file existence
           bicep build main.bicep
-
+          # Validate Bicep file
+          bicep build main.bicep  # Path relative to repository root
         displayName: 'Bicep Build en Valideer'
 
 - stage: Deploy

@@ -14,23 +14,25 @@ stages:
     - task: AzureCLI@2
       inputs:
         azureSubscription: 'Visual Studio Enterprise-abonnement – MPN(098e34b6-d88e-447e-ba9a-245275343d63)'
-        scriptType: 'bash'  # Use bash for Linux agent
+        scriptType: 'bash'  # Gebruik bash in plaats van PowerShell
         scriptLocation: 'inlineScript'
         inlineScript: |
-          # Install Bicep CLI
-          curl -L https://aka.ms/bicep/install/linux | sudo bash
+          # Controleer of Bicep is geïnstalleerd
+          if ! command -v bicep &> /dev/null
+          then
+            echo "Bicep CLI is niet geïnstalleerd. Installeren..."
+            curl -L https://aka.ms/bicep/install/linux | sudo bash
+          else
+            echo "Bicep CLI is al geïnstalleerd."
+          fi
 
-          # Check Bicep version
-          bicep --version
+          # Valideer het Bicep-bestand met parameters
+          bicep build main.bicep --parameters dev.bicepparam
 
-          # Validate Bicep file with parameters
-          bicep build main.bicep --parameters @dev.bicepparam
-
-        displayName: 'Bicep Build and Validate'
-        powerShellErrorActionPreference: 'silentlyContinue'
+        displayName: 'Bicep Build en Valideer'
 
 - stage: Deploy
-  displayName: 'Bicep Apply'
+  displayName: 'Bicep Deploy'
   jobs:
   - job: BicepDeploy
     displayName: 'Bicep Deploy'
@@ -38,7 +40,22 @@ stages:
     - task: AzureCLI@2
       inputs:
         azureSubscription: 'Visual Studio Enterprise-abonnement – MPN(098e34b6-d88e-447e-ba9a-245275343d63)'
-        scriptType: 'bash'  # Use bash for Linux agent
+        scriptType: 'bash'  # Gebruik bash in plaats van PowerShell
         scriptLocation: 'inlineScript'
         inlineScript: |
-          # Install Bicep CLI (if not already installed)
+          # Controleer of Bicep is geïnstalleerd
+          if ! command -v bicep &> /dev/null
+          then
+            echo "Bicep CLI is niet geïnstalleerd. Installeren..."
+            curl -L https://aka.ms/bicep/install/linux | sudo bash
+          else
+            echo "Bicep CLI is al geïnstalleerd."
+          fi
+
+          # Implementeer het Bicep-sjabloon met parameters
+          az deployment group create \
+            --resource-group NetworkRG \
+            --template-file main.bicep \
+            --parameters dev.bicepparam
+
+        displayName: 'Bicep Implementatie'

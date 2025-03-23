@@ -27,7 +27,7 @@ stages:
           fi
 
           # Valideer het Bicep-bestand met parameters
-          bicep build main.bicep --parameters dev.bicepparam
+          bicep build main.bicep
 
         displayName: 'Bicep Build en Valideer'
 
@@ -43,19 +43,8 @@ stages:
         scriptType: 'bash'  # Gebruik bash in plaats van PowerShell
         scriptLocation: 'inlineScript'
         inlineScript: |
-          # Controleer of Bicep is geïnstalleerd
-          if ! command -v bicep &> /dev/null
-          then
-            echo "Bicep CLI is niet geïnstalleerd. Installeren..."
-            curl -L https://aka.ms/bicep/install/linux | sudo bash
-          else
-            echo "Bicep CLI is al geïnstalleerd."
-          fi
-
-          # Implementeer het Bicep-sjabloon met parameters
           az deployment group create \
             --resource-group NetworkRG \
             --template-file main.bicep \
-            --parameters dev.bicepparam
-
+            --parameters @dev.bicepparam
         displayName: 'Bicep Implementatie'

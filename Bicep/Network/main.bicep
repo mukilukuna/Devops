@@ -16,8 +16,8 @@ module myKeyVault 'br/public:avm/res/key-vault/vault:0.11.0' = {
       }
     ]
     roleAssignments: [
-      {principalId: 'test'
-      roleDefinitionIdOrName: 'Contributor'
+      {principalId: 'da0a184d-e7dd-4d42-b011-a06f05fa395d'
+      roleDefinitionIdOrName: 'owner'
       }
     ]
   }

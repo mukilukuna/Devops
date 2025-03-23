@@ -14,7 +14,7 @@ stages:
     - task: AzureCLI@2
       inputs:
         azureSubscription: 'Visual Studio Enterprise-abonnement – MPN(098e34b6-d88e-447e-ba9a-245275343d63)'
-        scriptType: 'ps'  # PowerShell script type (though we use Azure CLI commands)
+        scriptType: 'bash'  # bash script type (though we use Azure CLI commands)
         scriptLocation: 'inlineScript'  # Inline script for Bicep CLI commands
         inlineScript: |
           # Install Bicep CLI

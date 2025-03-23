@@ -1,0 +1,55 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+- stage: Plan
+  displayName: 'Bicep Plan'
+  jobs:
+  - job: BicepPlan
+    displayName: 'Bicep Plan'
+    steps:
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: 'Visual Studio Enterprise-abonnement – MPN(098e34b6-d88e-447e-ba9a-245275343d63)'
+        scriptType: 'ps'  # PowerShell script type (though we use Azure CLI commands)
+        scriptLocation: 'inlineScript'  # Inline script for Bicep CLI commands
+        inlineScript: |
+          # Install Bicep CLI
+          curl -L https://aka.ms/bicep/install/linux | sudo bash
+
+          # Check Bicep version
+          bicep --version
+
+          # Validate Bicep file with parameters
+          bicep build main.bicep --parameters dev.bicepparam
+
+        displayName: 'Bicep Build and Validate'
+        powerShellErrorActionPreference: 'silentlyContinue'  # Suppress errors
+
+- stage: Deploy
+  displayName: 'Bicep Apply'
+  jobs:
+  - job: BicepDeploy
+    displayName: 'Bicep Deploy'
+    steps:
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: 'Visual Studio Enterprise-abonnement – MPN(098e34b6-d88e-447e-ba9a-245275343d63)'
+        scriptType: 'ps'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          # Install Bicep CLI (if not already installed)
+          curl -L https://aka.ms/bicep/install/linux | sudo bash
+
+          # Check Bicep version
+          bicep --version
+
+          # Deploy the Bicep template with parameters
+          az deployment group create --resource-group 'NetworkRG' --template-file main.bicep --parameters dev.bicepparam --mode Incremental
+
+        displayName: 'Bicep Deploy'
+        powerShellErrorActionPreference: 'silentlyContinue'  # Suppress errors
+        useGlobalConfig: true  # Use global Azure CLI configuration

@@ -1,4 +1,4 @@
-# Definieer de naam van het pakket
+    # Definieer de naam van het pakket
 $packageName = "XelionWindowsDesktop"
 
 # Controleer of het appx-pakket is geïnstalleerd

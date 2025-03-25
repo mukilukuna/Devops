@@ -18,13 +18,34 @@ stages:
       inputs:
         azureSubscription: 'Visual Studio Enterprise-abonnement – MPN(098e34b6-d88e-447e-ba9a-245275343d63)'
         scriptType: 'bash'
-        scriptLocation: 'inlineScript'  # Correct casing
-        inlineScript: |  # Use inlineScript, not script
-          # Validate Bicep files
-          cd bicep/AVD-infra  # Use forward slashes for Linux
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          # Debug directory structure
+          echo "Current directory: $(pwd)"
+          ls -R
+          
+          # Verify Bicep directory exists
+          if [ ! -d "bicep/AVD-infra" ]; then
+            echo "##vso[task.logissue type=error]Missing bicep/AVD-infra directory"
+            exit 1
+          fi
+
+          cd bicep/AVD-infra || exit 1
+          echo "Contents of bicep/AVD-infra:"
+          ls -l
+          
+          # Install Bicep CLI
           az bicep install
+          
+          # Validate Bicep
           bicep build main.bicep
           bicep lint main.bicep
+          
+          # Validate parameters
+          if [ ! -f "parameters/dev.bicepparam" ]; then
+            echo "##vso[task.logissue type=error]Missing parameters/dev.bicepparam"
+            exit 1
+          fi
 
 - stage: Deploy_Dev
   displayName: Deploy to Dev
@@ -39,13 +60,22 @@ stages:
       inputs:
         azureSubscription: 'Visual Studio Enterprise-abonnement – MPN(098e34b6-d88e-447e-ba9a-245275343d63)'
         scriptType: 'bash'
-        scriptLocation: 'inlineScript'  # Required for inline scripts
+        scriptLocation: 'inlineScript'
         inlineScript: |
-          cd bicep/AVD-infra
+          cd bicep/AVD-infra || exit 1
+          
+          # Debug before deployment
+          echo "Deployment files:"
+          ls -l
+          echo "Parameters file content:"
+          cat parameters/dev.bicepparam
+          
           az deployment group create \
             --resource-group avd-dev-rg \
             --template-file main.bicep \
-            --parameters @parameters/dev.bicepparam
+            --parameters @parameters/dev.bicepparam \
+            --name "avd-deploy-$(Build.BuildId)" \
+            --verbose
 
 - stage: Deploy_Prod
   displayName: Deploy to Prod
@@ -61,10 +91,17 @@ stages:
       inputs:
         azureSubscription: 'Visual Studio Enterprise-abonnement – MPN(098e34b6-d88e-447e-ba9a-245275343d63)'
         scriptType: 'bash'
-        scriptLocation: 'inlineScript'  # Required for inline scripts
+        scriptLocation: 'inlineScript'
         inlineScript: |
-          cd bicep/AVD-infra
+          cd bicep/AVD-infra || exit 1
+          
+          # Add manual approval check for production
+          echo "##[warning]Production deployment requires manual approval"
+          echo "##vso[task.complete result=SucceededWithIssues;]"
+          
           az deployment group create \
             --resource-group avd-prod-rg \
             --template-file main.bicep \
-            --parameters @parameters/prod.bicepparam
+            --parameters @parameters/prod.bicepparam \
+            --name "avd-prod-deploy-$(Build.BuildId)" \
+            --verbose

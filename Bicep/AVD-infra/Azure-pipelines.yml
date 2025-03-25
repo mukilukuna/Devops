@@ -20,32 +20,25 @@ stages:
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: |
-          # Debug directory structure
-          echo "Current directory: $(pwd)"
-          ls -R
-          
-          # Verify Bicep directory exists
-          if [ ! -d "bicep/AVD-infra" ]; then
-            echo "##vso[task.logissue type=error]Missing bicep/AVD-infra directory"
+          # Verify directory exists (case-sensitive)
+          if [ ! -d "Bicep/AVD-infra" ]; then
+            echo "##vso[task.logissue type=error]Directory Bicep/AVD-infra not found"
             exit 1
           fi
 
-          cd bicep/AVD-infra || exit 1
-          echo "Contents of bicep/AVD-infra:"
+          cd Bicep/AVD-infra || exit 1
+          echo "Contents:"
           ls -l
-          
-          # Install Bicep CLI
-          az bicep install
-          
-          # Validate Bicep
-          bicep build main.bicep
-          bicep lint main.bicep
-          
+
           # Validate parameters
-          if [ ! -f "parameters/dev.bicepparam" ]; then
-            echo "##vso[task.logissue type=error]Missing parameters/dev.bicepparam"
+          if [ ! -f "Parameters/dev.bicepparam" ]; then
+            echo "##vso[task.logissue type=error]Missing Parameters/dev.bicepparam"
             exit 1
           fi
+
+          az bicep install
+          bicep build main.bicep
+          bicep lint main.bicep
 
 - stage: Deploy_Dev
   displayName: Deploy to Dev
@@ -62,18 +55,11 @@ stages:
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: |
-          cd bicep/AVD-infra || exit 1
-          
-          # Debug before deployment
-          echo "Deployment files:"
-          ls -l
-          echo "Parameters file content:"
-          cat parameters/dev.bicepparam
-          
+          cd Bicep/AVD-infra || exit 1
           az deployment group create \
             --resource-group avd-dev-rg \
             --template-file main.bicep \
-            --parameters @parameters/dev.bicepparam \
+            --parameters @Parameters/dev.bicepparam  # Uppercase "P"
             --name "avd-deploy-$(Build.BuildId)" \
             --verbose
 

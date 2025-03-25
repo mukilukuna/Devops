@@ -18,19 +18,13 @@ stages:
       inputs:
         azureSubscription: 'Visual Studio Enterprise-abonnement – MPN(098e34b6-d88e-447e-ba9a-245275343d63)'
         scriptType: 'bash'
-        scriptlocation: 'inlineScript'
-        script: |
-          cd bicep\AVD-infra
-          # Install Bicep CLI
+        scriptLocation: 'inlineScript'  # Correct casing
+        inlineScript: |  # Use inlineScript, not script
+          # Validate Bicep files
+          cd bicep/AVD-infra  # Use forward slashes for Linux
           az bicep install
-          az deployment group create \
-            --resource-group avd-dev-rg \  # Explicitly define the RG
-            --template-file main.bicep \
-            --parameters @dev.bicepparam
-
-          # Lint and validate
-          bicep build avd-infra/main.bicep
-          bicep lint avd-infra/main.bicep
+          bicep build main.bicep
+          bicep lint main.bicep
 
 - stage: Deploy_Dev
   displayName: Deploy to Dev
@@ -45,11 +39,13 @@ stages:
       inputs:
         azureSubscription: 'Visual Studio Enterprise-abonnement – MPN(098e34b6-d88e-447e-ba9a-245275343d63)'
         scriptType: 'bash'
-        script: |
+        scriptLocation: 'inlineScript'  # Required for inline scripts
+        inlineScript: |
+          cd bicep/AVD-infra
           az deployment group create \
             --resource-group avd-dev-rg \
-            --template-file avd-infra/main.bicep \
-            --parameters @avd-infra/parameters/dev.bicepparam
+            --template-file main.bicep \
+            --parameters @parameters/dev.bicepparam
 
 - stage: Deploy_Prod
   displayName: Deploy to Prod
@@ -65,8 +61,10 @@ stages:
       inputs:
         azureSubscription: 'Visual Studio Enterprise-abonnement – MPN(098e34b6-d88e-447e-ba9a-245275343d63)'
         scriptType: 'bash'
-        script: |
+        scriptLocation: 'inlineScript'  # Required for inline scripts
+        inlineScript: |
+          cd bicep/AVD-infra
           az deployment group create \
             --resource-group avd-prod-rg \
-            --template-file avd-infra/main.bicep \
-            --parameters @avd-infra/parameters/prod.bicepparam
+            --template-file main.bicep \
+            --parameters @parameters/prod.bicepparam

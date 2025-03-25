@@ -18,6 +18,7 @@ stages:
       inputs:
         azureSubscription: 'Visual Studio Enterprise-abonnement – MPN(098e34b6-d88e-447e-ba9a-245275343d63)'
         scriptType: 'bash'
+        scriptlocation: 'inlineScript'
         script: |
           cd bicep\AVD-infra
           # Install Bicep CLI

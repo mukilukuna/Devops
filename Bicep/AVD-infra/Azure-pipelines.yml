@@ -59,7 +59,7 @@ stages:
           az deployment group create \
             --resource-group avd-dev-rg \
             --template-file main.bicep \
-            --parameters @Parameters/dev.bicepparam  # Uppercase "P"
+            --parameters @Parameters/dev.parameters.json  # Uppercase "P"
             --name "avd-deploy-$(Build.BuildId)" \
             --verbose
 

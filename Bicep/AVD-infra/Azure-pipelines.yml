@@ -30,12 +30,6 @@ stages:
           echo "Contents:"
           ls -l
 
-          # Validate parameters
-          if [ ! -f "Parameters/dev.bicepparam" ]; then
-            echo "##vso[task.logissue type=error]Missing Parameters/dev.bicepparam"
-            exit 1
-          fi
-
           az bicep install
           bicep build main.bicep
           bicep lint main.bicep
@@ -59,7 +53,6 @@ stages:
           az deployment group create \
             --resource-group avd-dev-rg \
             --template-file main.bicep \
-            --parameters @Parameters/dev.parameters.json  # Uppercase "P"
             --name "avd-deploy-$(Build.BuildId)" \
             --verbose
 
@@ -88,6 +81,6 @@ stages:
           az deployment group create \
             --resource-group avd-prod-rg \
             --template-file main.bicep \
-            --parameters @parameters/prod.bicepparam \
+
             --name "avd-prod-deploy-$(Build.BuildId)" \
             --verbose

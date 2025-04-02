@@ -1,5 +1,6 @@
 targetScope = 'resourceGroup'
-param KeyVaultName string
+param KeyVaultName string = 'AVMKeyVault' // the name of the Key Vault
+param location string = resourceGroup().location // the location of the Key Vault
 param enablePurgeProtection bool = true
 @secure()
 param patToken string = newGuid()
@@ -9,6 +10,7 @@ module myKeyVault 'br/public:avm/res/key-vault/vault:0.11.0' = {
   params: {
     name: KeyVaultName
     enablePurgeProtection: enablePurgeProtection
+    location: location
     secrets: [
       {
         name: 'mySecret'

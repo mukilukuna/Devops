@@ -8,6 +8,7 @@
 
 # Lijst met exacte Appx pakketnamen die verwijderd moeten worden.
 # Voeg hier de ongewenste Appx-package namen toe (Exacte naam, geen wildcards).
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 $PackagesToRemove = @(
     "Microsoft.Getstarted",
     "Microsoft.Xbox.TCUI",
@@ -47,7 +48,7 @@ function Write-Log {
     )
     try {
         $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-        $type = $IsError.IsPresent ? "ERROR" : "INFO"
+        $type = if ($IsError.IsPresent) { "ERROR" } else { "INFO" }
         $entry = "$timestamp [$type] $Message"
         Add-Content -Path $LogPath -Value $entry -Encoding UTF8
     }

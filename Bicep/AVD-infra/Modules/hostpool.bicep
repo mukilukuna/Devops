@@ -10,3 +10,5 @@ resource hostPool 'Microsoft.DesktopVirtualization/hostpools@2023-09-05' = {
     preferredAppGroupType: 'Desktop'
   }
 }
+
+output hostPoolId string = hostPool.id

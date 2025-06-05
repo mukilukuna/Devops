@@ -2,6 +2,10 @@ param scalingPlanName string
 param hostPoolName string
 param location string
 
+resource hostPool 'Microsoft.DesktopVirtualization/hostpools@2023-09-05' existing = {
+  name: hostPoolName
+}
+
 resource scalingPlan 'Microsoft.DesktopVirtualization/scalingplans@2023-09-05' = {
   name: scalingPlanName
   location: location
@@ -24,3 +28,5 @@ resource scalingPlan 'Microsoft.DesktopVirtualization/scalingplans@2023-09-05' =
     ]
   }
 }
+
+output scalingPlanId string = scalingPlan.id

@@ -1,3 +1,5 @@
+targetScope = 'subscription'
+
 resource vmTagPolicy 'Microsoft.Authorization/policyDefinitions@2023-04-01' = {
   name: 'enforce-vm-tags'
   properties: {
@@ -10,16 +12,16 @@ resource vmTagPolicy 'Microsoft.Authorization/policyDefinitions@2023-04-01' = {
     }
     policyRule: {
       if: {
-        allOf: [
-          {
-            field: 'type'
-            equals: 'Microsoft.Compute/virtualMachines'
-          },
-          {
-            field: 'tags[parameters(''tagName'')]'
-            exists: false
-          }
-        ]
+          allOf: [
+            {
+              field: 'type'
+              equals: 'Microsoft.Compute/virtualMachines'
+            }
+            {
+              field: 'tags[CostCenter]'
+              exists: false
+            }
+          ]
       }
       then: {
         effect: 'deny'
@@ -27,3 +29,5 @@ resource vmTagPolicy 'Microsoft.Authorization/policyDefinitions@2023-04-01' = {
     }
   }
 }
+
+output policyId string = vmTagPolicy.id

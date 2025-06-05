@@ -1,3 +1,5 @@
+# Script: SCR_APP_DetectApp.ps1
+# Purpose: SCR APP DetectApp
 <#
 .SYNOPSIS
     PowerShell Detection Script voor Intune - controleert of een specifieke applicatie is geïnstalleerd.

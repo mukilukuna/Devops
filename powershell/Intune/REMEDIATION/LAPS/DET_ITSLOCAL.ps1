@@ -1,3 +1,5 @@
+# Script: DET_ITSLOCAL.ps1
+# Purpose: DET ITSLOCAL
 Start-Transcript -Path "$env:ProgramData\Microsoft\IntuneManagementExtension\Logs\LAPSLocalAdmin_Detect.log" -Append
 
 $LAPSAdmin = "its_local"

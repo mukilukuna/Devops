@@ -1,4 +1,4 @@
-﻿#Kill federation sync - AD Sync
+#Kill federation sync - AD Sync
 Connect-MsolService
 Get-MsolCompanyInformation | fl *synch*
 

@@ -1,3 +1,5 @@
+# Script: SCR_UPD_UPDATEWITHOUTREBOOT.ps1
+# Purpose: SCR UPD UPDATEWITHOUTREBOOT
 Set-ExecutionPolicy Bypass -Confirm:$false
 Install-Script -name pswindowsupdate -force -Confirm:$false
 Get-WindowsUpdate -AcceptAll -ForceInstall -Install

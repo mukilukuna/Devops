@@ -1,4 +1,6 @@
-﻿$userName = 'aadsyncuser'
+# Script: Script 5.ps1
+# Purpose: Script 5
+$userName = 'aadsyncuser'
 $passwordProfile = New-Object -TypeName Microsoft.Open.AzureAD.Model.PasswordProfile
 $passwordProfile.Password = '6l3oswU_i4AphlspAdl2'
 $passwordProfile.ForceChangePasswordNextLogin = $false

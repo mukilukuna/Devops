@@ -1,3 +1,5 @@
+# Script: Install_FSLogix_latest.ps1
+# Purpose: Install FSLogix latest
 $URILatestFSLogix = $InheritedVars.FSLogixURI #"https://aka.ms/fslogix_download"
 $LatestFSLogixTempDestZip = "c:\temp\FSLogix.zip"
 $LatestFSLogixTempDest = "c:\temp\FSLogix"

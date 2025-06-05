@@ -1,4 +1,6 @@
-﻿Get-ProvisionedAppXPackage -Online | Select DisplayName
+# Script: WIndows_Defaultapps_Reinstall.ps1
+# Purpose: WIndows Defaultapps Reinstall
+Get-ProvisionedAppXPackage -Online | Select DisplayName
 
 Get-appxpackage Microsoft.MicrosoftOfficeHub
 

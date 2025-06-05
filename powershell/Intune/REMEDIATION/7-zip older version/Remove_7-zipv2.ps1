@@ -1,3 +1,5 @@
+# Script: Remove_7-zipv2.ps1
+# Purpose: Remove 7 zipv2
 Start-Process "C:\Windows\System32\msiexec.exe" `
 -ArgumentList "/i {23170F69-40C1-2702-2201-000001000000} /quiet /noreboot" -Wait
 

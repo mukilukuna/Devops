@@ -1,4 +1,4 @@
-﻿# Aanmaken van Active Directory beveiligingsgroepen en gebruikers toevoegen aan groepen
+# Aanmaken van Active Directory beveiligingsgroepen en gebruikers toevoegen aan groepen
 $ouPath = "OU=ToSync,DC=adatum,DC=com" # Definieer het pad voor de OU
 
 # Groepen aanmaken

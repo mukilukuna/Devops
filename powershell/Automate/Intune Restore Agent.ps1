@@ -1,3 +1,5 @@
+# Script: Intune Restore Agent.ps1
+# Purpose: Intune Restore Agent
 $ServiceName = 'LTSvcMon'
 $arrService = Get-Service -Name $ServiceName
 

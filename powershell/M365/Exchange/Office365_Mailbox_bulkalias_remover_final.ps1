@@ -1,4 +1,6 @@
-﻿$Domain = "sbrdam.nl"
+# Script: Office365_Mailbox_bulkalias_remover_final.ps1
+# Purpose: Office365 Mailbox bulkalias remover final
+$Domain = "sbrdam.nl"
 $RemoveSMTPDomain = "smtp:*@$Domain"
  
  

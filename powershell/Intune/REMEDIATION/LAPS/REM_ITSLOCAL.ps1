@@ -1,3 +1,5 @@
+# Script: REM_ITSLOCAL.ps1
+# Purpose: REM ITSLOCAL
 Start-Transcript -Path "$env:ProgramData\Microsoft\IntuneManagementExtension\Logs\LAPSLocalAdmin_Remediate.log" -Append
 
 $LAPSAdmin = "its_local"

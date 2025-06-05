@@ -1,3 +1,5 @@
+# Script: SCR_APP_Uninstall.ps1
+# Purpose: SCR APP Uninstall
 <#
 .SYNOPSIS
     PowerShell-script voor Intune om opgegeven applicaties te verwijderen.

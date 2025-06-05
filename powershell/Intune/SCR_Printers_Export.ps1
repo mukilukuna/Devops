@@ -1,3 +1,5 @@
+# Script: SCR_Printers_Export.ps1
+# Purpose: SCR Printers Export
 <#
 Printer instellingen exporteren door middel van PrintBrm.exe 
 Printer instellingen zoals ip adres, driver, poorten en instellingen worden opgeslagen in een .printerexport bestand

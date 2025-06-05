@@ -1,3 +1,5 @@
+# Script: SCR_EXPORTEXCHANGE.ps1
+# Purpose: SCR EXPORTEXCHANGE
 $Path = "C:\Users\muki.lukuna\IT Synergy\Stichting Mano - General\Professional services\Inventarisatie\export.csv"
 
 Connect-ExchangeOnline

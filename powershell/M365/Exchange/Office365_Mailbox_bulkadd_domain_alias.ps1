@@ -1,4 +1,6 @@
-﻿Connect-ExchangeOnline
+# Script: Office365_Mailbox_bulkadd_domain_alias.ps1
+# Purpose: Office365 Mailbox bulkadd domain alias
+Connect-ExchangeOnline
 
 $users = Get-Mailbox -ResultSize Unlimited | Where-Object{$_.PrimarySMTPAddress -match "stichting-joz.nl"}#
  

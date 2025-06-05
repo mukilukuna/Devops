@@ -1,3 +1,5 @@
+# Script: Get-AADTenantID-and-TenantName-FromWindowsClient.ps1
+# Purpose: Get AADTenantID and TenantName FromWindowsClient
 <#
     .SYNOPSIS 
     AAD details from AAD join

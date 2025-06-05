@@ -1,3 +1,5 @@
+# Script: TweedeAdminVerwijderen.ps1
+# Purpose: TweedeAdminVerwijderen
 <# 
 Script om een secundaire beheerder te verwijderen uit alle OneDrive for Business-sites van een organisatie.
 

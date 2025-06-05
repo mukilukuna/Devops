@@ -1,3 +1,5 @@
+# Script: Xelion.ps1
+# Purpose: Xelion
     # Definieer de naam van het pakket
 $packageName = "XelionWindowsDesktop"
 

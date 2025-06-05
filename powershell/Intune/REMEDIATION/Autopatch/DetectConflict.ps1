@@ -1,3 +1,5 @@
+# Script: DetectConflict.ps1
+# Purpose: DetectConflict
 $TranscriptPath = "C:\ProgramData\Microsoft\IntuneManagementExtension\Logs"
 $TranscriptName = "AutoPatchDetection.log"
 new-item $TranscriptPath -ItemType Directory -Force

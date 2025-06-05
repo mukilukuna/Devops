@@ -1,3 +1,5 @@
+# Script: Ltmoncheck.ps1
+# Purpose: Ltmoncheck
 $ServiceName = 'LTSvcMon'
 
 try {

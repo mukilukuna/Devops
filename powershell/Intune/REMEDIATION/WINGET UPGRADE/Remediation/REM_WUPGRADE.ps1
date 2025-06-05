@@ -1,3 +1,5 @@
+# Script: REM_WUPGRADE.ps1
+# Purpose: REM WUPGRADE
 Try {
     Write-Host "Resolving winget Path"
     ## Help System to find winget.exe

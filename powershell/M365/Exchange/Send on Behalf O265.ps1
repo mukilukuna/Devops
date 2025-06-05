@@ -1,4 +1,6 @@
-﻿Install the 64-bit version of the Microsoft Online Services Sign-in Assistant
+# Script: Send on Behalf O265.ps1
+# Purpose: Send on Behalf O265
+Install the 64-bit version of the Microsoft Online Services Sign-in Assistant
 https://go.microsoft.com/fwlink/p/?LinkId=286152
 
 Install Framework 5.1

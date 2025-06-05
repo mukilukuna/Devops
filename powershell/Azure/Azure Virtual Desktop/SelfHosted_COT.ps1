@@ -1,3 +1,5 @@
+# Script: SelfHosted_COT.ps1
+# Purpose: SelfHosted COT
 BEGIN {
     $Hostname = hostname
     [System.String]$WindowsVersion = (Get-ItemProperty "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\").ReleaseId

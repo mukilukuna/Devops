@@ -1,4 +1,6 @@
-﻿<#
+# Script: AzureAD_add_Group_Device.ps1
+# Purpose: AzureAD add Group Device
+<#
 .Synopsis
    Add Computers to Azure AD Group
 .DESCRIPTION

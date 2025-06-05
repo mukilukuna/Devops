@@ -1,3 +1,5 @@
+# Script: SCR_Set_PrimaryUser.ps1
+# Purpose: SCR Set PrimaryUser
 <#PSScriptInfo
 .SYNOPSIS
     Script for Intune to set Primary User on Device

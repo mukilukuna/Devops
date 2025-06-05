@@ -1,15 +1,33 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-      "KeyVaultName": {
-        "value": "AVMKeyVault"
-      },
-      "enablePurgeProtection": {
-        "value": false
-      },
-      "patToken": {
-        "value": "<your-secure-value-or-keyvault-reference>"
-      }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "keyVaultName": {
+      "value": "avd-kv-dev"
+    },
+    "enablePurgeProtection": {
+      "value": false
+    },
+    "patToken": {
+      "value": "<your-secure-value-or-keyvault-reference>"
+    },
+    "vnetName": {
+      "value": "avd-vnet-dev"
+    },
+    "avdHostPoolName": {
+      "value": "avd-dev-pool"
+    },
+    "scalingPlanName": {
+      "value": "avd-dev-scaling"
+    },
+    "entraAppName": {
+      "value": "avd-dev-app"
+    },
+    "vmAdminUsername": {
+      "value": "avdadmin"
+    },
+    "vmAdminPassword": {
+      "value": "<replace-with-secure-password>"
     }
   }
+}

@@ -3,7 +3,9 @@ trigger:
 
 variables:
   vmAdminUsername: 'avdadmin'
-  avdHostPoolName: 'my-avd-pool'
+  vmAdminPassword: ''
+  avdDevRg: 'avd-dev-rg'
+  avdProdRg: 'avd-prod-rg'
 
 stages:
 - stage: Validate
@@ -51,8 +53,10 @@ stages:
         inlineScript: |
           cd Bicep/AVD-infra || exit 1
           az deployment group create \
-            --resource-group avd-dev-rg \
+            --resource-group $(avdDevRg) \
             --template-file main.bicep \
+            --parameters @Parameters/dev.parameters.json \
+            --parameters vmAdminPassword=$(vmAdminPassword) \
             --name "avd-deploy-$(Build.BuildId)" \
             --verbose
 
@@ -72,15 +76,16 @@ stages:
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: |
-          cd bicep/AVD-infra || exit 1
+          cd Bicep/AVD-infra || exit 1
           
           # Add manual approval check for production
           echo "##[warning]Production deployment requires manual approval"
           echo "##vso[task.complete result=SucceededWithIssues;]"
           
           az deployment group create \
-            --resource-group avd-prod-rg \
+            --resource-group $(avdProdRg) \
             --template-file main.bicep \
-
+            --parameters @Parameters/dev.parameters.json \
+            --parameters vmAdminPassword=$(vmAdminPassword) \
             --name "avd-prod-deploy-$(Build.BuildId)" \
             --verbose

@@ -1,3 +1,5 @@
+# Script: Install Windows & Office Updates.ps1
+# Purpose: Install Windows & Office Updates
 if (Test-Path "C:\Program Files\Common Files\microsoft shared\ClickToRun\") {
     Set-Location "C:\Program Files\Common Files\microsoft shared\ClickToRun\"
     Start-Process OfficeC2RClient.exe -Wait -ArgumentList "/update user displaylevel=false forceappshutdown=false"

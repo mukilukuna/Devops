@@ -1,4 +1,6 @@
-﻿[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+# Script: Script 4.ps1
+# Purpose: Script 4
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 Install-Module -Name PowerShellGet -Force -SkipPublisherCheck
 
 Install-Module -Name Az -AllowClobber -SkipPublisherCheck

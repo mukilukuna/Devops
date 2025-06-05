@@ -1,3 +1,5 @@
+# Script: Detect_Dropbox.ps1
+# Purpose: Detect Dropbox
 $registryPath = "HKLM:\SOFTWARE\WOW6432Node\Dropbox\Client"
 
 # Check if the registry key exists

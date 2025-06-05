@@ -1,3 +1,5 @@
+# Script: Office365_PublicFolders_GetPermissions.ps1
+# Purpose: Office365 PublicFolders GetPermissions
 Connect-ExchangeOnline
 #SMTP Adresses
 Get-MailPublicFolder | ft Alias, PrimarySmtpAddress

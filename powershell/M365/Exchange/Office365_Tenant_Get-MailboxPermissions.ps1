@@ -1,3 +1,5 @@
+# Script: Office365_Tenant_Get-MailboxPermissions.ps1
+# Purpose: Office365 Tenant Get MailboxPermissions
 Write-Host "Fetching mailboxes"
 $Mbx = Get-ExoMailbox -RecipientTypeDetails UserMailbox, SharedMailbox -ResultSize Unlimited -PropertySet Delivery -Properties RecipientTypeDetails, DisplayName | Select DisplayName, UserPrincipalName, RecipientTypeDetails, GrantSendOnBehalfTo
 If ($Mbx.Count -eq 0) { 

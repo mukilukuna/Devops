@@ -1,3 +1,5 @@
+# Script: Windows_Printers_Addprinters.ps1
+# Purpose: Windows Printers Addprinters
 $ErrorActionPreference = 'SilentlyContinue'
 
 Add-printerport -Name "TCPPort:10.8.10.51" -PrinterHostAddress "10.8.10.51"

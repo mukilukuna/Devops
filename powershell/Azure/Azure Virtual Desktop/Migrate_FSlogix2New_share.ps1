@@ -1,3 +1,5 @@
+# Script: Migrate_FSlogix2New_share.ps1
+# Purpose: Migrate FSlogix2New share
 <# Zorg ervoor dat de volgende is ingesteld:
 1. Azure PowerShell-module is geïnstalleerd.
 2. voldoende ruimte in de doelbestandsshare.

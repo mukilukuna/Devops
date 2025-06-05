@@ -1,4 +1,4 @@
-﻿# Benodigde modules installeren en importeren
+# Benodigde modules installeren en importeren
 try {
     Install-Module -Name Az.Accounts -Force -AllowClobber
     Import-Module -Name Az.Accounts -Force

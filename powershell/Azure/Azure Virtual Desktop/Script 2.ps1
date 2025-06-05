@@ -1,4 +1,4 @@
-﻿# Aanmaken van gebruikers in de specifieke OU en een gebruiker toevoegen aan 'Domain Admins'
+# Aanmaken van gebruikers in de specifieke OU en een gebruiker toevoegen aan 'Domain Admins'
 $ouName = 'ToSync'
 $ouPath = "OU=$ouName,DC=adatum,DC=com"
 $adUserNamePrefix = 'aduser'

@@ -1,3 +1,5 @@
+# Script: RemoveAppxpackage.ps1
+# Purpose: RemoveAppxpackage
 $appPackages = @(
     "Microsoft.WindowsCamera",
     "Microsoft.Getstarted",

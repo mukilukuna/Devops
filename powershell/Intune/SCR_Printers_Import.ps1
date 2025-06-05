@@ -1,3 +1,5 @@
+# Script: SCR_Printers_Import.ps1
+# Purpose: SCR Printers Import
 <# een back-up van alle printerinstellingen importeren met behulp van PrintBrm.exe
 Printerinstellingen zoals ip adres, driver, poorten en instellingen worden opgeslagen in een .printerexport bestand
 vervolgens importeren met een andere script

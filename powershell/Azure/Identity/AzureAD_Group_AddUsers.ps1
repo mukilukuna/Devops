@@ -1,4 +1,6 @@
-﻿connect-azuread
+# Script: AzureAD_Group_AddUsers.ps1
+# Purpose: AzureAD Group AddUsers
+connect-azuread
 
 $csv = Get-Content c:\temp\ism_xx.csv
 foreach ($line1 in $csv) {

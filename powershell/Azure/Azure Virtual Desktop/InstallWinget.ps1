@@ -1,3 +1,5 @@
+# Script: InstallWinget.ps1
+# Purpose: InstallWinget
 $URILatestWinget = "https://github.com/microsoft/winget-cli/releases/download/v1.4.10173/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle"
 $URILatestWebview2 = "https://go.microsoft.com/fwlink/p/?LinkId=2124703"
 $LatestWingetTempDest = "c:\temp\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle"

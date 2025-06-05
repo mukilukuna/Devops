@@ -1,4 +1,6 @@
-﻿$LangList = Get-WinUserLanguageList
+# Script: Windows_Language_Remove.ps1
+# Purpose: Windows Language Remove
+$LangList = Get-WinUserLanguageList
 
 $MarkedLang = $LangList | where LanguageTag -eq "en-US"
 

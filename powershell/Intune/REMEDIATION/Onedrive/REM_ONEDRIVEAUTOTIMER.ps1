@@ -1,3 +1,5 @@
+# Script: REM_ONEDRIVEAUTOTIMER.ps1
+# Purpose: REM ONEDRIVEAUTOTIMER
 $Path = "HKCU:\SOFTWARE\Microsoft\OneDrive\Accounts\Business1"
 $Name = "Timerautomount"
 $Type = "QWORD"

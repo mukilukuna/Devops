@@ -1,4 +1,6 @@
-﻿Connect-ExchangeOnline
+# Script: Office365_Mailbox_RegionalSettings.ps1
+# Purpose: Office365 Mailbox RegionalSettings
+Connect-ExchangeOnline
 Get-MailboxRegionalConfiguration facturen@hefgroep.nl
 Set-MailboxRegionalConfiguration -Identity facturen@hefgroep.nl -Language nl-NL -DateFormat “d-M-yyyy” -timezone “W. Europe Standard Time” -timeformat “HH:mm” -LocalizeDefaultFolderName:$true
 Set-MailboxRegionalConfiguration -Identity itunes@peuterenco.nl -Language nl-NL -DateFormat “d-M-yyyy” -timezone “W. Europe Standard Time” -timeformat “HH:mm” -LocalizeDefaultFolderName:$true

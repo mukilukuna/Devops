@@ -1,4 +1,4 @@
-﻿##Change Teams Island mode to Teams Only##
+##Change Teams Island mode to Teams Only##
 ##Teams Powershell module installeren##
 Install-Module -Name MicrosoftTeams
 

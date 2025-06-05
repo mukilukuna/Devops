@@ -1,3 +1,5 @@
+# Script: WarmUp Temp user for first login.ps1
+# Purpose: WarmUp Temp user for first login
 param(
     [string] $Mode
 )

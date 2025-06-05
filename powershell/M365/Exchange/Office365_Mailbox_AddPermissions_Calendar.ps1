@@ -1,4 +1,6 @@
-﻿$LiveCred = Get-Credential
+# Script: Office365_Mailbox_AddPermissions_Calendar.ps1
+# Purpose: Office365 Mailbox AddPermissions Calendar
+$LiveCred = Get-Credential
 $Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri https://ps.outlook.com/powershell/ -Credential $LiveCred -Authentication Basic –AllowRedirection
 Import-PSSession $Session
 Get-MailboxFolderPermission mukaddes.kilayikli@SMWR-Rijnmond.nl:\agenda 

@@ -1,3 +1,5 @@
+# Script: DEC_ONEDRIVEAUTOTIMER.ps1
+# Purpose: DEC ONEDRIVEAUTOTIMER
 $Path = "HKCU:\SOFTWARE\Microsoft\OneDrive\Accounts\Business1"
 $Name = "Timerautomount"
 $Type = "QWORD"

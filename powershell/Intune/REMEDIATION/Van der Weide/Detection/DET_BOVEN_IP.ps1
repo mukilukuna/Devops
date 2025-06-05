@@ -1,3 +1,5 @@
+# Script: DET_BOVEN_IP.ps1
+# Purpose: DET BOVEN IP
 $printerName = "PRT_KYOCERA_BOVEN"
 $specificPort = "10.0.10.247"
 

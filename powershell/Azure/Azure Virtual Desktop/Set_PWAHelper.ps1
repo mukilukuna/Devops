@@ -1,3 +1,5 @@
+# Script: Set_PWAHelper.ps1
+# Purpose: Set PWAHelper
 $Path = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\"
 $msedge = $path + "msedge.exe"
 $ExtendPropertyPath = get-itemproperty -Path $msedge -name Path | Select-Object -ExpandProperty Path

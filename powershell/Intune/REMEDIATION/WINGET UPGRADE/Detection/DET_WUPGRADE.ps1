@@ -1,3 +1,5 @@
+# Script: DET_WUPGRADE.ps1
+# Purpose: DET WUPGRADE
 Try {
 	
     Write-Host "Resolving winget Path"

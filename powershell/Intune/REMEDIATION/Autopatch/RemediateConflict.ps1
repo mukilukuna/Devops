@@ -1,3 +1,5 @@
+# Script: RemediateConflict.ps1
+# Purpose: RemediateConflict
 $TranscriptPath = "C:\ProgramData\Microsoft\IntuneManagementExtension\Logs"
 $TranscriptName = "AutoPatchRemediation.log"
 new-item $TranscriptPath -ItemType Directory -Force

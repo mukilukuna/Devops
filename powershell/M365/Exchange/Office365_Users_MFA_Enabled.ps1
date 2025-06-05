@@ -1,4 +1,6 @@
-﻿
+# Script: Office365_Users_MFA_Enabled.ps1
+# Purpose: Office365 Users MFA Enabled
+
 Param
 (
     [Parameter(Mandatory = $false)]

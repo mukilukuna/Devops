@@ -1,3 +1,5 @@
+# Script: UninstallLabTechAgent.ps1
+# Purpose: UninstallLabTechAgent
 $url = "https://s3.amazonaws.com/assets-cp/assets/Agent_Uninstaller.zip"
 $output = "C:\Windows\Temp\Agent_Uninstaller.zip"
 (New-Object System.Net.WebClient).DownloadFile($url, $output)

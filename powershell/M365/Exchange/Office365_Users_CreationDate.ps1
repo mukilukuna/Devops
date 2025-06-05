@@ -1,4 +1,6 @@
-﻿Connect-AzureAD 
+# Script: Office365_Users_CreationDate.ps1
+# Purpose: Office365 Users CreationDate
+Connect-AzureAD 
 
 $Report = @()
 $AAD_users = Get-AzureADUser -All:$true

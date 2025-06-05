@@ -1,3 +1,5 @@
+# Script: APPX fix.ps1
+# Purpose: APPX fix
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 $wingetpath = 'C:\Program Files\WindowsApps\Microsoft.DesktopAppInstaller_*_x64__8wekyb3d8bbwe\'

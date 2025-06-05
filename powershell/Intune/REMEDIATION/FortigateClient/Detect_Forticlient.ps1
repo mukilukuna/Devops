@@ -1,3 +1,5 @@
+# Script: Detect_Forticlient.ps1
+# Purpose: Detect Forticlient
 if(Test-Path -Path "C:\Program Files\Fortinet\FortiClient\FortiClient.exe")
 {
     if((get-item -Path "C:\Program Files\Fortinet\FortiClient\FortiClient.exe").VersionInfo.FileVersion -lt "7.0.8.0427")

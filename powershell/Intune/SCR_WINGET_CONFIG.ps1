@@ -1,3 +1,5 @@
+# Script: SCR_WINGET_CONFIG.ps1
+# Purpose: SCR WINGET CONFIG
 $RegistryPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\AppInstaller"
 
 New-Item $RegistryPath -Fo

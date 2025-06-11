@@ -1,18 +1,28 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
 # Parameters
-$resourceGroupName = "NETWORK"
-$virtualWanName = "VWAN"
-$hubName = "VHub"
-$vpnConnectionName = "VGateway"
-$sharedKey = "N$wW7R1YerAq41r3mh" # Vervang dit door uw eigen gedeelde sleutel
-$location = "west europe"
+RESOURCE_GROUP="NETWORK"
+VIRTUAL_WAN="VWAN"
+HUB_NAME="VHub"
+VPN_CONNECTION_NAME="VGateway"
+SHARED_KEY="N\$wW7R1YerAq41r3mh" # Replace with your own shared key
+LOCATION="west europe"
+REMOTE_VPN_SITE="0.0.0.0/0"       # Replace with your remote site prefix or ID
 
-az group create --name $resourceGroupName --location $location
+# Create the resource group if it does not exist
+az group create --name "$RESOURCE_GROUP" --location "$LOCATION"
 
-# Maak de Virtual WAN
-az network vwan create --name $virtualWanName --resource-group $resourceGroupName --location $location
+# Create the Virtual WAN
+az network vwan create --name "$VIRTUAL_WAN" --resource-group "$RESOURCE_GROUP" --location "$LOCATION"
 
-# Voeg een hub toe aan de Virtual WAN
-az network vhub create --name $hubName --resource-group $resourceGroupName --vwan-name $virtualWanName
+# Create a hub inside the Virtual WAN
+az network vhub create --name "$HUB_NAME" --resource-group "$RESOURCE_GROUP" --vwan-name "$VIRTUAL_WAN"
 
-# Voeg een VPN-verbinding toe aan de hub
-az network vpn-connection create --name $vpnConnectionName --resource-group $resourceGroupName --vhub $hubName --remote-vpn-site 0.0.0.0/0 --shared-key $sharedKey
+# Add a VPN connection to the hub
+az network vpn-connection create \
+  --name "$VPN_CONNECTION_NAME" \
+  --resource-group "$RESOURCE_GROUP" \
+  --vhub "$HUB_NAME" \
+  --remote-vpn-site "$REMOTE_VPN_SITE" \
+  --shared-key "$SHARED_KEY"

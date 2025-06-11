@@ -1,22 +1,46 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
 # Parameters
-resourceGroupName="NETWORK"
-virtualNetworkName="MyVNet"
-gatewayName="MyVpnGateway"
-publicIpName="MyPip"
-location="west europe"
+RESOURCE_GROUP="NETWORK"
+VIRTUAL_NETWORK_NAME="MyVNet"
+GATEWAY_NAME="MyVpnGateway"
+PUBLIC_IP_NAME="MyPip"
+LOCATION="west europe"
+ROOT_CERT_PATH="YourRootCert.cer"
 
-# Maak een nieuwe resourcegroep (als deze nog niet bestaat)
-az group create --name $resourceGroupName --location $location
+# Ensure the resource group exists
+az group create --name "$RESOURCE_GROUP" --location "$LOCATION"
 
-# Maak een openbaar IP-adres aan voor de gateway
-az network public-ip create --name $publicIpName --resource-group $resourceGroupName --location $location --allocation-method Dynamic
+# Create the public IP address for the gateway
+az network public-ip create \
+  --name "$PUBLIC_IP_NAME" \
+  --resource-group "$RESOURCE_GROUP" \
+  --location "$LOCATION" \
+  --allocation-method Dynamic
 
-# Maak een Virtual Network Gateway aan
-az network vnet-gateway create --name $gatewayName --resource-group $resourceGroupName --location $location --vnet $virtualNetworkName --public-ip-address $publicIpName --gateway-type Vpn --vpn-type RouteBased --sku VpnGw1 --no-wait
+# Deploy the VPN gateway
+az network vnet-gateway create \
+  --name "$GATEWAY_NAME" \
+  --resource-group "$RESOURCE_GROUP" \
+  --location "$LOCATION" \
+  --vnet "$VIRTUAL_NETWORK_NAME" \
+  --public-ip-address "$PUBLIC_IP_NAME" \
+  --gateway-type Vpn \
+  --vpn-type RouteBased \
+  --sku VpnGw1 \
+  --no-wait
 
-# Wacht op de voltooiing van de gateway-implementatie voordat u Point-to-Site VPN-configuratie toevoegt
-az network vnet-gateway wait --name $gatewayName --resource-group $resourceGroupName --operation CreateVirtualNetworkGateway
+# Wait for the gateway to finish provisioning
+az network vnet-gateway wait \
+  --name "$GATEWAY_NAME" \
+  --resource-group "$RESOURCE_GROUP" \
+  --created
 
-# Voeg Point-to-Site VPN-configuratie toe
-az network vnet-gateway update --name $gatewayName --resource-group $resourceGroupName --add vpnClientConfiguration.0.vpnClientProtocols OpenVPN
-az network vnet-gateway update --name $gatewayName --resource-group $resourceGroupName --add vpnClientConfiguration.0.vpnClientRootCertificates[0].publicCertData "$(cat YourRootCert.cer | base64 -w 0)"
+# Configure Point-to-Site VPN
+BASE64_CERT=$(base64 -w 0 "$ROOT_CERT_PATH")
+az network vnet-gateway update \
+  --name "$GATEWAY_NAME" \
+  --resource-group "$RESOURCE_GROUP" \
+  --set vpnClientConfiguration.vpnClientProtocols="OpenVPN" \
+  --set vpnClientConfiguration.vpnClientRootCertificates[0].publicCertData="$BASE64_CERT"

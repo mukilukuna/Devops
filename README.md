@@ -1,5 +1,2 @@
 # Devops
-
-This repository contains various scripting examples. The folder `Machine Learning R` demonstrates how to create a synthetic support ticket dataset and apply machine learning techniques in R.
-
-The directory `AzureCLI/Azure Network` holds several Azure CLI scripts for deploying network infrastructure such as VPN gateways and Virtual WAN resources.
+Dit is een centrale hub voor alle scripts die ik heb verzameld of zelf ontwikkeld en die in de toekomst van pas kunnen komen.

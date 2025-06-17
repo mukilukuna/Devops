@@ -1,3 +1,22 @@
+<#
+.SYNOPSIS
+Verwijdert vooraf geïnstalleerde HP-apps, Appx-packages en extra software die vaak meegeleverd wordt met zakelijke HP-devices.
+
+.DESCRIPTION
+- Verwijdert een lijst van Appx-packages (voor alle gebruikers)
+- Verwijdert klassieke programma's met Get-Package of via WMI (fallback)
+- Verwijdert specifieke HP MSI's als laatste fallback
+- Logt alle stappen naar een Intune-logbestand op de client
+
+.GEBRUIK
+- Te gebruiken als Intune Win32-applicatie
+- Controleer of de te verwijderen pakketten overeenkomen met wat op jouw image staat
+- Uitvoeren met beheerdersrechten
+
+.AUTEUR
+Aangepast door Muki Lukuna
+#>
+
 # Stel de uitvoeringspolicy in op 'Bypass' om het uitvoeren van scripts toe te staan
 Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 
@@ -18,6 +37,7 @@ function Write-Log {
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     $logMessage = "$timestamp - $Message"
     Add-Content -Path $LogPath -Value $logMessage
+    Write-Output $logMessage
 }
 
 # Lijsten met te verwijderen pakketten en programma's
@@ -60,7 +80,6 @@ $UninstallPrograms = @(
 foreach ($Package in $UninstallPackages) {
     Write-Log "Proberen te verwijderen: $Package"
     try {
-        # Verwijder voor alle gebruikers
         Get-AppxPackage -AllUsers -Name $Package | Remove-AppxPackage -AllUsers -ErrorAction Stop
         Write-Log "Succesvol verwijderd: $Package"
     }
@@ -81,7 +100,6 @@ foreach ($Program in $UninstallPrograms) {
     }
     catch {
         Write-Log "Fout bij verwijderen van $Program via Get-Package: $_"
-        # Fallback naar CIM-methode
         Write-Log "Fallback: Proberen te verwijderen via CIM: $Program"
         try {
             $app = Get-CimInstance -ClassName Win32_Product -Filter "Name = '$Program'" -ErrorAction Stop

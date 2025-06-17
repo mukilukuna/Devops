@@ -10,6 +10,7 @@ resource scalingPlan 'Microsoft.DesktopVirtualization/scalingplans@2023-09-05' =
   name: scalingPlanName
   location: location
   properties: {
+    timeZone: 'W. Europe Standard Time'
     hostPoolReferences: [
       {
         hostPoolArmPath: hostPool.id

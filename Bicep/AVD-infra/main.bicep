@@ -73,7 +73,6 @@ module session './Modules/sessionhosts.bicep' = {
     vmAdminUsername: vmAdminUsername
     vmAdminPassword: vmAdminPassword
     subnetId: network.outputs.subnetId
-    hostPoolName: avdHostPoolName
     location: location
   }
 }

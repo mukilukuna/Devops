@@ -1,4 +1,4 @@
-# Dit script installeert de app diapi via een stille installatie en logt de voortgang.
+# Dit script installeert een app via een stille installatie en logt de voortgang.
 # Zet foutafhandeling zodat niet-terminerende fouten ook worden opgevangen in try/catch
 $ErrorActionPreference = 'Stop'
 

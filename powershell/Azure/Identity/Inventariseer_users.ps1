@@ -1,3 +1,4 @@
+Connect-MgGraph
 # Datum voor de bestandsnaam
 $datum = Get-Date -Format "yyyyMMdd"
 

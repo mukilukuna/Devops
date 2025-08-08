@@ -2,8 +2,8 @@
 # Robocopy Script - Mirror Source to Destination with Logging
 # =====================================================================
 # Configuratie
-$Source      = "\\vervps06\e$\Shares"
-$Destination = "\\vereuazusto.file.core.windows.net\shares"
+$Source      = "<Bron Locatie>"
+$Destination = "<Doel Locatie>"
 $LogPath     = "C:\Temp\Robocopy_Test_Mirror.log"
 
 # Maak logmap aan indien deze niet bestaat

@@ -29,7 +29,7 @@ function Write-Log {
 Write-Log "Start van HP Image Assistant installatiescript..."
 
 # Instellingen
-$HPIAPath      = "C:\Program Files\HPImageAssistant\HPImageAssistant.exe"
+$HPIAPath      = "C:\hpia\HPImageAssistant.exe"
 $ReportFolder  = "C:\HPIAReport"
 $SoftpaqFolder = "C:\HPIASoftpaqs"
 

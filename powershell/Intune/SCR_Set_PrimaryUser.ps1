@@ -72,7 +72,7 @@ param(
     [string[]]$ExcludedNames = @('TboneSRV'),
 
     [Parameter(Mandatory = $false, HelpMessage = "Filter to exclude enrollment accounts ('wds@tbone.se','ris@tbone.se'). Default is blank")]
-    [string[]]$EnrollmentAccounts = @("wds1@tbone.e", "wds2@tbone.se"),
+    [string[]]$EnrollmentAccounts = @('its_admin@verhoevemw.onmicrosoft.com', 'm.lukuna@buroantares.nl', 'l.groeneweg@buroantares.nl', 'admin@verhoevemw.com'),
 
     [Parameter(Mandatory = $false, HelpMessage = "Number of days to look back for sign-in logs. Default is 30 days")]
     [ValidateRange(1, 90)]

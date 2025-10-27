@@ -7,7 +7,7 @@ if (-not (Get-Module -Name Microsoft.Graph -ListAvailable)) {
 Import-Module Microsoft.Graph
 
 # Definieer het pad voor het CSV-bestand
-$path = "C:\Users\MukiLukunaITSynergy\IT Synergy\KindeRdam - Professional Services\Project beheer inventarisatie\M365GebruikersInfo.csv"
+$path = "C:\Users\MukiLukunaITSynergy\IT Synergy\Storax - Documents\inventarisatie\M365GebruikersInfo.csv"
 
 # Verbinding maken met Microsoft Graph
 Connect-MgGraph -Scopes "User.Read.All"

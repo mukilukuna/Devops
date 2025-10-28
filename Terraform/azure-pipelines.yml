@@ -15,12 +15,17 @@ stages:
       inputs:
         terraformVersion: 'latest'
 
-    - script: |
-        terraform --version
-        terraform init -backend-config="storage_account_name=$(storageAccountName)" -backend-config="container_name=$(containerName)" -backend-config="key=$(key)" -backend-config="access_key=$(accessKey)"
-        terraform plan -out=tfplan
+    - task: AzureCLI@2
       displayName: 'Terraform Init and Plan'
-      workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
+      inputs:
+        azureSubscription: $(azureSubscription)
+        scriptType: bash
+        scriptLocation: inlineScript
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
+        inlineScript: |
+          terraform --version
+          terraform init -backend-config="storage_account_name=$(storageAccountName)" -backend-config="container_name=$(containerName)" -backend-config="key=$(key)" -backend-config="access_key=$(accessKey)"
+          terraform plan -out=tfplan
 
 - stage: Deploy
   displayName: 'Terraform Apply'
@@ -34,9 +39,14 @@ stages:
       inputs:
         terraformVersion: 'latest'
 
-    - script: |
-        terraform --version
-        terraform init -backend-config="storage_account_name=$(storageAccountName)" -backend-config="container_name=$(containerName)" -backend-config="key=$(key)" -backend-config="access_key=$(accessKey)"
-        terraform apply -auto-approve
+    - task: AzureCLI@2
       displayName: 'Terraform Init and Apply'
-      workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
+      inputs:
+        azureSubscription: $(azureSubscription)
+        scriptType: bash
+        scriptLocation: inlineScript
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
+        inlineScript: |
+          terraform --version
+          terraform init -backend-config="storage_account_name=$(storageAccountName)" -backend-config="container_name=$(containerName)" -backend-config="key=$(key)" -backend-config="access_key=$(accessKey)"
+          terraform apply -auto-approve

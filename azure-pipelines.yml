@@ -2,7 +2,7 @@ trigger:
 - main
 
 variables:
-  azureSubscription: 'Your-Service-Connection-Name'
+  azureSubscription: 'Visual Studio Enterprise-abonnement – MPN(098e34b6-d88e-447e-ba9a-245275343d63)'
   resourceGroup: 'loi'
   aksName: 'aks-debock'
   aksLocation: 'westeurope'

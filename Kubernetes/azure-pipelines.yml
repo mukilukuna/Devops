@@ -38,7 +38,7 @@ stages:
       displayName: Show cluster nodes
       inputs:
         connectionType: Azure Resource Manager
-        azureSubscription: $(azureSubscription)
+        azureSubscriptionEndpoint: $(azureSubscription)
         azureResourceGroup: $(resourceGroup)
         kubernetesCluster: $(aksName)
         command: get

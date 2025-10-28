@@ -1,0 +1,46 @@
+trigger:
+- main
+
+variables:
+  azureSubscription: 'Your-Service-Connection-Name'
+  resourceGroup: 'loi'
+  aksName: 'aks-debock'
+  aksLocation: 'westeurope'
+  nodeCount: '1'
+  manifestPath: 'Kubernetes/webshop.yaml'
+
+stages:
+- stage: Deploy
+  displayName: Deploy AKS Webshop
+  jobs:
+  - job: ProvisionAndDeploy
+    displayName: Provision AKS and Deploy Manifests
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - checkout: self
+
+    - task: AzureCLI@2
+      displayName: Provision AKS and deploy manifests
+      inputs:
+        azureSubscription: $(azureSubscription)
+        scriptType: bash
+        scriptLocation: scriptPath
+        scriptPath: Kubernetes/deploy.azcli
+      env:
+        RESOURCE_GROUP: $(resourceGroup)
+        AKS_NAME: $(aksName)
+        AKS_LOCATION: $(aksLocation)
+        NODE_COUNT: $(nodeCount)
+        MANIFEST_PATH: $(manifestPath)
+
+    - task: Kubectl@1
+      displayName: Show cluster nodes
+      inputs:
+        connectionType: Azure Resource Manager
+        azureSubscription: $(azureSubscription)
+        azureResourceGroup: $(resourceGroup)
+        kubernetesCluster: $(aksName)
+        command: get
+        arguments: nodes
+        useClusterAdmin: true

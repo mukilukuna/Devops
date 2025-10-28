@@ -1,6 +1,45 @@
-az login 
-az account set --subscription "*********************"
+#!/usr/bin/env bash
 
-az aks create --resource-group loi --name aks-debock --node-count 1 --enable-addons monitoring --generate-ssh-keys
-kubectl apply -f .\webshop.yaml
+set -euo pipefail
+
+# Configuration defaults. Override these values by exporting environment
+# variables before invoking the script (e.g. in Azure DevOps pipeline variables).
+SUBSCRIPTION_ID="${SUBSCRIPTION_ID:-}"      # Optional when running in Azure DevOps.
+RESOURCE_GROUP="${RESOURCE_GROUP:-loi}"
+AKS_NAME="${AKS_NAME:-aks-debock}"
+AKS_LOCATION="${AKS_LOCATION:-westeurope}"
+NODE_COUNT="${NODE_COUNT:-1}"
+MANIFEST_PATH="${MANIFEST_PATH:-$(dirname "$0")/webshop.yaml}"
+
+# Login is typically handled by the AzureCLI task in Azure DevOps. Only attempt
+# an interactive login when not already authenticated.
+if ! az account show >/dev/null 2>&1; then
+  echo "No active Azure session detected; attempting interactive az login." >&2
+  az login >/dev/null
+fi
+
+if [ -n "$SUBSCRIPTION_ID" ]; then
+  az account set --subscription "$SUBSCRIPTION_ID"
+fi
+
+# Ensure the resource group exists.
+az group show --name "$RESOURCE_GROUP" >/dev/null 2>&1 || \
+  az group create --name "$RESOURCE_GROUP" --location "$AKS_LOCATION" >/dev/null
+
+# Create the AKS cluster if it does not already exist.
+if ! az aks show --resource-group "$RESOURCE_GROUP" --name "$AKS_NAME" >/dev/null 2>&1; then
+  az aks create \
+    --resource-group "$RESOURCE_GROUP" \
+    --name "$AKS_NAME" \
+    --location "$AKS_LOCATION" \
+    --node-count "$NODE_COUNT" \
+    --enable-addons monitoring \
+    --generate-ssh-keys
+else
+  echo "AKS cluster $AKS_NAME already exists; skipping creation." >&2
+fi
+
+# Retrieve cluster credentials and deploy the Kubernetes resources.
+az aks get-credentials --resource-group "$RESOURCE_GROUP" --name "$AKS_NAME" --overwrite-existing
+kubectl apply -f "$MANIFEST_PATH"
 kubectl get nodes

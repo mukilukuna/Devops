@@ -20,9 +20,12 @@ stages:
         terraform init -backend-config="storage_account_name=$(storageAccountName)" -backend-config="container_name=$(containerName)" -backend-config="key=$(key)" -backend-config="access_key=$(accessKey)"
         terraform plan -out=tfplan
       displayName: 'Terraform Init and Plan'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
 
 - stage: Deploy
   displayName: 'Terraform Apply'
+  dependsOn: Plan
+  condition: succeeded('Plan')
   jobs:
   - job: TerraformApply
     displayName: 'Terraform Apply'
@@ -34,5 +37,6 @@ stages:
     - script: |
         terraform --version
         terraform init -backend-config="storage_account_name=$(storageAccountName)" -backend-config="container_name=$(containerName)" -backend-config="key=$(key)" -backend-config="access_key=$(accessKey)"
-        terraform apply -auto-approve tfplan
+        terraform apply -auto-approve
       displayName: 'Terraform Init and Apply'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
